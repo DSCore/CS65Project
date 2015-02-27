@@ -1,0 +1,2 @@
+/Users/Kyrie/Desktop/Project_UI/app/build/intermediates/classes/debug
+/Users/Kyrie/Desktop/Project_UI/app/build/intermediates/pre-dexed/debug/support-v4-18.0.0-8f0663bcdb0e5aca2ae1b313c1ae0b60b086ce6f.jar
