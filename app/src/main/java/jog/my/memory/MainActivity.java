@@ -187,6 +187,8 @@ public class MainActivity extends Activity {
 		case 5:
 			fragment = new WhatsHotFragment();
 			break;
+        case 6:
+            fragment = new PrefsFragment();
 
 		default:
 			break;

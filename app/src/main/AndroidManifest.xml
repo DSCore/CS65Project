@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="jog.my.memory.ProfileActivity"
+            android:label="@string/profile_name"
+            android:windowSoftInputMode="stateHidden"
+            />
     </application>
 
 </manifest>

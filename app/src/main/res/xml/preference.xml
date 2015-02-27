@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="@string/account_preferences">
+        <PreferenceScreen
+            android:title="@string/user_profile"
+            android:summary="@string/user_pro_description">
+        <intent android:action="android.intent.action.VIEW"
+            android:targetPackage="jog.my.memory"
+            android:targetClass="jog.my.memory.teProfileActivity"
+            />
+        </PreferenceScreen>
+        <CheckBoxPreference
+            android:key="@string/checkboxpreference_privacy"
+            android:title="@string/privacy_setting"
+            android:summary="@string/privacy_description"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/addnl_settings">
+
+        <ListPreference
+            android:key="@string/list_unit_preferences"
+            android:title="@string/unit_preferences_title"
+            android:summary="@string/unit_preferences_summary"
+            android:entries="@array/unit_possibilities"
+            android:entryValues="@array/unit_poss_entries"
+            android:dialogTitle="@string/dialog_unit_preferences" />
+
+
+        <EditTextPreference
+            android:key="@string/edittextpreference_comment"
+            android:title="@string/title_edittext_comment"
+            android:summary="@string/summary_edittext_comment"
+            android:dialogTitle="@string/dialog_title_edittext_comment" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/misc">
+
+        <PreferenceScreen
+            android:title="@string/title_class_homepage"
+            android:summary="@string/summary_class_homepage">
+
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.cs.dartmouth.edu/~campbell" />
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+</PreferenceScreen>

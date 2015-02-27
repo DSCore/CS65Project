@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Jog My Memory</string>
-    <string name="action_settings">Settings</string>
-    <!--<string name="hello_world">Hello world!</string>-->
-    <string name="drawer_open">Slider Menu Opened</string>
-    <string name="drawer_close">Slider Menu Closed</string>
     
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
@@ -32,5 +26,60 @@
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+
+    <!-- Other String Resources -->
+    <string name="app_name">Jog My Memory</string>
+    <string name="action_settings">Settings</string>
+    <!--<string name="hello_world">Hello world!</string>-->
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+    <string name="account_preferences">Account Preferences</string>
+    <string name="user_profile">User Profile</string>
+    <string name="privacy_setting">Privacy Setting</string>
+    <string name="user_pro_description">Names, Email, Class, etc.</string>
+    <string name="privacy_description">Posting your records anonymously</string>
+    <string name="addnl_settings">Additional Settings</string>
+    <string name="unit_preferences_title">Unit Preferences</string>
+    <string name="unit_preferences_summary">Select the units in which you would like to see distance values</string>
+    <string name="dialog_unit_preferences">Unit Preferences</string>
+    <string name="title_edittext_comment">Comment</string>
+    <string name="summary_edittext_comment">Any suggestion to this course?</string>
+    <string name="dialog_title_edittext_comment">Comment</string>
+    <string name="misc">Misc.</string>
+    <string name="title_class_homepage">Class Homepage</string>
+    <string name="summary_class_homepage">http://www.cs.dartmouth.edu/~campbell</string>
+    <string name="checkboxpreference_privacy">chkbx_privacy</string>
+    <string name="list_unit_preferences">list_unit_preferences</string>
+    <string name="edittextpreference_comment">edtxt_comment</string>
+    <string name="ui_profile_photo_picker_title">Pick Profile Photo:</string>
+    <string name="preference_name">my_preferences</string>
+    <string name="prefs_Name">preferences_Name</string>
+    <string name="prefs_Email">preferences_Email</string>
+    <string name="prefs_Phone">preferences_Phones</string>
+    <string name="prefs_Gender">preferences_Gender</string>
+    <string name="prefs_Class">preferences_Class</string>
+    <string name="prefs_Major">preferences_Major</string>
+    <string name="profile_photo_file_name">profile_photo.png</string>
+    <string name="ProfilePhoto">Profile Photo:</string>
+    <string name="Name">Name:</string>
+    <string name="Email">Email:</string>
+    <string name="Phone">Phone:</string>
+    <string name="Gender">Gender:</string>
+    <string name="Major">Major:</string>
+    <string name="Class">Class:</string>
+    <string name="NameHint">Your name</string>
+    <string name="MajorHint">Your major</string>
+    <string name="ClassHint">e.g. 2012</string>
+    <string name="GenderHint">Your Gender</string>
+    <string name="PhoneHint">Your phone number</string>
+    <string name="EmailHint">Your email address</string>
+    <string name="buttonChangePhoto">Change</string>
+    <string name="Male">Male</string>
+    <string name="Female">Female</string>
+    <string name="title_activity_camera_control">CameraControlActivity</string>
+    <string name="toast_saved_test">Saved!</string>
+    <string name="SaveButton">Save</string>
+    <string name="CancelButton">Cancel</string>
+    <string name="profile_name">Profile</string>
 
 </resources>

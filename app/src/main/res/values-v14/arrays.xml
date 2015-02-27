@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="unit_possibilities">
+        <item>Metric (Kilometers)</item>
+        <item>Imperial (Miles)</item>
+    </string-array>
+    <string-array name="unit_poss_entries">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="ui_profile_photo_picker_items" >
+        <item>Take Photo</item>
+        <item>Choose from Gallery</item>
+    </string-array>
+</resources>
