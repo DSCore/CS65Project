@@ -28,6 +28,24 @@
             android:label="@string/profile_name"
             android:windowSoftInputMode="stateHidden"
             />
+        <activity
+            android:name=".images.GalleryFragmentActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".images.SlideshowActivity"
+            android:label="Slideshow"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".images.DisplayActivity"
+            android:label="@string/title_activity_display" >
+        </activity>
     </application>
 
 </manifest>

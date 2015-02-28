@@ -81,5 +81,11 @@
     <string name="SaveButton">Save</string>
     <string name="CancelButton">Cancel</string>
     <string name="profile_name">Profile</string>
+    <string name="title_activity_display">Picture</string>
+
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="action_share">Share</string>
+    <string name="DELETE">Delete</string>
+    <string name="slidebutt">Slideshow</string>
 
 </resources>

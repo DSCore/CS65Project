@@ -1,6 +1,8 @@
 package jog.my.memory;
 
 import jog.my.memory.adapter.NavDrawerListAdapter;
+import jog.my.memory.images.GalleryFragment;
+import jog.my.memory.images.GalleryFragmentActivity;
 import jog.my.memory.model.NavDrawerItem;
 
 import java.util.ArrayList;
@@ -173,7 +175,7 @@ public class MainActivity extends Activity {
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new FindPeopleFragment();
+			fragment = new GalleryFragment();
 			break;
 		case 2:
 			fragment = new PhotosFragment();
