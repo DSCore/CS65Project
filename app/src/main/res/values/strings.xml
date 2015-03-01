@@ -87,5 +87,13 @@
     <string name="action_share">Share</string>
     <string name="DELETE">Delete</string>
     <string name="slidebutt">Slideshow</string>
+    <string name="InputType">Input Type</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="ActivityType">Activity Type</string>
+    <string name="startButton">Start</string>
+    <string name="syncButton">sync</string>
+    <string name="stats">Statistics</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

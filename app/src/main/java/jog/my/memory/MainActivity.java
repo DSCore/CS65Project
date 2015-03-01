@@ -1,5 +1,6 @@
 package jog.my.memory;
 
+import jog.my.memory.GPS.StartFragment;
 import jog.my.memory.adapter.NavDrawerListAdapter;
 import jog.my.memory.images.GalleryFragment;
 import jog.my.memory.images.GalleryFragmentActivity;
@@ -172,12 +173,16 @@ public class MainActivity extends Activity {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			fragment = new HomeFragment();
+//            fragment = new HomeFragment();
+//            getFragmentManager().beginTransaction().add(fragment, "home").addToBackStack("home").commit();
+            fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new GalleryFragment();
+			fragment = new GalleryFragment(); //TODO: Fix an issue where you can't go back from or change out of the GalleryFragment (Nav Drawer won't display)
 			break;
 		case 2:
+//            fragment = new PhotosFragment();
+//            getFragmentManager().beginTransaction().add(fragment, "photos").addToBackStack("photos").commit();
 			fragment = new PhotosFragment();
 			break;
 		case 3:
@@ -187,7 +192,7 @@ public class MainActivity extends Activity {
 			fragment = new PagesFragment();
 			break;
 		case 5:
-			fragment = new WhatsHotFragment();
+			fragment = new StartFragment();
 			break;
         case 6:
             fragment = new PrefsFragment();
@@ -199,7 +204,7 @@ public class MainActivity extends Activity {
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+					.replace(R.id.frame_container, fragment).addToBackStack("prev").commit();
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
