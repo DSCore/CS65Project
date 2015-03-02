@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
+import jog.my.memory.Debug.BlankFragment;
 import jog.my.memory.GPS.StartFragment;
 import jog.my.memory.R;
 import jog.my.memory.adapter.NavDrawerListAdapter;
@@ -95,9 +96,6 @@ public class HomeActivity extends FragmentActivity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1))); //TODO: Figure out where the fragments are defined and add one for this.
-
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -276,29 +274,22 @@ public class HomeActivity extends FragmentActivity {
         // update the main content by replacing fragments
         Fragment fragment = null;
         switch (position) {
-            case 0:
-//            fragment = new HomeFragment();
-//            getFragmentManager().beginTransaction().add(fragment, "home").addToBackStack("home").commit();
+            case 0: //Home
                 fragment = new HomeFragment();
                 break;
-            case 1:
-                fragment = new GalleryFragment(); //TODO: Fix an issue where you can't go back from or change out of the GalleryFragment (Nav Drawer won't display)
+            case 1: //Excursions
+                fragment = new BlankFragment();
                 break;
-            case 2:
-//            fragment = new PhotosFragment();
-//            getFragmentManager().beginTransaction().add(fragment, "photos").addToBackStack("photos").commit();
-                fragment = new PhotosFragment();
+            case 2: //Photo Gallery
+                fragment = new GalleryFragment();
                 break;
-            case 3:
-                fragment = new CommunityFragment();
+            case 3: //Slideshows
+                fragment = new BlankFragment();
                 break;
-            case 4:
-                fragment = new PagesFragment();
-                break;
-            case 5:
+            case 4: //Get Going!
                 fragment = new StartFragment();
                 break;
-            case 6:
+            case 5: //User Profile
                 fragment = new PrefsFragment();
 
             default:
