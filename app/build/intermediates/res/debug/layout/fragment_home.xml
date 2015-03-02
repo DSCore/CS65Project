@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/bgimage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -40,6 +41,14 @@
         android:textSize="40dp"
         android:textColor="#FFF"
         android:text="Julia Jones"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bgimage"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/home_summary"/>
 
 </RelativeLayout>
 <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/layout/fragment_home.xml -->
