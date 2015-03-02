@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 /**
@@ -63,6 +64,20 @@ public class StartFragment extends Fragment {
 
         //Return the inflated view
         return startFragmentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Set the map background to non-visible
+        ((HomeActivity)super.getActivity()).setMapVisible(false);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
     }
 
     public void onStartClicked(View view) {

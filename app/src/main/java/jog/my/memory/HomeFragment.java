@@ -18,4 +18,16 @@ public class HomeFragment extends Fragment {
          
         return rootView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
+    }
 }

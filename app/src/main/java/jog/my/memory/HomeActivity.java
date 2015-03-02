@@ -178,7 +178,14 @@ public class HomeActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setMapVisible(true);
         setUpMapIfNeeded();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setMapVisible(false);
     }
 
     /**
@@ -335,5 +342,17 @@ public class HomeActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * Changes the map visibility
+     */
+    public void setMapVisible(boolean visible){
+        if(visible){
+            findViewById(R.id.map).setVisibility(View.VISIBLE);
+        }
+        else{
+            findViewById(R.id.map).setVisibility(View.INVISIBLE);
+        }
     }
 }

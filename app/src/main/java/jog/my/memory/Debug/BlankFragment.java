@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 /**
@@ -73,6 +74,18 @@ public class BlankFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)super.getActivity()).setMapVisible(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
     }
 
     @Override

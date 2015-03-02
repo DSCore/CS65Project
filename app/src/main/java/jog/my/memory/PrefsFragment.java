@@ -17,4 +17,16 @@ public class PrefsFragment extends PreferenceFragment {
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preference);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)super.getActivity()).setMapVisible(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
+    }
 }

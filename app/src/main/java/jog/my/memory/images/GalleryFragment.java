@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 
@@ -92,6 +93,18 @@ public class GalleryFragment extends Fragment {
         this.updateGridView();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)super.getActivity()).setMapVisible(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
     }
 
     public void updateLocation(Location location){
