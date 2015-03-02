@@ -78,13 +78,22 @@ public class GalleryFragment extends Fragment {
 //        super.getActivity().setContentView(R.layout.activity_gallery);
 
         //TODO:Set up all of the onClickListeners here so they don't need to be in the activity
-        Button mShowSlides = (Button)view.findViewById(R.id.button_take_pic);
+        Button mShowSlides = (Button)view.findViewById(R.id.button_slideshow);
         mShowSlides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSlideshowClicked(view);
             }
         });
+
+        Button mTakePhoto = (Button)view.findViewById(R.id.button_take_pic);
+        mTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTakePictureClicked(view);
+            }
+        });
+
 
         //Get a reference to the GridView
         this.mGV = (GridView)view.findViewById(R.id.gridview);
@@ -239,9 +248,13 @@ public class GalleryFragment extends Fragment {
 
                 bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500,500);
 
-                //TODO: Make this real code, not test code! i.e. make it store in the database!
-                this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                        this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp));
+                if(this.mLocation != null) {
+                    this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
+                            this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp));
+                }else{
+                    this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
+                            0,0,bmp));
+                }
 //                    this.mILList.add(new ImageLocation(new GregorianCalendar(), 16, 24, bmp));
                 this.updateGridView();
             }
