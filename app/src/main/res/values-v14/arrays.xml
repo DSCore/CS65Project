@@ -14,9 +14,7 @@
     </string-array>
 
     <string-array name="ui_inputType_spinner_entries">
-        <item>Manual Entry</item>
         <item>GPS</item>
-        <item>Automatic</item>
     </string-array>
 
     <string-array name="ui_activityType_spinner_entries">
