@@ -23,9 +23,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!--
-    Accesses for server communication
-    -->
+<!--     Accesses for server communication -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -37,14 +35,14 @@
 
     <uses-permission android:name="cormack.devon.lab1_1.android.permission.C2D_MESSAGE" />
 
-    <!-- TODO: Update this with our icon! -->
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="jog.my.memory.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,10 +51,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="jog.my.memory.ProfileActivity"
+            android:name=".ProfileActivity"
             android:label="@string/profile_name"
-            android:windowSoftInputMode="stateHidden"
-            />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".images.GalleryFragmentActivity"
             android:label="@string/app_name" >
@@ -69,7 +66,7 @@
         <activity
             android:name=".images.SlideshowActivity"
             android:label="Slideshow"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".images.DisplayActivity"
@@ -78,10 +75,21 @@
         <activity
             android:name=".GPS.MapsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps"
+            android:launchMode="singleTask" >
         </activity>
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
     </application>
 
 </manifest>

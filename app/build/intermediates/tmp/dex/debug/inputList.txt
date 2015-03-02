@@ -1,2 +1,8 @@
-/Users/Kyrie/Desktop/Project_UI/app/build/intermediates/classes/debug
-/Users/Kyrie/Desktop/Project_UI/app/build/intermediates/pre-dexed/debug/support-v4-18.0.0-8f0663bcdb0e5aca2ae1b313c1ae0b60b086ce6f.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\classes\debug
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-4b48987332e0a43ba15975a6b7ff603c8411dec3.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-ace15601bcc96ad41e088b6c812180f3770415e4.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\classes-eee49e881448855f725fc9575bed7e8c1e3374e1.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-71e73a9402ad1059ae561718f25f021ff2e22a96.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\classes-c568b4f916479424b3a7efa6d6bd7506ced1e68e.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\classes-06f6f5549fd39fb82e11be5239017e47d442831c.jar
+C:\Users\CBAS\Desktop\CS65Project\app\build\intermediates\pre-dexed\debug\classes-7b2dabff6871f973f8f3800b172ff316312bd5d3.jar
