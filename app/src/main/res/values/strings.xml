@@ -95,5 +95,6 @@
     <string name="cancel">Cancel</string>
     <string name="title_activity_home">Jog My Memory!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_takephoto">Take Photo</string>
 
 </resources>
