@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
             fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new GalleryFragment(); //TODO: Fix an issue where you can't go back from or change out of the GalleryFragment (Nav Drawer won't display)
+			fragment = new GalleryFragment();
 			break;
 		case 2:
 //            fragment = new PhotosFragment();

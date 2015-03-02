@@ -47,6 +47,8 @@ public class GalleryFragment extends Fragment {
 
     private Context context;
 
+    private GridView mGV;
+
     /** Location Listener to get location **/
 
     private final LocationListener locationListener = new LocationListener() {
@@ -68,19 +70,23 @@ public class GalleryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_gallery, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        this.context = inflater.getContext();
 //        View view =  super.onCreateView(inflater, container, savedInstanceState);
 
-        super.getActivity().setContentView(R.layout.activity_gallery);
+//        super.getActivity().setContentView(R.layout.activity_gallery);
 
         //TODO:Set up all of the onClickListeners here so they don't need to be in the activity
-        Button mShowSlides = (Button)super.getActivity().findViewById(R.id.button_take_pic);
+        Button mShowSlides = (Button)view.findViewById(R.id.button_take_pic);
         mShowSlides.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSlideshowClicked(view);
             }
         });
+
+        //Get a reference to the GridView
+        this.mGV = (GridView)view.findViewById(R.id.gridview);
 
         //Update the grid view
         this.updateGridView();
@@ -93,8 +99,6 @@ public class GalleryFragment extends Fragment {
     }
 
     public void updateGridView(){
-        //Get the gridview
-        GridView mGV = (GridView)super.getActivity().findViewById(R.id.gridview);
 
         //Get the data from the database
         this.mDbHelper = new ImageLocationDBHelper(super.getActivity());
@@ -103,9 +107,9 @@ public class GalleryFragment extends Fragment {
         //Set the adapter for the grid view
 //        mGV.setAdapter(new ImageLocationAdapter(this,
 //                android.R.layout.simple_list_item_1,this.mILList));
-        mGV.setAdapter(new ImageLocationAdapter(super.getActivity(),
+        this.mGV.setAdapter(new ImageLocationAdapter(context,
                 R.id.example_list_item,this.mILList));        //Set the listener for clicks on items in the gridview
-        mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(context,DisplayActivity.class);
