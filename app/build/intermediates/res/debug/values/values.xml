@@ -318,7 +318,7 @@
     <string name="edittextpreference_comment">edtxt_comment</string>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/debug/res/values/google_maps_api.xml -->
     <eat-comment/>
-    <string name="google_maps_key" templateMergeStrategy="preserve">YOUR_KEY_HERE</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyA4SbIZG9FDLOy1r1XC7Z1spsIwDKSs5JY</string>
     <string name="google_maps_key_instructions" templateMergeStrategy="replace"><!--
 
     TODO: Before you run your application, you need a Google Maps API key.

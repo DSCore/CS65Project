@@ -2,22 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/bgdefault"/>
+
     <TextView
         android:id="@+id/txtLabel"
-         android:layout_width="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Home View"/>
-    
-    <ImageView android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingRight="45dp"
+        android:paddingTop="30dp"
+        android:textSize="30dp"
+        android:textColor="#FFF"
+        android:text="Profile"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_home"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
-    
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="45dp"
+        android:paddingTop="40dp"
+
+        android:src="@drawable/profile_default"/>
 
 </RelativeLayout>
 <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/layout/fragment_home.xml -->
