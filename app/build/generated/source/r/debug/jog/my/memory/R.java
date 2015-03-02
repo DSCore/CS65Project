@@ -1723,11 +1723,12 @@ containing a value of this type.
         public static final int powered_by_google_dark=0x7f02005f;
         public static final int powered_by_google_light=0x7f020060;
         public static final int profile_default=0x7f020061;
-        public static final int runimg1=0x7f020062;
-        public static final int runimg2=0x7f020063;
-        public static final int runimg3=0x7f020064;
-        public static final int runimg4=0x7f020065;
-        public static final int runimg5=0x7f020066;
+        public static final int quick_start=0x7f020062;
+        public static final int runimg1=0x7f020063;
+        public static final int runimg2=0x7f020064;
+        public static final int runimg3=0x7f020065;
+        public static final int runimg4=0x7f020066;
+        public static final int runimg5=0x7f020067;
     }
     public static final class id {
         public static final int ImageView_displayImage=0x7f0b0053;
@@ -1746,8 +1747,8 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0b0042;
         public static final int action_mode_bar_stub=0x7f0b0041;
         public static final int action_mode_close_button=0x7f0b0034;
-        public static final int action_settings=0x7f0b0083;
-        public static final int action_share=0x7f0b0084;
+        public static final int action_settings=0x7f0b0086;
+        public static final int action_share=0x7f0b0087;
         public static final int activity_chooser_view_content=0x7f0b0035;
         public static final int adjust_height=0x7f0b0016;
         public static final int adjust_width=0x7f0b0017;
@@ -1769,7 +1770,7 @@ containing a value of this type.
         public static final int counter=0x7f0b0077;
         public static final int decor_content_parent=0x7f0b0043;
         public static final int default_activity_button=0x7f0b0038;
-        public static final int deleteEntryButton=0x7f0b0085;
+        public static final int deleteEntryButton=0x7f0b0088;
         public static final int dialog=0x7f0b0020;
         public static final int disableHome=0x7f0b000c;
         public static final int donate_with_google=0x7f0b002e;
@@ -1782,7 +1783,7 @@ containing a value of this type.
         public static final int editTextPhone=0x7f0b0069;
         public static final int edit_query=0x7f0b0047;
         public static final int end=0x7f0b0014;
-        public static final int example_list_item=0x7f0b0082;
+        public static final int example_list_item=0x7f0b0085;
         public static final int exit_btn=0x7f0b0074;
         public static final int expand_activities_button=0x7f0b0036;
         public static final int expanded_menu=0x7f0b003c;
@@ -1814,6 +1815,9 @@ containing a value of this type.
         public static final int next_bt=0x7f0b0073;
         public static final int none=0x7f0b000e;
         public static final int normal=0x7f0b000a;
+        public static final int num_excursions=0x7f0b007c;
+        public static final int num_galleries=0x7f0b007d;
+        public static final int num_likes=0x7f0b007e;
         public static final int previous_btn=0x7f0b0075;
         public static final int production=0x7f0b0025;
         public static final int profileLabel=0x7f0b007a;
@@ -1838,11 +1842,11 @@ containing a value of this type.
         public static final int showCustom=0x7f0b000f;
         public static final int showHome=0x7f0b0010;
         public static final int showTitle=0x7f0b0011;
-        public static final int spinner_ActivityType=0x7f0b007f;
-        public static final int spinner_InputType=0x7f0b007d;
+        public static final int spinner_ActivityType=0x7f0b0082;
+        public static final int spinner_InputType=0x7f0b0080;
         public static final int split_action_bar=0x7f0b0007;
-        public static final int startFragStartButton=0x7f0b0080;
-        public static final int startFragSyncButton=0x7f0b0081;
+        public static final int startFragStartButton=0x7f0b0083;
+        public static final int startFragSyncButton=0x7f0b0084;
         public static final int start_btn=0x7f0b0076;
         public static final int strict_sandbox=0x7f0b0027;
         public static final int submit_area=0x7f0b0050;
@@ -1856,8 +1860,8 @@ containing a value of this type.
         public static final int textViewPhone=0x7f0b0068;
         public static final int textViewProfilePhoto=0x7f0b0061;
         public static final int title=0x7f0b003b;
-        public static final int tv_activityType=0x7f0b007e;
-        public static final int tv_inputType=0x7f0b007c;
+        public static final int tv_activityType=0x7f0b0081;
+        public static final int tv_inputType=0x7f0b007f;
         public static final int txtLabel=0x7f0b0078;
         public static final int type_stats=0x7f0b005d;
         public static final int up=0x7f0b0008;

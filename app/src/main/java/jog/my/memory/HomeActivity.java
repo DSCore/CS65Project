@@ -152,7 +152,7 @@ public class HomeActivity extends FragmentActivity {
                     new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                    .target(new LatLng(location.getLatitude()+.0008, location.getLongitude()))      // Sets the center of the map to location user
                     .zoom(17)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -165,8 +165,8 @@ public class HomeActivity extends FragmentActivity {
 
                 Polyline line = mMap.addPolyline(new PolylineOptions()
                         .add(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(updates.get(updates.size() - 1).getLatitude(), updates.get(updates.size() - 1).getLongitude()))
-                        .width(5)
-                        .color(Color.BLUE).geodesic(true));
+                        .width(10)
+                        .color(Color.RED).geodesic(true));
 
                 updates.add(location);
             }

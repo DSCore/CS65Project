@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/bgimage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:src="@drawable/bgdefault"/>
@@ -49,5 +49,52 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:src="@drawable/home_summary"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/bgimage">
+
+        <TextView
+            android:id="@+id/num_excursions"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_width="0dip"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="#616161"
+            android:text="142"/>
+
+        <TextView
+            android:id="@+id/num_galleries"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#616161"
+            android:text="22"/>
+
+        <TextView
+            android:id="@+id/num_likes"
+            android:layout_height="wrap_content"
+            android:paddingRight="60dp"
+            android:textSize="20dp"
+            android:textColor="#00a5f6"
+            android:layout_width="0dip"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="15.4K"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/quick_start"/>
 
 </RelativeLayout>
