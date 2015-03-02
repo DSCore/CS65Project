@@ -5,11 +5,10 @@
     <string-array name="nav_drawer_items">
         <item>Home</item> <!-- User homepage, displays personal info and recent runs, non-editable -->
         <item>Excursions</item> <!-- Recent outings -->
-        <item>Photos</item> <!-- Gallery -->
+        <item>Photo Gallery</item> <!-- Gallery -->
         <item>Slideshows</item> <!-- List of all slideshows -->
         <item>Get Going!</item> <!-- Start a new excursion -->
-        <item>User Profile</item> <!-- User Profile -->
-        <item>Settings</item> <!-- Application Settings TODO: May want to combine the last 2. -->
+        <item>User Profile</item> <!-- Application Settings TODO: May want to combine the last 2. -->
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -22,7 +21,6 @@
         <item>@drawable/ic_communities</item>
         <item>@drawable/ic_pages</item>
         <item>@drawable/ic_whats_hot</item>
-        <item>@drawable/ic_launcher</item>
     </array>
 
     <!-- Content Description -->
@@ -96,5 +94,6 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="title_activity_home">Map</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
