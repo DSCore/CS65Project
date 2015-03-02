@@ -299,7 +299,7 @@ public class HomeActivity extends FragmentActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).addToBackStack("prev").commit();
+                    .replace(R.id.frame_container, fragment).addToBackStack("prev").commit(); //
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);

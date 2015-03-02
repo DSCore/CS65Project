@@ -518,7 +518,7 @@ public class MapsActivity extends FragmentActivity /*implements SensorEventListe
         @Override
         public void onReceive(Context context, Intent intent) {
             //Triggers on ACTION_NOTIFY_LOC_UPDATE
-//                Log.d(TAG, "Just received a location update!");
+                Log.d(TAG, "Just received a location update!");
                 handleNewLocationInfo();
         }
     }
