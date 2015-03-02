@@ -11,12 +11,12 @@
         android:src="@drawable/bgdefault"/>
 
     <TextView
-        android:id="@+id/txtLabel"
+        android:id="@+id/profileLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingRight="45dp"
-        android:paddingTop="30dp"
+        android:paddingTop="25dp"
         android:textSize="30dp"
         android:textColor="#FFF"
         android:text="Profile"/>
@@ -27,10 +27,19 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:layout_alignParentRight="true"
-        android:paddingRight="45dp"
-        android:paddingTop="40dp"
-
+        android:paddingRight="30dp"
+        android:paddingTop="70dp"
         android:src="@drawable/profile_default"/>
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="210dp"
+        android:textSize="40dp"
+        android:textColor="#FFF"
+        android:text="Julia Jones"/>
 
 </RelativeLayout>
 <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/layout/fragment_home.xml -->

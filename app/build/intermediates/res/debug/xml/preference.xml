@@ -8,7 +8,7 @@
             android:summary="@string/user_pro_description">
         <intent android:action="android.intent.action.VIEW"
             android:targetPackage="jog.my.memory"
-            android:targetClass="jog.my.memory.teProfileActivity"
+            android:targetClass="jog.my.memory.ProfileActivity"
             />
         </PreferenceScreen>
         <CheckBoxPreference

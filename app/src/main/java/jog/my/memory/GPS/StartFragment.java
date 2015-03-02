@@ -89,7 +89,7 @@ public class StartFragment extends Fragment {
             intent.putExtra(StartFragment.KEY_INPUT, (((Spinner)this.getActivity()
                     .findViewById(R.id.spinner_InputType)).getSelectedItemPosition()));
 
-//            startActivity(intent);
+            startActivity(intent);
         }
         else if(inputType.equals("Automatic")){
 //            //If "Automatic" is selected, launch the GPS Tracker.
