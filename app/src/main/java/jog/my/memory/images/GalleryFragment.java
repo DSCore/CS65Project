@@ -68,7 +68,8 @@ public class GalleryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_gallery, container, false);
+//        View view =  super.onCreateView(inflater, container, savedInstanceState);
 
         super.getActivity().setContentView(R.layout.activity_gallery);
 
