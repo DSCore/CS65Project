@@ -23,6 +23,7 @@
         android:text="Profile"/>
 
     <ImageView
+        android:id="@+id/home_profile_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -97,4 +98,10 @@
         android:adjustViewBounds="true"
         android:src="@drawable/quick_start"/>
 
+    <Button
+        android:id="@+id/button_quick_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>

@@ -13,11 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import jog.my.memory.HomeActivity;
+import jog.my.memory.Home.HomeActivity;
 import jog.my.memory.R;
 
 
