@@ -3,6 +3,7 @@ package jog.my.memory;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -34,12 +35,16 @@ import java.util.ArrayList;
 
 import jog.my.memory.Debug.BlankFragment;
 import jog.my.memory.GPS.StartFragment;
+import jog.my.memory.GPS.TraceFragment;
+import jog.my.memory.Home.HomeFragment;
+import jog.my.memory.Profile.ProfileActivity;
+import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
 import jog.my.memory.adapter.NavDrawerListAdapter;
 import jog.my.memory.images.GalleryFragment;
 import jog.my.memory.model.NavDrawerItem;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity implements TraceFragment.onTraceFragmentClickedListener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -297,7 +302,9 @@ public class HomeActivity extends FragmentActivity {
                 fragment = new StartFragment();
                 break;
             case 5: //User Profile
-                fragment = new PrefsFragment();
+//                Intent i = new Intent(this, ProfileActivity.class);
+//                startActivity(i);
+                fragment = new ProfileFragment();
 
             default:
                 break;
@@ -306,7 +313,8 @@ public class HomeActivity extends FragmentActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).addToBackStack("prev").commit(); //
+                    .replace(R.id.frame_container, fragment, "last")
+                    .addToBackStack("prev").commit();
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
@@ -355,4 +363,6 @@ public class HomeActivity extends FragmentActivity {
             findViewById(R.id.map).setVisibility(View.INVISIBLE);
         }
     }
+
+
 }

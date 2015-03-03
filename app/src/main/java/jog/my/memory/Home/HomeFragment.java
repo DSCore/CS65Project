@@ -11,15 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
-import jog.my.memory.images.BitmapHelpers;
 
 public class HomeFragment extends Fragment {
 
@@ -145,12 +144,16 @@ public class HomeFragment extends Fragment {
     private void updateProfileName(){
         //Get the SharedPreferences object.
         String mKey = getString(R.string.preference_name);
-        SharedPreferences mPrefs = super.getActivity().getSharedPreferences(mKey, super.getActivity().MODE_PRIVATE);
+        SharedPreferences mPrefs = super.getActivity().getSharedPreferences(mKey,
+                super.getActivity().MODE_PRIVATE);
 
         //Load the user data into the widgets.
         //Name
         mKey = getString(R.string.prefs_Name);
         String mValue = mPrefs.getString(mKey, "");
+        if(mValue == null || mValue == ""){
+            mValue = "Profile";
+        }
         this.mProfileName.setText(mValue);
         Log.d(TAG,"Name is: "+mValue);
     }

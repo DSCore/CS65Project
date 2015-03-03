@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import jog.my.memory.Home.HomeActivity;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 

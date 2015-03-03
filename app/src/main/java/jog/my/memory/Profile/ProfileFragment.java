@@ -97,6 +97,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Button mChangePhoto = (Button)profileView.findViewById(R.id.buttonChangePhoto);
+        mChangePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNewPicture(v);
+            }
+        });
+
         return profileView;
     }
 

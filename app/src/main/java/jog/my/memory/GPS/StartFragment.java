@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import jog.my.memory.Home.HomeActivity;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 /**

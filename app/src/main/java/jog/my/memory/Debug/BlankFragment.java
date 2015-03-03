@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jog.my.memory.Home.HomeActivity;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 /**

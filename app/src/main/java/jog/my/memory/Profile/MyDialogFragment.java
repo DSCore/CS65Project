@@ -127,8 +127,15 @@ public class MyDialogFragment extends DialogFragment {
                 DialogInterface.OnClickListener dlistener = new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         //Call the onPhotoPicker method with the correct item.
-                        ((ProfileActivity)getActivity()) //This should be getting us into the SettingsActivity
-                                .onPhotoPickerItemSelected(item);
+                        try {
+                            ((ProfileFragment) getFragmentManager()
+                                    .findFragmentByTag("last"))
+                                    .onPhotoPickerItemSelected(item);
+                        }
+                        catch (ClassCastException cce){
+                            Log.e(TAG, "The last fragment was not ProfileFragment. " +
+                                    "This should only be accessed from ProfileFragment");
+                        }
                     }
                 };
                 // Set the item/s to display and create the dialog

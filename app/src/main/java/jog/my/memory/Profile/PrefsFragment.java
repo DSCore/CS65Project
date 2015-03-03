@@ -3,7 +3,7 @@ package jog.my.memory.Profile;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
-import jog.my.memory.Home.HomeActivity;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 /**
