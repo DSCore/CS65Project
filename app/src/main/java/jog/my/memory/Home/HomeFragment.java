@@ -1,6 +1,8 @@
 package jog.my.memory.Home;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import jog.my.memory.HomeActivity;
+import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
 
 public class HomeFragment extends Fragment {
@@ -61,6 +64,12 @@ public class HomeFragment extends Fragment {
         this.updateDisplayedInformation();
 
         this.mProfilePhoto = (ImageView)rootView.findViewById(R.id.home_profile_photo);
+        this.mProfilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onProfilePhotoClicked(v);
+            }
+        });
         this.updateProfilePhoto();
 
         this.mProfileName = (TextView)rootView.findViewById(R.id.profileLabel);
@@ -158,4 +167,12 @@ public class HomeFragment extends Fragment {
         Log.d(TAG,"Name is: "+mValue);
     }
 
+    public void onProfilePhotoClicked(View v){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction mft = fragmentManager.beginTransaction();
+//        fragmentManager.beginTransaction()
+                mft.replace(R.id.frame_container, new ProfileFragment());
+                mft.addToBackStack("");
+                mft.commit();
+    }
 }

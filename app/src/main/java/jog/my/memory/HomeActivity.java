@@ -315,6 +315,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment, "last")
                     .addToBackStack("prev").commit();
+            Log.d(TAG,"Added: Back stack contains: "+getFragmentManager().getBackStackEntryCount());
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
@@ -364,5 +365,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         }
     }
 
-
+    @Override
+    /**
+     * Allows navigation back through the fragments that the user has accessed.
+     */
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() != 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
