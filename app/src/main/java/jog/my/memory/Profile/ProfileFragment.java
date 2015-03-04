@@ -340,7 +340,7 @@ public class ProfileFragment extends Fragment {
     private void saveProfilePhoto() {
         this.mProfilePhoto.buildDrawingCache();
         Bitmap bmap = this.mProfilePhoto.getDrawingCache();
-        bmap = BitmapHelpers.GetBitmapClippedCircle(bmap);
+        Log.d(TAG,"Cropped circle, size is: h,w: "+bmap.getHeight()+", "+bmap.getWidth());
         try {
             FileOutputStream fos = context.openFileOutput(
                     getString(R.string.profile_photo_file_name), context.MODE_PRIVATE);

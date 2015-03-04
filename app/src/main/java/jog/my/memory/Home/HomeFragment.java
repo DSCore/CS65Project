@@ -2,7 +2,6 @@ package jog.my.memory.Home;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -64,6 +63,7 @@ public class HomeFragment extends Fragment {
         this.updateDisplayedInformation();
 
         this.mProfilePhoto = (ImageView)rootView.findViewById(R.id.home_profile_photo);
+        this.mProfilePhoto.setClickable(true);
         this.mProfilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,12 +82,14 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
+        HomeActivity.mDrawTrace = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
+        HomeActivity.mDrawTrace = false;
     }
 
     /**
@@ -124,6 +126,8 @@ public class HomeFragment extends Fragment {
      */
     private void updateProfilePhoto(){
         this.loadProfilePhoto();
+        this.mProfilePhoto.setRight(View.FOCUS_RIGHT);
+        Log.d(TAG,"Photo size is: "+this.mProfilePhoto.getDrawable().getMinimumHeight()+", "+this.mProfilePhoto.getDrawable().getMinimumWidth());
     }
 
     /**
@@ -168,11 +172,11 @@ public class HomeFragment extends Fragment {
     }
 
     public void onProfilePhotoClicked(View v){
+        Fragment fragment = new ProfileFragment();
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction mft = fragmentManager.beginTransaction();
-//        fragmentManager.beginTransaction()
-                mft.replace(R.id.frame_container, new ProfileFragment());
-                mft.addToBackStack("");
-                mft.commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_container, fragment, "last")
+                .addToBackStack("prev").commit();
+
     }
 }

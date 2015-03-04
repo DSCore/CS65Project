@@ -2,8 +2,8 @@ package jog.my.memory;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -27,19 +27,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
 import jog.my.memory.Debug.BlankFragment;
-import jog.my.memory.GPS.StartFragment;
 import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.Home.HomeFragment;
-import jog.my.memory.Profile.ProfileActivity;
 import jog.my.memory.Profile.ProfileFragment;
-import jog.my.memory.R;
 import jog.my.memory.adapter.NavDrawerListAdapter;
 import jog.my.memory.images.GalleryFragment;
 import jog.my.memory.model.NavDrawerItem;
@@ -52,6 +48,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    public static boolean mDrawTrace = false;
+    Polyline mRouteTrace;
 
     // nav drawer title
     private CharSequence mDrawerTitle;
@@ -165,19 +164,42 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-
-                Polyline line = mMap.addPolyline(new PolylineOptions()
-                        .add(new LatLng(location.getLatitude(), location.getLongitude()), new LatLng(updates.get(updates.size() - 1).getLatitude(), updates.get(updates.size() - 1).getLongitude()))
-                        .width(10)
-                        .color(Color.RED).geodesic(true));
-
+                //Add the new location to the updates list
+                Log.d(TAG,"Add location to updates: ("+location.getLatitude()+", "+location.getLongitude()+")");
                 updates.add(location);
+                //Remove the polyline
+                if(mRouteTrace != null){
+                    mRouteTrace.remove();
+                }
+                //Draw the polyline if we are tracing
+                if(mDrawTrace) {
+                    Log.d(TAG, "Drawing polyline");
+                    PolylineOptions mPO = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
+                    for (Location ll : updates) {
+                        mPO.add(new LatLng(ll.getLatitude(), ll.getLongitude()));
+                    }
+                    mRouteTrace = mMap.addPolyline(mPO);
+                }
             }
             public void onStatusChanged(String provider, int status, Bundle extras) { }
             public void onProviderEnabled(String provider) { }
             public void onProviderDisabled(String provider) { }
         };
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    }
+
+    /**
+     * @return the list of location updates the phone has received
+     */
+    public ArrayList<Location> getUpdates(){
+        return this.updates;
+    }
+
+    /**
+     * Clears the list of location updates
+     */
+    public void clearUpdates(){
+        this.updates.clear();
     }
 
     @Override
@@ -191,6 +213,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     protected void onPause() {
         super.onPause();
         setMapVisible(false);
+    }
+
+    @Override
+    protected void onDestroy(){
+        try {
+            ((NotificationManager) getSystemService(this.NOTIFICATION_SERVICE))
+                    .cancel(TraceFragment.TRACING_NOTIFICATION);
+        }catch(Exception e) {Log.e(TAG,"Couldn't stop tracking notification");}
+        super.onDestroy();
     }
 
     /**
@@ -228,7 +259,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+//        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker")); //Commented since we don't need an origin marker
     }
 
     /**
@@ -299,7 +330,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 fragment = new BlankFragment();
                 break;
             case 4: //Get Going!
-                fragment = new StartFragment();
+//                fragment = new StartFragment();
+                fragment = new TraceFragment();
                 break;
             case 5: //User Profile
 //                Intent i = new Intent(this, ProfileActivity.class);
@@ -363,6 +395,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         else{
             findViewById(R.id.map).setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void setDrawTrace(boolean drawTrace){
+        this.mDrawTrace = drawTrace;
     }
 
     @Override
