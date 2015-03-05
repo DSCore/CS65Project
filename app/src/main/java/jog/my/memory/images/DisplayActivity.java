@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 
 import jog.my.memory.R;
+import jog.my.memory.database.PicturesDBHelper;
 
 
 public class DisplayActivity extends Activity {
@@ -91,7 +92,7 @@ public class DisplayActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.deleteEntryButton) {
-            new ImageLocationDBHelper(this).removeEntry(this.mId);
+            new PicturesDBHelper(this).removeEntry(this.mId);
             setResult(RESULT_OK);
             finish();
             return true;
@@ -100,7 +101,7 @@ public class DisplayActivity extends Activity {
     }
 
     public void onDeleteButtonClicked(View view){
-        new ImageLocationDBHelper(this).removeEntry(this.mId);
+        new PicturesDBHelper(this).removeEntry(this.mId);
         setResult(RESULT_OK);
         finish();
     }

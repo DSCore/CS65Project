@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
@@ -23,12 +26,18 @@ public class ExcursionDBHelper {
     public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DURATION = "duration";
     public static final String COLUMN_DISTANCE = "distance";
+    public static final String COLUMN_GPS_DATA = "GPSData";
+    public static final String COLUMN_PICTUREIDS = "pictureids";
+    public static final String COLUMN_NAME = "name";
 
     private String[] allColumns = {
             COLUMN_ID,
             COLUMN_TIMESTAMP,
             COLUMN_DURATION,
-            COLUMN_DISTANCE};
+            COLUMN_DISTANCE,
+            COLUMN_GPS_DATA,
+            COLUMN_PICTUREIDS,
+            COLUMN_NAME};
 
 
     public ExcursionDBHelper(Context c) {
@@ -55,11 +64,26 @@ public class ExcursionDBHelper {
         values.put(COLUMN_TIMESTAMP, mExcursion.getmTimeStamp());
         values.put(COLUMN_DURATION, mExcursion.getmDuration());
         values.put(COLUMN_DISTANCE, mExcursion.getmDistance());
-
+        values.put(COLUMN_GPS_DATA, mExcursion.getmGPSDATA());
+        values.put(COLUMN_PICTUREIDS, mExcursion.getmPictureIDsAsByteArray());
+        values.put(COLUMN_NAME, mExcursion.getmName());
 
         long insertId = db.insert(ExcursionSQLiteHelper.TABLE_EXCURSIONS, null,
                 values);
         return insertId;
+    }
+
+    public boolean updateEntry(long rowId, Excursion mExcursion)
+    {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TIMESTAMP, mExcursion.getmTimeStamp());
+        values.put(COLUMN_DURATION, mExcursion.getmDuration());
+        values.put(COLUMN_DISTANCE, mExcursion.getmDistance());
+        values.put(COLUMN_GPS_DATA, mExcursion.getmGPSDATA());
+        values.put(COLUMN_PICTUREIDS, mExcursion.getmPictureIDsAsByteArray());
+        values.put(COLUMN_NAME, mExcursion.getmName());
+        int i =  db.update(ExcursionSQLiteHelper.TABLE_EXCURSIONS, values, COLUMN_ID + "=" + rowId, null);
+        return i > 0;
     }
 
     //Remove an entry by its id
@@ -105,8 +129,29 @@ public class ExcursionDBHelper {
         exc.setmTimeStamp(cursor.getString(1));
         exc.setmDuration(cursor.getDouble(2));
         exc.setmDistance(cursor.getDouble(3));
+        exc.setmGPSDATA(cursor.getBlob(4));
+        exc.setmPictureIDs(deserialize(cursor.getBlob(5)));
+        exc.setmName(cursor.getString(6));
 
         return exc;
     }
 
+    public ArrayList<Long> deserialize(byte[] b) {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(b));
+            Object object = in.readObject();
+            in.close();
+
+            ArrayList<Long> list = (ArrayList<Long>) object;
+
+            return list;
+        } catch (ClassNotFoundException cnfe) {
+            Log.e("deserializeObject", "class not found error", cnfe);
+
+            return null;
+        } catch (IOException ioe) {
+            Log.e("deserializeObject", "io error", ioe);
+            return null;
+        }
+    }
 }

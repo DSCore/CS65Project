@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import jog.my.memory.R;
+import jog.my.memory.database.Picture;
+import jog.my.memory.database.PictureAdapter;
+import jog.my.memory.database.PicturesDBHelper;
 
 
 /** Created by Devon Cormack and Steven Muenzen 02/03/15 **/
@@ -36,9 +39,13 @@ public class GalleryFragmentActivity extends FragmentActivity {
     private static final int CAMERA_PICTURE_REQUEST = 1;
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
-    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
+    //private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
+    private ArrayList<Picture> mPicList = new ArrayList<Picture>();
+
     private Uri mImageCaptureUri; //TODO: currently unused
-    private ImageLocationDBHelper mDbHelper;
+    //private ImageLocationDBHelper mDbHelper;
+    private PicturesDBHelper mDbHelper;
+
 
     /** Location Listener to get location **/
 
@@ -88,26 +95,28 @@ public class GalleryFragmentActivity extends FragmentActivity {
         GridView mGV = (GridView)this.findViewById(R.id.gridview);
 
         //Get the data from the database
-        this.mDbHelper = new ImageLocationDBHelper(this);
-        this.mILList = this.mDbHelper.fetchEntries();
+        this.mDbHelper = new PicturesDBHelper(this);
+        //this.mILList = this.mDbHelper.fetchEntries();
+        this.mPicList = this.mDbHelper.fetchEntries();
+
 
         //Set the adapter for the grid view
 //        mGV.setAdapter(new ImageLocationAdapter(this,
 //                android.R.layout.simple_list_item_1,this.mILList));
-        mGV.setAdapter(new ImageLocationAdapter(this,
-                R.id.example_list_item,this.mILList));        //Set the listener for clicks on items in the gridview
+        mGV.setAdapter(new PictureAdapter(this,
+                R.id.example_list_item,this.mPicList));        //Set the listener for clicks on items in the gridview
         mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(getBaseContext(),DisplayActivity.class);
-                ImageLocation mCurrentImageLocation = mILList.get(position);
-                intent.putExtra(DisplayActivity.IMAGE, mCurrentImageLocation.getmImage());
+                Picture mCurrentPicture = mPicList.get(position);
+                intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImage());
                 intent.putExtra(DisplayActivity.GPS,
-                        Location.convert(mCurrentImageLocation.getmLat(), Location.FORMAT_DEGREES)
-                                +", "+ Location.convert(mCurrentImageLocation.getmLong()
+                        Location.convert(mCurrentPicture.getmLat(), Location.FORMAT_DEGREES)
+                                +", "+ Location.convert(mCurrentPicture.getmLong()
                                 , Location.FORMAT_DEGREES));
-                intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentImageLocation.getmTimeStamp());
-                intent.putExtra(DisplayActivity.ID,mCurrentImageLocation.getId());
+                intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentPicture.getmTimeStamp());
+                intent.putExtra(DisplayActivity.ID,mCurrentPicture.getId());
                 startActivityForResult(intent, DISPLAY_ACTIVITY_REQUEST);
             }
         });
@@ -214,8 +223,7 @@ public class GalleryFragmentActivity extends FragmentActivity {
                 bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500,500);
 
                 //TODO: Make this real code, not test code! i.e. make it store in the database!
-                this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                        this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp));
+                this.mDbHelper.insertEntry(new Picture(this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp, mLocation, "CAPTION", new GregorianCalendar(), 19));
 //                    this.mILList.add(new ImageLocation(new GregorianCalendar(), 16, 24, bmp));
                 this.updateGridView();
             }

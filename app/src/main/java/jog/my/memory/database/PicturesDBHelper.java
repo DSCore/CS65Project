@@ -26,13 +26,17 @@ public class PicturesDBHelper {
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_LAT = "lat";
     public static final String COLUMN_LONG = "long";
+    public static final String COLUMN_CAPTION = "caption";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
 
     private String[] allColumns = {
             COLUMN_ID,
             COLUMN_EXCURSIONID,
             COLUMN_IMAGE,
             COLUMN_LAT,
-            COLUMN_LONG};
+            COLUMN_LONG,
+            COLUMN_CAPTION,
+            COLUMN_TIMESTAMP};
 
 
     public PicturesDBHelper(Context c) {
@@ -60,6 +64,8 @@ public class PicturesDBHelper {
         values.put(COLUMN_IMAGE, mPicture.getmImageAsByteArray());
         values.put(COLUMN_LAT, mPicture.getmLat());
         values.put(COLUMN_LONG, mPicture.getmLong());
+        values.put(COLUMN_CAPTION, mPicture.getmCaption());
+        values.put(COLUMN_TIMESTAMP, mPicture.getmTimeStamp());
 
 
         long insertId = db.insert(PicturesSQLiteHelper.TABLE_PICTURES, null,
@@ -101,6 +107,29 @@ public class PicturesDBHelper {
         return entries;
     }
 
+    public ArrayList<Picture> fetchEntriesByExcursionID(long id){
+        ArrayList<Picture> entries = new ArrayList<Picture>();
+        Cursor cursor = db.query(PicturesSQLiteHelper.TABLE_PICTURES,
+                allColumns,
+                COLUMN_EXCURSIONID + " = ?",
+                new String[]{Long.toString(id)},
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Picture mIL = cursorToPicture(cursor);
+            Log.d(TAG, "get IL = " + cursorToPicture(cursor).toString());
+            entries.add(mIL);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        cursor.close();
+
+        return entries;
+    }
+
 
     // Gets the ExerciseEntry that the cursor is currently at
     private Picture cursorToPicture(Cursor cursor) {
@@ -111,6 +140,8 @@ public class PicturesDBHelper {
         exc.setmImage(BitmapFactory.decodeByteArray(cursor.getBlob(2), 0, cursor.getBlob(2).length));
         exc.setmLat(cursor.getDouble(3));
         exc.setmLong(cursor.getDouble(4));
+        exc.setmCaption(cursor.getString(5));
+        exc.setmTimeStamp(cursor.getString(6));
 
         return exc;
     }

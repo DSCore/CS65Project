@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 
 import jog.my.memory.R;
+import jog.my.memory.database.Picture;
+import jog.my.memory.database.PicturesDBHelper;
 
 
 public class SlideshowActivity extends Activity {
@@ -29,8 +31,8 @@ public class SlideshowActivity extends Activity {
     private Timer timer;
     private static final String KEY_INDEX = "index";
     private  int currentIndex=0;
-    private ImageLocationDBHelper mDbHelper;
-    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
+    private PicturesDBHelper mDbHelper;
+    private ArrayList<Picture> mPicList = new ArrayList<Picture>();
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -45,8 +47,8 @@ public class SlideshowActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slideshow);
 
-        this.mDbHelper = new ImageLocationDBHelper(this);
-        this.mILList = this.mDbHelper.fetchEntries();
+        this.mDbHelper = new PicturesDBHelper(this);
+        this.mPicList = this.mDbHelper.fetchEntries();
 
 
         start = (Button)findViewById(R.id.start_btn);
@@ -80,7 +82,7 @@ public class SlideshowActivity extends Activity {
                 exit.setVisibility(View.VISIBLE);
 
 
-                img.setImageBitmap(mILList.get(0).getmImageAsBitmap());
+                img.setImageBitmap(mPicList.get(0).getmImage());
                 mHandler.postDelayed(slideOver, 5000);
 
             }
@@ -94,7 +96,7 @@ public class SlideshowActivity extends Activity {
     {
         public void run()
         {
-            i= (i+1) % mILList.size();
+            i= (i+1) % mPicList.size();
             changeImage();
 
          }
@@ -104,7 +106,7 @@ public class SlideshowActivity extends Activity {
     private int i=0;
 
     public void onClickNext(View v){
-      i= (i+1) % mILList.size();
+      i= (i+1) % mPicList.size();
       changeImage();
 
     }
@@ -114,15 +116,15 @@ public class SlideshowActivity extends Activity {
     }
 
     public void onPrevClicked(View v){
-        i= (i-1) % mILList.size();
-        i= (i<0)? i+mILList.size(): i;
+        i= (i-1) % mPicList.size();
+        i= (i<0)? i+mPicList.size(): i;
 
         changeImage();
     }
 
     public void changeImage(){
 
-        img.setImageBitmap(mILList.get(i).getmImageAsBitmap());
+        img.setImageBitmap(mPicList.get(i).getmImage());
         currentIndex=i;
         mHandler.postDelayed(slideOver, 5000);
 

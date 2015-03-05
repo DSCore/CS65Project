@@ -1,10 +1,5 @@
 package jog.my.memory.adapter;
 
-import jog.my.memory.R;
-import jog.my.memory.model.NavDrawerItem;
-
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import jog.my.memory.R;
+import jog.my.memory.model.NavDrawerItem;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 	

@@ -29,6 +29,9 @@ import java.util.GregorianCalendar;
 
 import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
+import jog.my.memory.database.Picture;
+import jog.my.memory.database.PictureAdapter;
+import jog.my.memory.database.PicturesDBHelper;
 
 
 /** Created by Devon Cormack and Steven Muenzen 02/03/15 **/
@@ -39,9 +42,9 @@ public class GalleryFragment extends Fragment {
     private static final int CAMERA_PICTURE_REQUEST = 1;
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
-    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
+    private ArrayList<Picture> mPicsList = new ArrayList<Picture>();
     private Uri mImageCaptureUri; //TODO: currently unused
-    private ImageLocationDBHelper mDbHelper;
+    private PicturesDBHelper mDbHelper;
 
     private Context context;
 
@@ -120,26 +123,26 @@ public class GalleryFragment extends Fragment {
     public void updateGridView(){
 
         //Get the data from the database
-        this.mDbHelper = new ImageLocationDBHelper(super.getActivity());
-        this.mILList = this.mDbHelper.fetchEntries();
+        this.mDbHelper = new PicturesDBHelper(super.getActivity());
+        this.mPicsList = this.mDbHelper.fetchEntries();
 
         //Set the adapter for the grid view
 //        mGV.setAdapter(new ImageLocationAdapter(this,
 //                android.R.layout.simple_list_item_1,this.mILList));
-        this.mGV.setAdapter(new ImageLocationAdapter(context,
-                R.id.example_list_item,this.mILList));        //Set the listener for clicks on items in the gridview
+        this.mGV.setAdapter(new PictureAdapter(context,
+                R.id.example_list_item,this.mPicsList));        //Set the listener for clicks on items in the gridview
         this.mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(context,DisplayActivity.class);
-                ImageLocation mCurrentImageLocation = mILList.get(position);
-                intent.putExtra(DisplayActivity.IMAGE, mCurrentImageLocation.getmImage());
+                Picture mCurrentPicture = mPicsList.get(position);
+                intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImageAsByteArray());
                 intent.putExtra(DisplayActivity.GPS,
-                        Location.convert(mCurrentImageLocation.getmLat(), Location.FORMAT_DEGREES)
-                                +", "+ Location.convert(mCurrentImageLocation.getmLong()
+                        Location.convert(mCurrentPicture.getmLat(), Location.FORMAT_DEGREES)
+                                +", "+ Location.convert(mCurrentPicture.getmLong()
                                 , Location.FORMAT_DEGREES));
-                intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentImageLocation.getmTimeStamp());
-                intent.putExtra(DisplayActivity.ID,mCurrentImageLocation.getId());
+                intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentPicture.getmTimeStamp());
+                intent.putExtra(DisplayActivity.ID,mCurrentPicture.getId());
                 startActivityForResult(intent, DISPLAY_ACTIVITY_REQUEST);
             }
         });
@@ -174,7 +177,7 @@ public class GalleryFragment extends Fragment {
      * which is then added to the gallery
      * @param view - the view clicked
      */
-    public void onTakePictureClicked(View view){
+    public void onTakePictureClicked(View view){ //Todo: User should not be able to take pictures from the gallery. Only an Excursion!!!!
         Log.d(TAG, "Taking a picture!");
         // Take photo from camera
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -246,11 +249,11 @@ public class GalleryFragment extends Fragment {
                 bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500,500);
 
                 if(this.mLocation != null) {
-                    this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                            this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp));
+                    this.mDbHelper.insertEntry(new Picture(this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp, mLocation, "CAPTION", new GregorianCalendar(), 20));
                 }else{
-                    this.mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                            0,0,bmp));
+                    //Todo
+                    //Todo: Eliminate
+                    this.mDbHelper.insertEntry(new Picture(0, 0, bmp, mLocation, "CAPTION", new GregorianCalendar(), 20));
                 }
 //                    this.mILList.add(new ImageLocation(new GregorianCalendar(), 16, 24, bmp));
                 this.updateGridView();

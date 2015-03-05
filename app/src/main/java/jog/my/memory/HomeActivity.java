@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import jog.my.memory.Debug.BlankFragment;
+import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.Home.HomeFragment;
 import jog.my.memory.Profile.ProfileFragment;
@@ -316,12 +318,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private void displayView(int position) {
         // update the main content by replacing fragments
         Fragment fragment = null;
+        ListFragment listfragment = null;
         switch (position) {
             case 0: //Home
                 fragment = new HomeFragment();
                 break;
             case 1: //Excursions
-                fragment = new BlankFragment();
+                listfragment = new ExcursionsFragment();
+                //fragment = new ExcursionsFragment();
+                //    fragment = new BlankFragment();
                 break;
             case 2: //Photo Gallery
                 fragment = new GalleryFragment();
@@ -342,8 +347,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 break;
         }
 
+        FragmentManager fragmentManager = getFragmentManager();
+
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
+            //FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment, "last")
                     .addToBackStack("prev").commit();
@@ -354,9 +361,23 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
-        } else {
+
+        } else if (listfragment != null) {
+            //FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, listfragment, "last")
+                    .addToBackStack("prev").commit();
+            Log.d(TAG,"Added: Back stack contains: "+ getFragmentManager().getBackStackEntryCount());
+
+            // update selected item and title, then close the drawer
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            setTitle(navMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+        }
+        else {
             // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
+            Log.e("HomeActivity", "Error in creating fragment");
         }
     }
 

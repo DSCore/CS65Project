@@ -9,21 +9,29 @@ import android.util.Log;
  * Created by Steve on 3/1/2015.
  */
 public class ExcursionSQLiteHelper extends SQLiteOpenHelper {
+    //Name of the table
+    public static final String TABLE_EXCURSIONS = "EXCURSIONS";
 
-    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS (" +
+    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_EXCURSIONS +  " (" +
             "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "timestamp DATETIME NOT NULL," +
             "duration FLOAT," +
-            "distance FLOAT);";
+            "distance FLOAT," +
+            "GPSData BLOB," +
+            "pictureids BLOB,"+
+            "name TEXT);";
 
-    //Name of the table
-    public static final String TABLE_EXCURSIONS = "EXCURSIONS";
 
     //Columns in the table
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_DURATION = "duration";
     public static final String COLUMN_DISTANCE = "distance";
+    public static final String COLUMN_GPS_DATA = "GPSData";
+    public static final String COLUMN_PICTUREIDS = "pictureids";
+    public static final String COLUMN_NAME = "name";
+
 
     //Database information
     private static final String DATABASE_NAME = "EXCURSIONS.db";

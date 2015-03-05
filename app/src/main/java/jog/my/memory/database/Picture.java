@@ -1,9 +1,13 @@
 package jog.my.memory.database;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Steve on 3/1/2015.
@@ -15,19 +19,30 @@ public class Picture {
     private Location mLocation;
     private double mLat;
     private double mLong;
+    private String mCaption;
+    private Calendar mTimeStamp = new GregorianCalendar();
 
+    private static final java.text.SimpleDateFormat df
+            = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     /**
      * Constructs a Picture object
+     * @param mContext
      */
     public Picture(){}
 
     /**
      * Non-default constructor
      */
-    public Picture(double mLat, double mLong, Bitmap mImage){
+    //Todo
+    //Todo
+    public Picture(double mLat, double mLong, Bitmap mImage, Location mLocation, String mCaption, Calendar mTimeStamp, long mExcursionID){
         this.mLat = mLat;
         this.mLong = mLong;
         this.mImage = mImage;
+        this.mLocation = mLocation;
+        this.mCaption = mCaption;
+        this.mTimeStamp = mTimeStamp;
+        this.mExcursionID = mExcursionID;
     }
 
 
@@ -92,6 +107,31 @@ public class Picture {
 
     public void setmLong(double mLong){
         this.mLong = mLong;
+    }
+
+    public void setmCaption(String mCaption){
+        this.mCaption = mCaption;
+    }
+
+    public String getmCaption(){
+        return mCaption;
+    }
+
+    public String getmTimeStamp() {
+        return df.format(this.mTimeStamp.getTime());
+    }
+
+    public void setmTimeStamp(Calendar cal) {
+        this.mTimeStamp = cal;
+    }
+
+    public void setmTimeStamp(String date) {
+        try {
+            this.mTimeStamp.setTime(df.parse(date));
+        }
+        catch(ParseException pe){
+            pe.printStackTrace();
+        }
     }
 
 }

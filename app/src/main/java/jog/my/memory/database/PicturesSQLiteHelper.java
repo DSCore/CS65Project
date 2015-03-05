@@ -10,16 +10,18 @@ import android.util.Log;
  */
 public class PicturesSQLiteHelper extends SQLiteOpenHelper{
 
+    //Name of the table
+    public static final String TABLE_PICTURES = "PICTURES";
 
-    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS (" +
+    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS " +
+            TABLE_PICTURES +  " (" +
             "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "excursionid INTEGER," +
             "image BLOB," +
             "lat real,"+
-            "long real);";
-
-    //Name of the table
-    public static final String TABLE_PICTURES = "PICTURES";
+            "long real," +
+            "caption TEXT," +
+            "timestamp DATETIME NOT NULL);";
 
     //Columns in the table
     public static final String COLUMN_ID = "_id";
@@ -27,6 +29,9 @@ public class PicturesSQLiteHelper extends SQLiteOpenHelper{
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_LAT = "lat";
     public static final String COLUMN_LONG = "long";
+    public static final String COLUMN_CAPTION = "caption";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
+
 
     //Database information
     private static final String DATABASE_NAME = "PICTURES.db";

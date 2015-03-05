@@ -1,4 +1,4 @@
-package jog.my.memory.images;
+package jog.my.memory.database;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -13,13 +13,11 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-
 /**
- * Created by Devon Cormack and Steven Muenzen on 2/3/15.
+ * Created by Steve on 3/5/2015.
  */
-public class ImageLocationAdapter extends ArrayAdapter<ImageLocation> {
-
-    private static final String TAG = "ImageLocationAdapter";
+public class PictureAdapter extends ArrayAdapter<Picture> {
+    private static final String TAG = "PictureAdapter";
 
     /*** FIELDS ***/
     Context mContext;
@@ -34,13 +32,12 @@ public class ImageLocationAdapter extends ArrayAdapter<ImageLocation> {
 //        super(mContext, resource, textViewResourceId);
 //        this.mContext = mContext;
 //    }
-
-    ImageLocationAdapter(Context mContext, int resource, List objects){
+    public PictureAdapter(Context mContext, int resource, List objects){
         super(mContext, resource, objects);
         this.mContext = mContext;
     }
 
-    ImageLocationAdapter(Context mContext, int resource, int textViewResourceId, List objects){
+    PictureAdapter(Context mContext, int resource, int textViewResourceId, List objects){
         super(mContext,resource,textViewResourceId,objects);
         this.mContext = mContext;
     }
@@ -77,10 +74,8 @@ public class ImageLocationAdapter extends ArrayAdapter<ImageLocation> {
             imageView = (ImageView) convertView;
         }
 
-        //TODO: Below, we need to select the image from the ImageLocation entry!
-        imageView.setImageBitmap(((ImageLocation)this.getItem(position)).getmImageAsBitmap());
+        // Below, we need to select the image from the Picture entry!
+        imageView.setImageBitmap(((Picture)this.getItem(position)).getmImage());
         return imageView;
     }
-
 }
-

@@ -15,12 +15,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import jog.my.memory.HomeActivity;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
+import jog.my.memory.database.Excursion;
+import jog.my.memory.database.ExcursionDBHelper;
 
 public class HomeFragment extends Fragment {
 
@@ -49,8 +55,18 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Clicked!");
-                //TODO: Make this start up the adventure activity!!
 
+                //TODO: Make this start up the adventure activity!!
+                //Todo: At the moment, it just adds a canned excursion to the DB
+                Excursion exc;
+                ArrayList<LatLng> latlngs = new ArrayList<LatLng>();
+                ArrayList<Long> picids = new ArrayList<Long>();
+
+                exc = new Excursion(new GregorianCalendar(), 0 , 0 , latlngs, picids, "EXCURSION NAME");
+                ExcursionDBHelper mDBHelper = new ExcursionDBHelper(context);
+                mDBHelper.open();
+                mDBHelper.insertEntry(exc);
+                mDBHelper.close();
             }
         });
 
