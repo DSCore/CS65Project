@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment {
         //Name
         mKey = getString(R.string.prefs_Name);
         String mValue = mPrefs.getString(mKey, "");
-        if(mValue == null || mValue == ""){
+        if(mValue == null || mValue.equals("")){
             mValue = "Profile";
         }
         this.mProfileName.setText(mValue);

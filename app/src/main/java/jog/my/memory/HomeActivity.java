@@ -321,16 +321,12 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             getFragmentManager().popBackStack();
         // update the main content by replacing fragments
         Fragment fragment = null;
-        ListFragment listfragment = null;
         switch (position) {
             case 0: //Home
-
                 fragment = new HomeFragment();
                 break;
             case 1: //Excursions
-                listfragment = new ExcursionsFragment();
-                //fragment = new ExcursionsFragment();
-                //    fragment = new BlankFragment();
+                fragment = new ExcursionsFragment();
                 break;
             case 2: //Photo Gallery
                 fragment = new GalleryFragment();
@@ -339,12 +335,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 fragment = new BlankFragment();
                 break;
             case 4: //Get Going!
-//                fragment = new StartFragment();
                 fragment = new TraceFragment();
                 break;
             case 5: //User Profile
-//                Intent i = new Intent(this, ProfileActivity.class);
-//                startActivity(i);
+
                 fragment = new ProfileFragment();
 
             default:
@@ -365,7 +359,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             mDrawerLayout.closeDrawer(mDrawerList);
 
         }
-        else if(fragment.getClass() == HomeFragment.class){ //TODO: Check
+        else if(fragment != null && fragment.getClass() == HomeFragment.class){ //TODO: Check
             //Open the fragment but don't add it to the backstack
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
