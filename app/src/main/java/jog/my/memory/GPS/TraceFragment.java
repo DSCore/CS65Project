@@ -25,6 +25,8 @@ import android.widget.Button;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import jog.my.memory.HomeActivity;
@@ -64,6 +66,7 @@ public class TraceFragment extends Fragment {
 
     private onTraceFragmentClickedListener mListener;
     private Context context;
+    private View view;
 
     public interface  onTraceFragmentClickedListener{
     }
@@ -121,7 +124,7 @@ public class TraceFragment extends Fragment {
         // Start the tracking service
 //        this.startTrackingLocation();
         //Inflate the view
-        View view = inflater.inflate(R.layout.fragment_trace, container, false);
+        this.view = inflater.inflate(R.layout.fragment_trace, container, false);
         this.displayTrackingNotification();
         //Save the context
         this.context = inflater.getContext();
@@ -139,6 +142,14 @@ public class TraceFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onPhotoStartClicked(v);
+            }
+        });
+
+        Button finishPhoto = (Button) view.findViewById(R.id.trace_finish_btn);
+        finishPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFinishExcursionClicked(v);
             }
         });
 
@@ -238,9 +249,27 @@ public class TraceFragment extends Fragment {
             ((HomeActivity) getActivity()).setDrawTrace(true);
             //Update the button
             startPhoto.setText("");
-            startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_home)); //TODO: MAKE THIS THE CAMERA IMAGE
+            startPhoto.setBackgroundResource(android.R.drawable.ic_menu_camera);
             //Display the tracking notification
             this.displayTrackingNotification();
+        }
+    }
+
+    public void onFinishExcursionClicked(View v){
+        //If we aren't tracing, ignore the click
+        if(!((HomeActivity)getActivity()).mDrawTrace){
+            //Do nothing
+        }
+        else {
+            //Turn off the trace
+            ((HomeActivity) getActivity()).setDrawTrace(false);
+            ArrayList<Location> updates = ((HomeActivity) getActivity()).getUpdates();
+            //TODO: Save the data to the database here
+
+            // Set the camera/start button back to camera mode
+            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()
+                    .getResources().getDrawable(android.R.drawable.btn_default));
+            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("START");
         }
     }
 
