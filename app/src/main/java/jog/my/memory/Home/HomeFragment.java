@@ -55,23 +55,20 @@ public class HomeFragment extends Fragment {
         mQuickStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
                 Log.d(TAG, "Clicked!");
-
-                //TODO: Make this start up the adventure activity!!
-                //Todo: At the moment, it just adds a canned excursion to the DB
-                Excursion exc;
-                ArrayList<LatLng> latlngs = new ArrayList<LatLng>();
-                ArrayList<Long> picids = new ArrayList<Long>();
-
-                exc = new Excursion(new GregorianCalendar(), 0 , 0 , latlngs, picids, "EXCURSION NAME");
-                ExcursionDBHelper mDBHelper = new ExcursionDBHelper(context);
-                mDBHelper.open();
-                mDBHelper.insertEntry(exc);
-                mDBHelper.close();
-=======
+//                TODO: THIS BLOCK WAS FROM STEVE AND MAYA, WE NEED TO GO OVER THIS AS A GROUP
+//                //TODO: Make this start up the adventure activity!!
+//                //Todo: At the moment, it just adds a canned excursion to the DB
+//                Excursion exc;
+//                ArrayList<LatLng> latlngs = new ArrayList<LatLng>();
+//                ArrayList<Long> picids = new ArrayList<Long>();
+//
+//                exc = new Excursion(new GregorianCalendar(), 0 , 0 , latlngs, picids, "EXCURSION NAME");
+//                ExcursionDBHelper mDBHelper = new ExcursionDBHelper(context);
+//                mDBHelper.open();
+//                mDBHelper.insertEntry(exc);
+//                mDBHelper.close();
                 onQuickStartClicked(v);
->>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             }
         });
 

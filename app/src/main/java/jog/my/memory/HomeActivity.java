@@ -350,17 +350,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             default:
                 break;
         }
-
-<<<<<<< HEAD
-        FragmentManager fragmentManager = getFragmentManager();
-
-        if (fragment != null) {
-            //FragmentManager fragmentManager = getFragmentManager();
-=======
         if (fragment != null && fragment.getClass() != HomeFragment.class) {
             //Open the fragment and add it to the backstack
             FragmentManager fragmentManager = getFragmentManager();
->>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment, "last")
                     .addToBackStack("prev").commit();
@@ -371,23 +363,13 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
-<<<<<<< HEAD
 
-        } else if (listfragment != null) {
-            //FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, listfragment, "last")
-                    .addToBackStack("prev").commit();
-            Log.d(TAG,"Added: Back stack contains: "+ getFragmentManager().getBackStackEntryCount());
-
-=======
         }
-        else if(fragment.getClass() == HomeFragment.class){
+        else if(fragment.getClass() == HomeFragment.class){ //TODO: Check
             //Open the fragment but don't add it to the backstack
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment, "last").commit();
->>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);

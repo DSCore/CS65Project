@@ -34,9 +34,8 @@ import jog.my.memory.R;
 import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.images.BitmapHelpers;
 import jog.my.memory.images.GalleryFragment;
-import jog.my.memory.images.ImageLocation;
-import jog.my.memory.images.ImageLocationDBHelper;
-
+import jog.my.memory.database.Picture;
+import jog.my.memory.database.PicturesDBHelper;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -318,7 +317,7 @@ public class TraceFragment extends Fragment {
 
                 bmp = BitmapHelpers.LoadAndResizeBitmap(GalleryFragment.mImageCaptureUri.getPath(), 500, 500);
 
-                ImageLocationDBHelper mDbHelper = new ImageLocationDBHelper(context);
+                PicturesDBHelper mDbHelper = new PicturesDBHelper(context);
 
                 Location mLastLocation = null;
                 try {
@@ -328,11 +327,17 @@ public class TraceFragment extends Fragment {
                     Log.d(TAG,"No locations were found");
                 }
                 if( mLastLocation != null) {
-                    mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                            mLastLocation.getLatitude(), mLastLocation.getLongitude(), bmp));
+                    Picture pic = new Picture(); //TODO: Update this from merging in the databases
+                    pic.setmLat(mLastLocation.getLatitude());
+                    pic.setmLong(mLastLocation.getLongitude());
+                    pic.setmImage(bmp);
+                    mDbHelper.insertEntry(pic);
                 }else{
-                    mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
-                            0,0,bmp));
+                    Picture pic = new Picture(); //TODO: Update this from merging in the databases
+                    pic.setmLat(0);
+                    pic.setmLong(0);
+                    pic.setmImage(bmp);
+                    mDbHelper.insertEntry(pic);
                 }
 //                    this.updateGridView();
             }

@@ -42,15 +42,12 @@ public class GalleryFragment extends Fragment {
     private static final int CAMERA_PICTURE_REQUEST = 1;
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
-<<<<<<< HEAD
     private ArrayList<Picture> mPicsList = new ArrayList<Picture>();
-    private Uri mImageCaptureUri; //TODO: currently unused
+    public static Uri mImageCaptureUri;
     private PicturesDBHelper mDbHelper;
-=======
-    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
-    public static Uri mImageCaptureUri; //TODO: currently unused
-    private ImageLocationDBHelper mDbHelper;
->>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
+//    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>(); //TODO: Check this, this was from Devon's version
+//    public static Uri mImageCaptureUri; //TODO: currently unused
+//    private ImageLocationDBHelper mDbHelper;
 
     private Context context;
 
