@@ -40,7 +40,7 @@ public class GalleryFragment extends Fragment {
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
     private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
-    private Uri mImageCaptureUri; //TODO: currently unused
+    public static Uri mImageCaptureUri; //TODO: currently unused
     private ImageLocationDBHelper mDbHelper;
 
     private Context context;
