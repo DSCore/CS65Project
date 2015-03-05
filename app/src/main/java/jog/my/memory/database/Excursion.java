@@ -13,6 +13,7 @@ public class Excursion {
     private double mDuration;
     private double mDistance;
 
+
     private static final java.text.SimpleDateFormat df
             = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

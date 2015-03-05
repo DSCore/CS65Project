@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.Timer;
 
 import jog.my.memory.R;
@@ -28,9 +29,8 @@ public class SlideshowActivity extends Activity {
     private Timer timer;
     private static final String KEY_INDEX = "index";
     private  int currentIndex=0;
-
-    private int[] myImages= new int[] {R.drawable.runimg1,R.drawable.runimg2,R.drawable.runimg3,
-            R.drawable.runimg4,R.drawable.runimg5};
+    private ImageLocationDBHelper mDbHelper;
+    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -44,6 +44,10 @@ public class SlideshowActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slideshow);
+
+        this.mDbHelper = new ImageLocationDBHelper(this);
+        this.mILList = this.mDbHelper.fetchEntries();
+
 
         start = (Button)findViewById(R.id.start_btn);
 
@@ -76,7 +80,7 @@ public class SlideshowActivity extends Activity {
                 exit.setVisibility(View.VISIBLE);
 
 
-                img.setImageResource(myImages[0]);
+                img.setImageBitmap(mILList.get(0).getmImageAsBitmap());
                 mHandler.postDelayed(slideOver, 5000);
 
             }
@@ -90,7 +94,7 @@ public class SlideshowActivity extends Activity {
     {
         public void run()
         {
-            i= (i+1) % myImages.length;
+            i= (i+1) % mILList.size();
             changeImage();
 
          }
@@ -100,7 +104,7 @@ public class SlideshowActivity extends Activity {
     private int i=0;
 
     public void onClickNext(View v){
-      i= (i+1) % myImages.length;
+      i= (i+1) % mILList.size();
       changeImage();
 
     }
@@ -110,15 +114,15 @@ public class SlideshowActivity extends Activity {
     }
 
     public void onPrevClicked(View v){
-        i= (i-1) % myImages.length;
-        i= (i<0)? i+myImages.length: i;
+        i= (i-1) % mILList.size();
+        i= (i<0)? i+mILList.size(): i;
 
         changeImage();
     }
 
     public void changeImage(){
 
-        img.setImageResource(myImages[i]);
+        img.setImageBitmap(mILList.get(i).getmImageAsBitmap());
         currentIndex=i;
         mHandler.postDelayed(slideOver, 5000);
 
