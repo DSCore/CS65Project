@@ -4,19 +4,36 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.GregorianCalendar;
 
 import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
+import jog.my.memory.database.ExcursionDBHelper;
+import jog.my.memory.images.BitmapHelpers;
+import jog.my.memory.images.GalleryFragment;
+import jog.my.memory.images.ImageLocation;
+import jog.my.memory.images.ImageLocationDBHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +60,8 @@ public class TraceFragment extends Fragment {
     public static int TRACING_NOTIFICATION = 1;
 
     private static final String TAG = "TraceFragment";
+    private static final int CAMERA_PICTURE_REQUEST = 1;
+
     private onTraceFragmentClickedListener mListener;
     private Context context;
 
@@ -79,14 +98,14 @@ public class TraceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
-        ((HomeActivity)super.getActivity()).setDrawTrace(true);
+//        ((HomeActivity)super.getActivity()).setDrawTrace(true);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         ((HomeActivity)super.getActivity()).setMapVisible(false);
-        ((HomeActivity)super.getActivity()).setDrawTrace(false);
+//        ((HomeActivity)super.getActivity()).setDrawTrace(false);
     }
 
     public void onDestroy(){
@@ -101,10 +120,30 @@ public class TraceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Start the tracking service
 //        this.startTrackingLocation();
+        //Inflate the view
+        View view = inflater.inflate(R.layout.fragment_trace, container, false);
         this.displayTrackingNotification();
+        //Save the context
         this.context = inflater.getContext();
+        //Set the button's display contextually
+        Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
+        if(((HomeActivity)getActivity()).mDrawTrace){
+            startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_home)); //TODO: MAKE THIS THE CAMERA IMAGE
+        }
+        else{
+            startPhoto.setText("START");
+
+        }
+
+        startPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPhotoStartClicked(v);
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trace, container, false);
+        return view;
     }
 
     // Display tracking location
@@ -169,6 +208,106 @@ public class TraceFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    public void onPhotoStartClicked(View v) {
+        Log.d(TAG, "Button clicked, mDrawTrace is " + ((HomeActivity) getActivity()).mDrawTrace);
+        Button startPhoto = (Button) v;
+        if (((HomeActivity) getActivity()).mDrawTrace) {
+            //If we're drawing the trace, then this is the picture button
+            // Take photo from camera
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Construct temporary image path and name to save the taken
+            // photo
+            GalleryFragment.mImageCaptureUri = Uri.fromFile(new File(Environment
+                    .getExternalStorageDirectory(), "tmp_"
+                    + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+            intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    GalleryFragment.mImageCaptureUri);
+//        //Just tell it to return the image to us, we'll save it in the database
+            intent.putExtra("return-data", true);
+            try {
+                // Start a camera capturing activity
+                startActivityForResult(intent, this.CAMERA_PICTURE_REQUEST);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //Start drawing a new trace
+            ((HomeActivity) getActivity()).clearUpdates();
+            ((HomeActivity) getActivity()).setDrawTrace(true);
+            //Update the button
+            startPhoto.setText("");
+            startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_home)); //TODO: MAKE THIS THE CAMERA IMAGE
+            //Display the tracking notification
+            this.displayTrackingNotification();
+        }
+    }
+
+    /**
+     *
+     * @param requestCode - What was called?
+     * @param resultCode - Was it executed correctly?
+     * @param data - data returned
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == super.getActivity().RESULT_OK) {
+            Log.d(TAG, "data is: " + data);
+//            if (data != null) {
+            //Get the URI of the picture from the Gallery
+//                Uri pictureURI = data.getData();
+//                Log.d(TAG, "URI was: " + pictureURI.getPath().toString());
+            //Get the real location
+            //            String realURI = this.getRealPathFromURI(pictureURI);
+            Bitmap bmp = null;
+//                try {
+//                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.mImageCaptureUri);
+//                } catch (FileNotFoundException fnfe) {
+//                    Log.d(TAG, "File not found: "+fnfe.getStackTrace().toString());
+//                } catch (IOException ioe) {
+//                    Log.d(TAG, "IOException: "+ioe.getStackTrace().toString());
+//                }
+
+//                Bundle extras = data.getExtras();
+//                bmp = (Bitmap) extras.get("data");
+
+            ContentResolver cr = super.getActivity().getContentResolver();
+            cr.notifyChange(GalleryFragment.mImageCaptureUri,null);
+            try{
+                bmp = MediaStore.Images.Media.getBitmap(cr, GalleryFragment.mImageCaptureUri);
+                FileOutputStream out = new FileOutputStream(GalleryFragment.mImageCaptureUri.getPath());
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, out); // PNG is a lossless format, the compression factor (100) is ignored, in JPEG it is used.
+            }catch(IOException ioe){
+                Log.d(TAG, "File was not found.");
+            }
+
+
+            if (bmp == null) {
+                Log.d(TAG, "Error: The bitmap was null");
+            } else {
+
+                bmp = BitmapHelpers.LoadAndResizeBitmap(GalleryFragment.mImageCaptureUri.getPath(), 500, 500);
+
+                ImageLocationDBHelper mDbHelper = new ImageLocationDBHelper(context);
+
+                Location mLastLocation = null;
+                try {
+                    mLastLocation = ((HomeActivity) getActivity()).getUpdates().get(((HomeActivity) getActivity()).getUpdates().size() - 1);
+                }
+                catch(ArrayIndexOutOfBoundsException ae){
+                    Log.d(TAG,"No locations were found");
+                }
+                if( mLastLocation != null) {
+                    mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
+                            mLastLocation.getLatitude(), mLastLocation.getLongitude(), bmp));
+                }else{
+                    mDbHelper.insertEntry(new ImageLocation(new GregorianCalendar(),
+                            0,0,bmp));
+                }
+//                    this.updateGridView();
+            }
+        }
     }
 
 }

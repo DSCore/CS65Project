@@ -2,6 +2,7 @@ package jog.my.memory;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -47,8 +48,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private static final String TAG = "MainActivity";
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    public DrawerLayout mDrawerLayout;
+    public ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     public static boolean mDrawTrace = false;
@@ -61,10 +62,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private CharSequence mTitle;
 
     // slide menu items
-    private String[] navMenuTitles;
+    public String[] navMenuTitles;
     private TypedArray navMenuIcons;
 
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    public ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
     private ArrayList<Location> updates = new ArrayList<Location>();
@@ -316,11 +317,14 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      * Diplaying fragment view for selected nav drawer list item
      * */
     private void displayView(int position) {
+        //Pop back to the home screen
+            getFragmentManager().popBackStack();
         // update the main content by replacing fragments
         Fragment fragment = null;
         ListFragment listfragment = null;
         switch (position) {
             case 0: //Home
+
                 fragment = new HomeFragment();
                 break;
             case 1: //Excursions
@@ -347,10 +351,16 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 break;
         }
 
+<<<<<<< HEAD
         FragmentManager fragmentManager = getFragmentManager();
 
         if (fragment != null) {
             //FragmentManager fragmentManager = getFragmentManager();
+=======
+        if (fragment != null && fragment.getClass() != HomeFragment.class) {
+            //Open the fragment and add it to the backstack
+            FragmentManager fragmentManager = getFragmentManager();
+>>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment, "last")
                     .addToBackStack("prev").commit();
@@ -361,6 +371,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
+<<<<<<< HEAD
 
         } else if (listfragment != null) {
             //FragmentManager fragmentManager = getFragmentManager();
@@ -369,6 +380,14 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                     .addToBackStack("prev").commit();
             Log.d(TAG,"Added: Back stack contains: "+ getFragmentManager().getBackStackEntryCount());
 
+=======
+        }
+        else if(fragment.getClass() == HomeFragment.class){
+            //Open the fragment but don't add it to the backstack
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, fragment, "last").commit();
+>>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
@@ -428,7 +447,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      */
     public void onBackPressed() {
         if(getFragmentManager().getBackStackEntryCount() != 0) {
+            //Get the last entry in the fragment manager
             getFragmentManager().popBackStack();
+            HomeActivity mHomeActivity = this;
+            Log.d(TAG,"NavDrawerItems: "+mHomeActivity.navDrawerItems);
+            int position = 0; //Go back to the HomeFragment
+            Log.d(TAG,"ProfileFragment is position: "+position);
+            mHomeActivity.mDrawerList.setItemChecked(position, true);
+            mHomeActivity.mDrawerList.setSelection(position);
+            mHomeActivity.setTitle(mHomeActivity.navMenuTitles[position]);
         } else {
             super.onBackPressed();
         }

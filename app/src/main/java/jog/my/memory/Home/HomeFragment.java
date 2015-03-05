@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.HomeActivity;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment {
         mQuickStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 Log.d(TAG, "Clicked!");
 
                 //TODO: Make this start up the adventure activity!!
@@ -67,6 +69,9 @@ public class HomeFragment extends Fragment {
                 mDBHelper.open();
                 mDBHelper.insertEntry(exc);
                 mDBHelper.close();
+=======
+                onQuickStartClicked(v);
+>>>>>>> 50c2e467efd1e6e368e5cdeec8e44fcbc885d50a
             }
         });
 
@@ -193,6 +198,27 @@ public class HomeFragment extends Fragment {
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_container, fragment, "last")
                 .addToBackStack("prev").commit();
+        HomeActivity mHomeActivity = ((HomeActivity)getActivity());
+        Log.d(TAG,"NavDrawerItems: "+mHomeActivity.navDrawerItems);
+        int position = 5; //ProfileFragment
+        Log.d(TAG,"ProfileFragment is position: "+position);
+        mHomeActivity.mDrawerList.setItemChecked(position, true);
+        mHomeActivity.mDrawerList.setSelection(position);
+        mHomeActivity.setTitle(mHomeActivity.navMenuTitles[position]);
+    }
 
+    public void onQuickStartClicked(View v){
+        Fragment fragment = new TraceFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_container, fragment, "last")
+                .addToBackStack("prev").commit();
+        HomeActivity mHomeActivity = ((HomeActivity)getActivity());
+        Log.d(TAG,"NavDrawerItems: "+mHomeActivity.navDrawerItems);
+        int position = 4; //TraceFragment
+        Log.d(TAG,"ProfileFragment is position: "+position);
+        mHomeActivity.mDrawerList.setItemChecked(position, true);
+        mHomeActivity.mDrawerList.setSelection(position);
+        mHomeActivity.setTitle(mHomeActivity.navMenuTitles[position]);
     }
 }
