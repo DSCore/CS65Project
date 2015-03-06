@@ -343,9 +343,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 fragment = new TraceFragment();
                 break;
             case 5: //User Profile
-
                 fragment = new ProfileFragment();
-
+                break;
             default:
                 break;
         }
