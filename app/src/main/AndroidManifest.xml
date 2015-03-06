@@ -44,10 +44,6 @@
             <!--android:label="@string/app_name" >-->
         <!--</activity>-->
         <activity
-            android:name=".Gallery.GalleryFragmentActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name=".Gallery.SlideshowActivity"
             android:label="Slideshow"
             android:screenOrientation="portrait" >

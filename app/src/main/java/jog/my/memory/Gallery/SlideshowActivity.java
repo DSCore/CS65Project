@@ -82,9 +82,15 @@ public class SlideshowActivity extends Activity {
                     prev.setVisibility(View.VISIBLE);
                     exit.setVisibility(View.VISIBLE);
 
+<<<<<<< HEAD:app/src/main/java/jog/my/memory/Gallery/SlideshowActivity.java
                     img.setImageBitmap(mPicList.get(0).getmImage());
                     mHandler.postDelayed(slideOver, 5000);
                 }
+=======
+
+                img.setImageBitmap(mPicList.get(0).getmImage());
+                mHandler.postDelayed(slideOver, 2500);
+>>>>>>> 7e3768a3c179ac908f4bd75d74bee6247e3b24c7:app/src/main/java/jog/my/memory/images/SlideshowActivity.java
 
             }
         });
@@ -108,6 +114,7 @@ public class SlideshowActivity extends Activity {
 
     public void onClickNext(View v){
       i= (i+1) % mPicList.size();
+      mHandler.removeCallbacks(slideOver);
       changeImage();
 
     }
@@ -119,6 +126,7 @@ public class SlideshowActivity extends Activity {
     public void onPrevClicked(View v){
         i= (i-1) % mPicList.size();
         i= (i<0)? i+mPicList.size(): i;
+        mHandler.removeCallbacks(slideOver);
 
         changeImage();
     }
@@ -127,7 +135,7 @@ public class SlideshowActivity extends Activity {
 
         img.setImageBitmap(mPicList.get(i).getmImage());
         currentIndex=i;
-        mHandler.postDelayed(slideOver, 5000);
+        mHandler.postDelayed(slideOver, 2500);
 
     }
 
