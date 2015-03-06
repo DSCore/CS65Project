@@ -15,8 +15,7 @@
         android:id="@+id/profileLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:paddingRight="45dp"
+        android:layout_centerHorizontal="true"
         android:paddingTop="25dp"
         android:textSize="30dp"
         android:textColor="#FFF"
@@ -28,8 +27,7 @@
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:layout_alignParentRight="true"
-        android:paddingRight="30dp"
+        android:layout_centerHorizontal="true"
         android:paddingTop="70dp"
         android:src="@drawable/profile_default"/>
 
