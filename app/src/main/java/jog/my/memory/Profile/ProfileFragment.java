@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.profileView = inflater.inflate(R.layout.activity_settings, container, false);
+        this.profileView = inflater.inflate(R.layout.fragment_profile, container, false);
         this.context = inflater.getContext();
         setImageCaptureURI();
         this.mProfilePhoto = (ImageView)profileView.findViewById(R.id.imageViewProfilePhoto);
@@ -305,31 +305,11 @@ public class ProfileFragment extends Fragment {
         String mValue = (String) ((EditText) profileView.findViewById(R.id.editTextName)).getText().toString();
         mEditor.putString(mKey, mValue);
 
-        //Email
-        mKey = getString(R.string.prefs_Email);
-        mValue = (String) ((EditText) profileView.findViewById(R.id.editTextEmail)).getText().toString();
-        mEditor.putString(mKey, mValue);
-
-        //Phone Number
-        mKey = getString(R.string.prefs_Phone);
-        mValue = (String) ((EditText) profileView.findViewById(R.id.editTextPhone)).getText().toString();
-        mEditor.putString(mKey, mValue);
-
         //Gender
         mKey = getString(R.string.prefs_Gender);
         RadioGroup mFRadioGroup = (RadioGroup) profileView.findViewById(R.id.mFRadio);
         int mIntValue = mFRadioGroup.indexOfChild(profileView.findViewById(mFRadioGroup.getCheckedRadioButtonId()));
         mEditor.putInt(mKey, mIntValue);
-
-        //Class
-        mKey = getString(R.string.prefs_Class);
-        mValue = (String)((EditText)profileView.findViewById(R.id.editTextClass)).getText().toString();
-        mEditor.putString(mKey,mValue);
-
-        //Major
-        mKey = getString(R.string.prefs_Major);
-        mValue = (String) ((EditText) profileView.findViewById(R.id.editTextMajor)).getText().toString();
-        mEditor.putString(mKey, mValue);
 
         //Commit all of the changes in the editor.
         mEditor.commit();
@@ -376,16 +356,6 @@ public class ProfileFragment extends Fragment {
         String mValue = mPrefs.getString(mKey, "");
         ((EditText) profileView.findViewById(R.id.editTextName)).setText(mValue);
 
-        //Email
-        mKey = getString(R.string.prefs_Email);
-        mValue = mPrefs.getString(mKey, "");
-        ((EditText) profileView.findViewById(R.id.editTextEmail)).setText(mValue);
-
-        //Phone
-        mKey = getString(R.string.prefs_Phone);
-        mValue = mPrefs.getString(mKey, "");
-        ((EditText) profileView.findViewById(R.id.editTextPhone)).setText(mValue);
-
         //Gender
         mKey = getString(R.string.prefs_Gender);
         int mIntValue = mPrefs.getInt(mKey, -1);
@@ -396,17 +366,6 @@ public class ProfileFragment extends Fragment {
                     .getChildAt(mIntValue);
             radBtn.setChecked(true);
         }
-
-        //Class
-        mKey = getString(R.string.prefs_Class);
-        mValue = mPrefs.getString(mKey, "");
-        ((EditText) profileView.findViewById(R.id.editTextClass)).setText(mValue);
-
-        //Major
-        mKey = getString(R.string.prefs_Major);
-        mValue = mPrefs.getString(mKey, "");
-        ((EditText) profileView.findViewById(R.id.editTextMajor)).setText(mValue);
-
     }
 
     private void loadProfilePhoto() {
