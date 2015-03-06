@@ -83,7 +83,7 @@ public class SlideshowActivity extends Activity {
 
 
                 img.setImageBitmap(mPicList.get(0).getmImage());
-                mHandler.postDelayed(slideOver, 5000);
+                mHandler.postDelayed(slideOver, 2500);
 
             }
         });
@@ -107,6 +107,7 @@ public class SlideshowActivity extends Activity {
 
     public void onClickNext(View v){
       i= (i+1) % mPicList.size();
+      mHandler.removeCallbacks(slideOver);
       changeImage();
 
     }
@@ -118,6 +119,7 @@ public class SlideshowActivity extends Activity {
     public void onPrevClicked(View v){
         i= (i-1) % mPicList.size();
         i= (i<0)? i+mPicList.size(): i;
+        mHandler.removeCallbacks(slideOver);
 
         changeImage();
     }
@@ -126,7 +128,7 @@ public class SlideshowActivity extends Activity {
 
         img.setImageBitmap(mPicList.get(i).getmImage());
         currentIndex=i;
-        mHandler.postDelayed(slideOver, 5000);
+        mHandler.postDelayed(slideOver, 2500);
 
     }
 
