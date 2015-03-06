@@ -5,20 +5,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:src="@drawable/blue_bar"/>
+
         <Button
             android:id="@+id/trace_finish_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:background="#00000000"
+            android:textColor="#00a5f6"
             android:layout_alignParentTop="true"
-            android:text="@string/finish_button"
-            />
+            android:text="@string/finish_button"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:src="@drawable/blue_bar"/>
 
         <Button
             android:id="@+id/trace_start_photo_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:minLines="2"/>
+            android:layout_height="45dip"
+            android:background="#00000000"
+            android:textColor="#00a5f6"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </FrameLayout>
