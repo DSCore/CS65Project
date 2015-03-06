@@ -1,4 +1,4 @@
-package jog.my.memory.images;
+package jog.my.memory.Gallery;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -75,15 +75,16 @@ public class SlideshowActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                start.setVisibility(View.INVISIBLE);
-                img.setVisibility(View.VISIBLE);
-                next.setVisibility(View.VISIBLE);
-                prev.setVisibility(View.VISIBLE);
-                exit.setVisibility(View.VISIBLE);
+                if(mPicList.size() > 0) {
+                    start.setVisibility(View.INVISIBLE);
+                    img.setVisibility(View.VISIBLE);
+                    next.setVisibility(View.VISIBLE);
+                    prev.setVisibility(View.VISIBLE);
+                    exit.setVisibility(View.VISIBLE);
 
-
-                img.setImageBitmap(mPicList.get(0).getmImage());
-                mHandler.postDelayed(slideOver, 5000);
+                    img.setImageBitmap(mPicList.get(0).getmImage());
+                    mHandler.postDelayed(slideOver, 5000);
+                }
 
             }
         });

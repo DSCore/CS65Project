@@ -1,4 +1,4 @@
-package jog.my.memory.images;
+package jog.my.memory.Gallery;
 
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import jog.my.memory.Helpers.BitmapHelpers;
 import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 import jog.my.memory.database.Picture;
@@ -249,7 +250,7 @@ public class GalleryFragment extends Fragment {
                 Log.d(TAG, "Error: The bitmap was null");
             } else {
 
-                bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500,500);
+                bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500, 500);
 
                 if(this.mLocation != null) {
                     this.mDbHelper.insertEntry(new Picture(this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp, mLocation, "CAPTION", new GregorianCalendar(), 20));

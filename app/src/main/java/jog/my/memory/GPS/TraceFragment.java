@@ -1,7 +1,6 @@
 package jog.my.memory.GPS;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
@@ -25,15 +24,12 @@ import android.widget.Button;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
-import jog.my.memory.database.ExcursionDBHelper;
-import jog.my.memory.images.BitmapHelpers;
-import jog.my.memory.images.GalleryFragment;
+import jog.my.memory.Helpers.BitmapHelpers;
+import jog.my.memory.Gallery.GalleryFragment;
 import jog.my.memory.database.Picture;
 import jog.my.memory.database.PicturesDBHelper;
 /**

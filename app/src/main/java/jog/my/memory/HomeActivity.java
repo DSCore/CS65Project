@@ -2,7 +2,6 @@ package jog.my.memory;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,7 +14,6 @@ import android.location.LocationManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -35,13 +33,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
-import jog.my.memory.Debug.BlankFragment;
 import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.Home.HomeFragment;
 import jog.my.memory.Profile.ProfileFragment;
+import jog.my.memory.Slideshow.SlideshowGalleryFragment;
 import jog.my.memory.adapter.NavDrawerListAdapter;
-import jog.my.memory.images.GalleryFragment;
+import jog.my.memory.Gallery.GalleryFragment;
 import jog.my.memory.model.NavDrawerItem;
 
 public class HomeActivity extends FragmentActivity implements TraceFragment.onTraceFragmentClickedListener{
@@ -337,7 +335,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 fragment = new GalleryFragment();
                 break;
             case 3: //Slideshows
-                fragment = new BlankFragment();
+                fragment = new SlideshowGalleryFragment();
                 break;
             case 4: //Get Going!
                 fragment = new TraceFragment();

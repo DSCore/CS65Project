@@ -1,6 +1,5 @@
 package jog.my.memory.Profile;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -17,8 +16,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,8 +29,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import jog.my.memory.Helpers.MyDialogFragment;
 import jog.my.memory.R;
-import jog.my.memory.images.BitmapHelpers;
+import jog.my.memory.Helpers.BitmapHelpers;
 
 
 public class ProfileFragment extends Fragment {

@@ -1,7 +1,9 @@
-package jog.my.memory.images;
+package jog.my.memory.Slideshow;
 
+import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,12 +13,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
 import java.io.File;
@@ -25,7 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import jog.my.memory.Gallery.DisplayActivity;
+import jog.my.memory.Helpers.BitmapHelpers;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
+import jog.my.memory.database.Excursion;
+import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.database.Picture;
 import jog.my.memory.database.PictureAdapter;
 import jog.my.memory.database.PicturesDBHelper;
@@ -33,19 +40,23 @@ import jog.my.memory.database.PicturesDBHelper;
 
 /** Created by Devon Cormack and Steven Muenzen 02/03/15 **/
 
-public class GalleryFragmentActivity extends FragmentActivity {
+public class SlideshowGalleryFragment extends Fragment {
 
     private static final String TAG = "GalleryActivity";
     private static final int CAMERA_PICTURE_REQUEST = 1;
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
-    //private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>();
-    private ArrayList<Picture> mPicList = new ArrayList<Picture>();
-
-    private Uri mImageCaptureUri; //TODO: currently unused
-    //private ImageLocationDBHelper mDbHelper;
+    private ArrayList<Picture> mPicsList = new ArrayList<Picture>();
+    public static Uri mImageCaptureUri;
     private PicturesDBHelper mDbHelper;
+    private ExcursionDBHelper mExcursionDbHelper;
+//    private ArrayList<ImageLocation> mILList = new ArrayList<ImageLocation>(); //TODO: Check this, this was from Devon's version
+//    public static Uri mImageCaptureUri; //TODO: currently unused
+//    private ImageLocationDBHelper mDbHelper;
 
+    private Context context;
+
+    private GridView mGV;
 
     /** Location Listener to get location **/
 
@@ -62,28 +73,51 @@ public class GalleryFragmentActivity extends FragmentActivity {
     private Location mLocation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_slideshow_gallery, container, false);
+        this.context = inflater.getContext();
 
-        //TODO: We don't actually use the below line right now
-//        //Set the temporary URI for captured images
-//        this.setImageCaptureURI();
-
-        this.updateGridView();
-//        //Get the gridview
-//        GridView mGV = (GridView)this.findViewById(R.id.gridview);
-//        //Set the adapter for the grid view
-//        mGV.setAdapter(new ImageLocationAdapter(this,
-//                android.R.layout.simple_list_item_1,this.mILList));
-//        //Set the listener for clicks on items in the gridview
-//        mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-//                Toast.makeText(getBaseContext(),"Clicked item!",Toast.LENGTH_SHORT).show();
+//        Button mShowSlides = (Button)view.findViewById(R.id.button_slideshow);
+//        mShowSlides.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onSlideshowClicked(view);
+//            }
+//        });
+//
+//        Button mTakePhoto = (Button)view.findViewById(R.id.button_take_pic);
+//        mTakePhoto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onTakePictureClicked(view);
 //            }
 //        });
 
+
+        //Get a reference to the GridView
+        this.mGV = (GridView)view.findViewById(R.id.gridview);
+
+        //Update the grid view
+        this.updateGridView();
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)super.getActivity()).setMapVisible(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((HomeActivity)super.getActivity()).setMapVisible(true);
     }
 
     public void updateLocation(Location location){
@@ -91,26 +125,34 @@ public class GalleryFragmentActivity extends FragmentActivity {
     }
 
     public void updateGridView(){
-        //Get the gridview
-        GridView mGV = (GridView)this.findViewById(R.id.gridview);
 
         //Get the data from the database
-        this.mDbHelper = new PicturesDBHelper(this);
-        //this.mILList = this.mDbHelper.fetchEntries();
-        this.mPicList = this.mDbHelper.fetchEntries();
+        this.mDbHelper = new PicturesDBHelper(context);
+        this.mExcursionDbHelper = new ExcursionDBHelper(context);
+        //Get a list of all of the Excursion IDs
+        ArrayList<Excursion> mExcursions = this.mExcursionDbHelper.fetchEntries();
+        ArrayList<Long> mCurExcursionIds = new ArrayList<Long>();
+        for(Excursion mExcursion : mExcursions){
+            mCurExcursionIds.add(mExcursion.getmID());
+        }
 
+        //Get a list of all of the first pictures in each of the excursion galleries
+        this.mPicsList.clear();
+        for(long id : mCurExcursionIds) {
+            this.mPicsList.add(this.mDbHelper.fetchEntriesByExcursionID(id).get(0));
+        }
 
         //Set the adapter for the grid view
 //        mGV.setAdapter(new ImageLocationAdapter(this,
 //                android.R.layout.simple_list_item_1,this.mILList));
-        mGV.setAdapter(new PictureAdapter(this,
-                R.id.example_list_item,this.mPicList));        //Set the listener for clicks on items in the gridview
-        mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.mGV.setAdapter(new PictureAdapter(context,
+                R.id.example_list_item,this.mPicsList));        //Set the listener for clicks on items in the gridview
+        this.mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(getBaseContext(),DisplayActivity.class);
-                Picture mCurrentPicture = mPicList.get(position);
-                intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImage());
+                Intent intent = new Intent(context,SlideshowActivity.class);
+                Picture mCurrentPicture = mPicsList.get(position);
+                intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImageAsByteArray());
                 intent.putExtra(DisplayActivity.GPS,
                         Location.convert(mCurrentPicture.getmLat(), Location.FORMAT_DEGREES)
                                 +", "+ Location.convert(mCurrentPicture.getmLong()
@@ -124,34 +166,34 @@ public class GalleryFragmentActivity extends FragmentActivity {
 
     //TODO: Add the savedInstanceState here! If needed!
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_gallery, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        super.getActivity().getMenuInflater().inflate(R.menu.menu_gallery, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+////        //noinspection SimplifiableIfStatement
+////        if (id == R.id.action_settings) {
+////            return true;
+////        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * Launches the camera application and takes a picture,
      * which is then added to the gallery
      * @param view - the view clicked
      */
-    public void onTakePictureClicked(View view){
+    public void onTakePictureClicked(View view){ //Todo: User should not be able to take pictures from the gallery. Only an Excursion!!!!
         Log.d(TAG, "Taking a picture!");
         // Take photo from camera
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -160,7 +202,7 @@ public class GalleryFragmentActivity extends FragmentActivity {
         mImageCaptureUri = Uri.fromFile(new File(Environment
                 .getExternalStorageDirectory(), "tmp_"
                 + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 mImageCaptureUri);
 //        //Just tell it to return the image to us, we'll save it in the database
         intent.putExtra("return-data", true);
@@ -174,7 +216,7 @@ public class GalleryFragmentActivity extends FragmentActivity {
 
 
     public void onSlideshowClicked( View view){
-        startActivity(new Intent(GalleryFragmentActivity.this, SlideshowActivity.class));
+        startActivity(new Intent(super.getActivity(), SlideshowActivity.class));
     }
 
     /**
@@ -184,8 +226,8 @@ public class GalleryFragmentActivity extends FragmentActivity {
      * @param data - data returned
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == RESULT_OK) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == super.getActivity().RESULT_OK) {
             Log.d(TAG, "data is: " + data);
 //            if (data != null) {
             //Get the URI of the picture from the Gallery
@@ -205,10 +247,10 @@ public class GalleryFragmentActivity extends FragmentActivity {
 //                Bundle extras = data.getExtras();
 //                bmp = (Bitmap) extras.get("data");
 
-            ContentResolver cr = this.getContentResolver();
+            ContentResolver cr = super.getActivity().getContentResolver();
             cr.notifyChange(this.mImageCaptureUri,null);
             try{
-                bmp = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageCaptureUri);
+                bmp = MediaStore.Images.Media.getBitmap(cr, mImageCaptureUri);
                 FileOutputStream out = new FileOutputStream(this.mImageCaptureUri.getPath());
                 bmp.compress(Bitmap.CompressFormat.JPEG, 100, out); // PNG is a lossless format, the compression factor (100) is ignored, in JPEG it is used.
             }catch(IOException ioe){
@@ -220,16 +262,21 @@ public class GalleryFragmentActivity extends FragmentActivity {
                 Log.d(TAG, "Error: The bitmap was null");
             } else {
 
-                bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500,500);
+                bmp = BitmapHelpers.LoadAndResizeBitmap(this.mImageCaptureUri.getPath(), 500, 500);
 
-                //TODO: Make this real code, not test code! i.e. make it store in the database!
-                this.mDbHelper.insertEntry(new Picture(this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp, mLocation, "CAPTION", new GregorianCalendar(), 19));
+                if(this.mLocation != null) {
+                    this.mDbHelper.insertEntry(new Picture(this.mLocation.getLatitude(), this.mLocation.getLongitude(), bmp, mLocation, "CAPTION", new GregorianCalendar(), 20));
+                }else{
+                    //Todo
+                    //Todo: Eliminate
+                    this.mDbHelper.insertEntry(new Picture(0, 0, bmp, mLocation, "CAPTION", new GregorianCalendar(), 20));
+                }
 //                    this.mILList.add(new ImageLocation(new GregorianCalendar(), 16, 24, bmp));
                 this.updateGridView();
             }
 //            }
         }
-        if(requestCode == DISPLAY_ACTIVITY_REQUEST && resultCode == RESULT_OK){
+        if(requestCode == DISPLAY_ACTIVITY_REQUEST && resultCode == super.getActivity().RESULT_OK){
             Log.d(TAG, "Updating gridview");
             this.updateGridView();
         }
@@ -241,9 +288,9 @@ public class GalleryFragmentActivity extends FragmentActivity {
      * @return - actual URI of resource
      */
     private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = new String[] { android.provider.MediaStore.Images.ImageColumns.DATA };
+        String[] proj = new String[] { MediaStore.Images.ImageColumns.DATA };
 
-        Cursor cursor = getContentResolver().query(contentUri, proj, null,
+        Cursor cursor = super.getActivity().getContentResolver().query(contentUri, proj, null,
                 null, null);
         int column_index = cursor
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

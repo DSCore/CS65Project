@@ -1,4 +1,4 @@
-package jog.my.memory.images;
+package jog.my.memory.Gallery;
 
 
 import android.app.Activity;

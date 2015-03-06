@@ -1,4 +1,4 @@
-package jog.my.memory.Profile;
+package jog.my.memory.Helpers;
 
 
 import android.app.AlertDialog;
@@ -10,6 +10,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 
+import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
 
 public class MyDialogFragment extends DialogFragment {
