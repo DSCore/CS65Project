@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -73,7 +74,11 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_ACTION_BAR);
+
         setContentView(R.layout.activity_home);
+
+        getWindow().setFeatureInt(Window.FEATURE_ACTION_BAR, R.layout.window_title);
         setUpMapIfNeeded();
 
         mTitle = mDrawerTitle = getTitle();
@@ -309,7 +314,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -380,6 +385,18 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
+        if(title.toString().equalsIgnoreCase("home"))
+            getActionBar().setIcon(R.drawable.ic_home);
+        else if(title.toString().equalsIgnoreCase("excursions"))
+            getActionBar().setIcon(R.drawable.ic_list);
+        else if(title.toString().equalsIgnoreCase("photo gallery"))
+            getActionBar().setIcon(R.drawable.ic_photos);
+        else if(title.toString().equalsIgnoreCase("slideshows"))
+            getActionBar().setIcon(R.drawable.ic_gallery);
+        else if(title.toString().equalsIgnoreCase("get going!"))
+            getActionBar().setIcon(R.drawable.ic_time);
+        else if(title.toString().equalsIgnoreCase("user profile"))
+            getActionBar().setIcon(R.drawable.ic_profile);
     }
 
     /**

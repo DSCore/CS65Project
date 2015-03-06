@@ -19,9 +19,7 @@
         <item>Other</item>
     </string-array>
     <string-array name="ui_inputType_spinner_entries">
-        <item>Manual Entry</item>
         <item>GPS</item>
-        <item>Automatic</item>
     </string-array>
     <string-array name="ui_profile_photo_picker_items">
         <item>Take Photo</item>
@@ -35,11 +33,6 @@
         <item>Metric (Kilometers)</item>
         <item>Imperial (Miles)</item>
     </string-array>
-    <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/values-v14/styles.xml -->
-    <eat-comment/>
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-        <!-- API 14 theme customizations can go here. -->
-    </style>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values-v14/values.xml -->
     <eat-comment/>
     <style name="Base.Theme.AppCompat" parent="Base.V14.Theme.AppCompat">

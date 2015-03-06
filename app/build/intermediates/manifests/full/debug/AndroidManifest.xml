@@ -30,26 +30,20 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="cormack.devon.lab1_1.android.permission.C2D_MESSAGE"
+        android:name="jog.my.memory.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
-    <uses-permission android:name="cormack.devon.lab1_1.android.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="jog.my.memory.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="jog.my.memory.ProfileActivity"
-            android:label="@string/profile_name"
-            android:windowSoftInputMode="stateHidden" />
+        android:theme="@style/CustomTheme" >
+
+        <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:label="@string/app_name" > -->
+        <!-- </activity> -->
         <activity
             android:name="jog.my.memory.images.GalleryFragmentActivity"
             android:label="@string/app_name" >
@@ -63,12 +57,6 @@
             android:name="jog.my.memory.images.DisplayActivity"
             android:label="@string/title_activity_display" >
         </activity>
-        <activity
-            android:name="jog.my.memory.GPS.MapsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_maps"
-            android:launchMode="singleTask" >
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -79,7 +67,9 @@
 
         <activity
             android:name="jog.my.memory.HomeActivity"
-            android:label="@string/title_activity_home" >
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

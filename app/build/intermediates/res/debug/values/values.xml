@@ -4,21 +4,19 @@
     <eat-comment/>
     <array name="nav_drawer_icons">
         <item>@drawable/ic_home</item>
-        <item>@drawable/ic_people</item>
+        <item>@drawable/ic_list</item>
         <item>@drawable/ic_photos</item>
-        <item>@drawable/ic_communities</item>
-        <item>@drawable/ic_pages</item>
-        <item>@drawable/ic_whats_hot</item>
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_gallery</item>
+        <item>@drawable/ic_time</item>
+        <item>@drawable/ic_profile</item>
     </array>
     <string-array name="nav_drawer_items">
         <item>Home</item> <!-- User homepage, displays personal info and recent runs, non-editable -->
         <item>Excursions</item> <!-- Recent outings -->
-        <item>Photos</item> <!-- Gallery -->
+        <item>Photo Gallery</item> <!-- Gallery -->
         <item>Slideshows</item> <!-- List of all slideshows -->
         <item>Get Going!</item> <!-- Start a new excursion -->
-        <item>User Profile</item> <!-- User Profile -->
-        <item>Settings</item> <!-- Application Settings TODO: May want to combine the last 2. -->
+        <item>User Profile</item> <!-- Application Settings TODO: May want to combine the last 2. -->
     </string-array>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
@@ -271,6 +269,7 @@
     <string name="addnl_settings">Additional Settings</string>
     <string name="app_name">Jog My Memory</string>
     <string name="buttonChangePhoto">Change</string>
+    <string name="button_takephoto">Take Photo</string>
     <string name="cancel">Cancel</string>
     <string name="checkboxpreference_privacy">chkbx_privacy</string>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/common_strings.xml -->
@@ -316,9 +315,10 @@
     <string name="drawer_close">Slider Menu Closed</string>
     <string name="drawer_open">Slider Menu Opened</string>
     <string name="edittextpreference_comment">edtxt_comment</string>
+    <string name="finish_button">Finish \nExcursion</string>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/debug/res/values/google_maps_api.xml -->
     <eat-comment/>
-    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyA4SbIZG9FDLOy1r1XC7Z1spsIwDKSs5JY</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyAWE3DGE7IJa5vV2_wih36LLtZpeyM60y8</string>
     <string name="google_maps_key_instructions" templateMergeStrategy="replace"><!--
 
     TODO: Before you run your application, you need a Google Maps API key.
@@ -335,6 +335,7 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     --></string>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="list_unit_preferences">list_unit_preferences</string>
     <string name="misc">Misc.</string>
     <string name="preference_name">my_preferences</string>
@@ -364,7 +365,7 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     <string name="title_activity_camera_control">CameraControlActivity</string>
     <string name="title_activity_display">Picture</string>
     <string name="title_activity_gallery">GalleryActivity</string>
-    <string name="title_activity_home">Map</string>
+    <string name="title_activity_home">Jog My Memory!</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_class_homepage">Class Homepage</string>
     <string name="title_edittext_comment">Comment</string>
@@ -377,18 +378,6 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/wallet_strings.xml -->
     <eat-comment/>
     <string name="wallet_buy_button_place_holder" translation_description="Text on a button that allows a user to make a payment with Google Wallet [CHAR LIMIT=30]">Buy with Google</string>
-    <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/values/styles.xml -->
-    <eat-comment/>
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-    </style>
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-    </style>
     <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat" parent="android:TextAppearance">
@@ -1143,6 +1132,20 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
         <item name="android:scaleType">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+    <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/values/custom_style.xml -->
+    <eat-comment/>
+    <style name="CustomTheme" parent="android:Theme">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="CustomWindowTitleBackground">
+        <item name="android:background">#323331</item>
+    </style>
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/blue_bar</item>
+        <item name="android:height">60dp</item>
+    </style>
+    <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
     <style name="Platform.AppCompat" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>
         <item name="buttonBarStyle">@android:style/ButtonBar</item>

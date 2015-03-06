@@ -9,6 +9,6 @@ package jog.my.memory;
 
 public final class Manifest {
     public static final class permission {
-        public static final String C2D_MESSAGE="cormack.devon.lab1_1.android.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="jog.my.memory.android.permission.C2D_MESSAGE";
     }
 }

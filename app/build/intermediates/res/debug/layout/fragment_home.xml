@@ -23,6 +23,7 @@
         android:text="Profile"/>
 
     <ImageView
+        android:id="@+id/home_profile_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -95,7 +96,18 @@
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:src="@drawable/quick_start"/>
+        android:src="@drawable/blue_bar"/>
+
+    <Button
+        android:id="@+id/button_quick_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFF"
+        android:textSize="20sp"
+        android:textColor="#00a5f6"
+        android:layout_margin="14dp"
+        android:text="Quick Start"/>
 
 </RelativeLayout>
 <!-- From: file:/C:/Users/CBAS/Desktop/CS65Project/app/src/main/res/layout/fragment_home.xml -->

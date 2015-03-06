@@ -33,14 +33,12 @@
         android:name="jog.my.memory.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomTheme" >
         <!--<activity-->
             <!--android:name=".MainActivity"-->
             <!--android:label="@string/app_name" >-->
@@ -57,12 +55,6 @@
         <activity
             android:name=".images.DisplayActivity"
             android:label="@string/title_activity_display" >
-        </activity>
-        <activity
-            android:name=".GPS.MapsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_maps"
-            android:launchMode="singleTask" >
         </activity>
 
         <meta-data

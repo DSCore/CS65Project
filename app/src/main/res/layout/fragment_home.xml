@@ -96,12 +96,17 @@
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:src="@drawable/quick_start"/>
+        android:src="@drawable/blue_bar"/>
 
     <Button
         android:id="@+id/button_quick_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        />
+        android:background="#FFF"
+        android:textSize="20sp"
+        android:textColor="#00a5f6"
+        android:layout_margin="13dp"
+        android:text="Quick Start"/>
+
 </RelativeLayout>

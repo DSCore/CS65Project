@@ -12,15 +12,14 @@
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
-    <!-- TODO: Update these from Sebastian! -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
         <item>@drawable/ic_home</item>
-        <item>@drawable/ic_people</item>
+        <item>@drawable/ic_list</item>
         <item>@drawable/ic_photos</item>
-        <item>@drawable/ic_communities</item>
-        <item>@drawable/ic_pages</item>
-        <item>@drawable/ic_whats_hot</item>
+        <item>@drawable/ic_gallery</item>
+        <item>@drawable/ic_time</item>
+        <item>@drawable/ic_profile</item>
     </array>
 
     <!-- Content Description -->
