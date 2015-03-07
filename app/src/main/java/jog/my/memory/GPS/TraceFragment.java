@@ -243,6 +243,8 @@ public class TraceFragment extends Fragment {
             //Start drawing a new trace
             ((HomeActivity) getActivity()).clearUpdates();
             ((HomeActivity) getActivity()).setDrawTrace(true);
+            //Start a new Excursion
+            ((HomeActivity) getActivity()).startNewExcursion();
             //Update the button
             startPhoto.setText("");
             startPhoto.setBackgroundResource(R.drawable.camera_bar);
