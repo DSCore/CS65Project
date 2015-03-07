@@ -51,7 +51,7 @@ public class SlideshowActivity extends Activity {
         this.mPicList = this.mDbHelper.fetchEntries();
 
 
-        start = (Button)findViewById(R.id.start_btn);
+//        start = (Button)findViewById(R.id.start_btn);
 
 
         next= (Button)findViewById(R.id.next_bt);

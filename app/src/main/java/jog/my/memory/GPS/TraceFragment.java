@@ -125,6 +125,7 @@ public class TraceFragment extends Fragment {
         this.context = inflater.getContext();
         //Set the button's display contextually
         Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
+        Log.d(TAG,"mDrawTrace is: "+((HomeActivity)getActivity()).mDrawTrace);
         if(((HomeActivity)getActivity()).mDrawTrace){
             startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_home)); //TODO: MAKE THIS THE CAMERA IMAGE
         }
@@ -245,6 +246,8 @@ public class TraceFragment extends Fragment {
             //Update the button
             startPhoto.setText("");
             startPhoto.setBackgroundResource(android.R.drawable.ic_menu_camera);
+            //Start up an Excursion
+            ((HomeActivity)getActivity()).startNewExcursion();
             //Display the tracking notification
             this.displayTrackingNotification();
         }
@@ -260,6 +263,8 @@ public class TraceFragment extends Fragment {
             ((HomeActivity) getActivity()).setDrawTrace(false);
             ArrayList<Location> updates = ((HomeActivity) getActivity()).getUpdates();
             //TODO: Save the data to the database here
+            //Save the database
+            ((HomeActivity) getActivity()).stopCurrentExcursion();
 
             // Set the camera/start button back to camera mode
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()

@@ -46,7 +46,10 @@ public class SlideshowGalleryFragment extends Fragment {
     private static final int CAMERA_PICTURE_REQUEST = 1;
     private static final int DISPLAY_ACTIVITY_REQUEST = 2;
 
+    //List of the first picture in every gallery
     private ArrayList<Picture> mPicsList = new ArrayList<Picture>();
+    //Ordered list of all of the IDs for the above picture list
+    private ArrayList<Long> mOrderedIDList = new ArrayList<Long>();
     public static Uri mImageCaptureUri;
     private PicturesDBHelper mDbHelper;
     private ExcursionDBHelper mExcursionDbHelper;

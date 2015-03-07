@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -38,8 +39,6 @@ public class SlideshowActivity extends Activity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState() called");
         outState.putInt(KEY_INDEX, currentIndex);
-
-
     }
 
     @Override
@@ -50,52 +49,13 @@ public class SlideshowActivity extends Activity {
         this.mDbHelper = new PicturesDBHelper(this);
         this.mPicList = this.mDbHelper.fetchEntries();
 
-
-        start = (Button)findViewById(R.id.start_btn);
-
-
         next= (Button)findViewById(R.id.next_bt);
         exit= (Button)findViewById(R.id.exit_btn);
         prev= (Button)findViewById(R.id.previous_btn);
         img= (ImageView)findViewById(R.id.img_view);
-        img.setVisibility(View.INVISIBLE);
-        next.setVisibility(View.INVISIBLE);
-        exit.setVisibility(View.INVISIBLE);
-        prev.setVisibility(View.INVISIBLE);
 
-
-        Log.d(KEY_INDEX, "onCreate() called");
-
-        if (savedInstanceState != null){
-            currentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-
-        }
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(mPicList.size() > 0) {
-                    start.setVisibility(View.INVISIBLE);
-                    img.setVisibility(View.VISIBLE);
-                    next.setVisibility(View.VISIBLE);
-                    prev.setVisibility(View.VISIBLE);
-                    exit.setVisibility(View.VISIBLE);
-
-<<<<<<< HEAD:app/src/main/java/jog/my/memory/Gallery/SlideshowActivity.java
-                    img.setImageBitmap(mPicList.get(0).getmImage());
-                    mHandler.postDelayed(slideOver, 5000);
-                }
-=======
-
-                img.setImageBitmap(mPicList.get(0).getmImage());
-                mHandler.postDelayed(slideOver, 2500);
->>>>>>> 7e3768a3c179ac908f4bd75d74bee6247e3b24c7:app/src/main/java/jog/my/memory/images/SlideshowActivity.java
-
-            }
-        });
-
-
+        img.setImageBitmap(mPicList.get(0).getmImage());
+        mHandler.postDelayed(slideOver, 2500);
 
     }
 
@@ -106,16 +66,16 @@ public class SlideshowActivity extends Activity {
             i= (i+1) % mPicList.size();
             changeImage();
 
-         }
+        }
 
     };
 
     private int i=0;
 
     public void onClickNext(View v){
-      i= (i+1) % mPicList.size();
-      mHandler.removeCallbacks(slideOver);
-      changeImage();
+        i= (i+1) % mPicList.size();
+        mHandler.removeCallbacks(slideOver);
+        changeImage();
 
     }
 

@@ -45,7 +45,7 @@
         <!--</activity>-->
         <activity
             android:name=".Gallery.SlideshowActivity"
-            android:label="Slideshow"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait" >
         </activity>
         <activity

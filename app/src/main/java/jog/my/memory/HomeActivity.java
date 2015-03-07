@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
@@ -26,12 +27,17 @@ import android.widget.ListView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
@@ -40,6 +46,9 @@ import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.Slideshow.SlideshowGalleryFragment;
 import jog.my.memory.adapter.NavDrawerListAdapter;
 import jog.my.memory.Gallery.GalleryFragment;
+import jog.my.memory.database.Excursion;
+import jog.my.memory.database.ExcursionDBHelper;
+import jog.my.memory.database.Picture;
 import jog.my.memory.model.NavDrawerItem;
 
 public class HomeActivity extends FragmentActivity implements TraceFragment.onTraceFragmentClickedListener{
@@ -67,7 +76,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     public ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
 
+    //Excursion and GPS information
     private ArrayList<Location> updates = new ArrayList<Location>();
+    private Excursion currentExcursion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -449,5 +460,55 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Start up a new excursion
+     */
+    public void startNewExcursion(){
+        this.currentExcursion = new Excursion();
+        this.currentExcursion.setmName("TESTEXCURSION"); //TODO: Trigger a DialogFragment to get this!
+        Date date = new Date();
+        DateFormat formatter = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss");
+        String dateFormatted = formatter.format(date);
+        this.currentExcursion.setmTimeStamp(dateFormatted);
+        Log.d(TAG,"Created new Excursion"+this.currentExcursion);
+    }
+
+    /**
+     * Stop the excursion and save it to the database
+     */
+    public void stopCurrentExcursion(){
+        //Populate the database with locations
+        this.currentExcursion.setmLocationList(fromLocationListToLatLngList(this.updates));
+        //TODO: distance
+        //TODO: duration
+        //Add the Excursion to the database
+        (new ExcursionDBHelper(this)).insertEntry(this.currentExcursion);
+        Log.d(TAG,"Added Excursion to the database "+this.currentExcursion);
+    }
+
+    /**
+     * Convert from list of Locations to list of LatLng
+     * @param locationList - list of Locations
+     * @return list of LatLng from list of locations
+     */
+    private ArrayList<LatLng> fromLocationListToLatLngList(ArrayList<Location> locationList){
+        ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+        for( Location entry : locationList ){
+            latLngList.add(new LatLng(entry.getLatitude(),entry.getLongitude()));
+        }
+        return latLngList;
+    }
+
+    public void addPictureToMap(Picture pic){
+        Location location = pic.getmLocation();
+        LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
+        Bitmap bmp = pic.getmImage();
+        this.mMap.addMarker(new MarkerOptions()
+                .position(position)
+                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+        );
+        Log.d(TAG,"Created new marker!");
     }
 }
