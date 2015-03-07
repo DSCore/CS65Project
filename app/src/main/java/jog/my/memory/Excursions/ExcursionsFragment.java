@@ -73,7 +73,6 @@ public class ExcursionsFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), DisplayExcursionActivity.class);
         intent.putExtra(DisplayExcursionActivity.EXTRA_ROW_ID, rowId);
         startActivity(intent);
-
     }
 
     @Override

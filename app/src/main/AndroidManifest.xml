@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-<!--     Accesses for server communication -->
+    <!-- Accesses for server communication -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -33,16 +33,17 @@
         android:name="jog.my.memory.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <!-- TODO: Update this with our icon! -->
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/CustomTheme" >
-        <!--<activity-->
-            <!--android:name=".MainActivity"-->
-            <!--android:label="@string/app_name" >-->
-        <!--</activity>-->
+
+        <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:label="@string/app_name" > -->
+        <!-- </activity> -->
         <activity
             android:name=".Gallery.SlideshowActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -62,13 +63,18 @@
 
         <activity
             android:name=".HomeActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Excursions.DisplayExcursionActivity"
+            android:label="@string/title_activity_display_excursion" >
         </activity>
     </application>
 

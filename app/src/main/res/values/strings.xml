@@ -96,5 +96,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_takephoto">Take Photo</string>
     <string name="finish_button">Finish \nExcursion</string>
+    <string name="title_activity_display_excursion">DisplayExcursionActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
