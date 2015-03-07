@@ -117,6 +117,7 @@ public class GalleryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(false);
+        HomeActivity.hideKeyboard(context);
     }
 
     @Override

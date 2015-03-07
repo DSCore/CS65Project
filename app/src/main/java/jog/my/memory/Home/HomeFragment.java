@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -101,6 +103,11 @@ public class HomeFragment extends Fragment {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
         HomeActivity.mDrawTrace = true;
+        //Ensure that the keyboard is hidden
+//        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        HomeActivity.hideKeyboard(context);
+        Log.d(TAG,"Hid it!");
+
     }
 
     @Override

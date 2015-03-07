@@ -24,6 +24,7 @@ import android.widget.GridView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -115,6 +116,7 @@ public class SlideshowGalleryFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(false);
+        HomeActivity.hideKeyboard(context);
     }
 
     @Override
@@ -142,7 +144,10 @@ public class SlideshowGalleryFragment extends Fragment {
         //Get a list of all of the first pictures in each of the excursion galleries
         this.mPicsList.clear();
         for(long id : mCurExcursionIds) {
-            this.mPicsList.add(this.mDbHelper.fetchEntriesByExcursionID(id).get(0));
+            ArrayList<Picture> images = this.mDbHelper.fetchEntriesByExcursionID(id);
+            if(images != null && images.size() > 0) {
+                this.mPicsList.add(images.get(0));
+            }
         }
 
         //Set the adapter for the grid view

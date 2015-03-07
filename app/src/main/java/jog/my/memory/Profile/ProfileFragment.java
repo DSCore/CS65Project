@@ -31,6 +31,7 @@ import java.io.IOException;
 
 import jog.my.memory.Helpers.BitmapHelpers;
 import jog.my.memory.Helpers.MyDialogFragment;
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 
@@ -104,6 +105,12 @@ public class ProfileFragment extends Fragment {
         });
 
         return profileView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HomeActivity.hideKeyboard(context);
     }
 
     private void setImageCaptureURI() {

@@ -1,5 +1,6 @@
 package jog.my.memory;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -533,5 +535,17 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                 .icon(BitmapDescriptorFactory.fromBitmap(bmp))
         );
         Log.d(TAG,"Created new marker!");
+    }
+
+    public static void hideKeyboard(Context context){
+        InputMethodManager imm =
+                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        //Check if there is a view in focus
+        View view = ((Activity) context).getCurrentFocus();
+        if(view != null){
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+
     }
 }
