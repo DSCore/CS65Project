@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,59 +40,21 @@ public class SlideshowActivity extends Activity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState() called");
         outState.putInt(KEY_INDEX, currentIndex);
-
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slideshow);
-
         this.mDbHelper = new PicturesDBHelper(this);
         this.mPicList = this.mDbHelper.fetchEntries();
-
-
-//        start = (Button)findViewById(R.id.start_btn);
-
 
         next= (Button)findViewById(R.id.next_bt);
         exit= (Button)findViewById(R.id.exit_btn);
         prev= (Button)findViewById(R.id.previous_btn);
         img= (ImageView)findViewById(R.id.img_view);
-        img.setVisibility(View.INVISIBLE);
-        next.setVisibility(View.INVISIBLE);
-        exit.setVisibility(View.INVISIBLE);
-        prev.setVisibility(View.INVISIBLE);
-
-
-        Log.d(KEY_INDEX, "onCreate() called");
-
-        if (savedInstanceState != null){
-            currentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-
-        }
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(mPicList.size() > 0) {
-                    start.setVisibility(View.INVISIBLE);
-                    img.setVisibility(View.VISIBLE);
-                    next.setVisibility(View.VISIBLE);
-                    prev.setVisibility(View.VISIBLE);
-                    exit.setVisibility(View.VISIBLE);
-
-                    img.setImageBitmap(mPicList.get(0).getmImage());
-                    mHandler.postDelayed(slideOver, 5000);
-                }
-
-            }
-        });
-
-
-
+        img.setImageBitmap(mPicList.get(0).getmImage());
+        mHandler.postDelayed(slideOver, 2500);
     }
 
     private final Runnable slideOver = new Runnable()
@@ -153,5 +117,38 @@ public class SlideshowActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    GestureDetector.SimpleOnGestureListener simpleOnGestureListener
+            = new GestureDetector.SimpleOnGestureListener(){
+
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+
+            float sensitvity = 50;
+
+            // TODO Auto-generated method stub
+            if((e1.getX() - e2.getX()) > sensitvity){
+                i= (i+1) % mPicList.size();
+                mHandler.removeCallbacks(slideOver);
+                changeImage();
+            }else if((e2.getX() - e1.getX()) < sensitvity) {
+                i = (i - 1) % mPicList.size();
+                i = (i < 0) ? i + mPicList.size() : i;
+                mHandler.removeCallbacks(slideOver);
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    };
+
+    GestureDetector gestureDetector = new GestureDetector(simpleOnGestureListener);
 }
 

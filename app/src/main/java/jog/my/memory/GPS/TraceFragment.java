@@ -127,7 +127,7 @@ public class TraceFragment extends Fragment {
         Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
         Log.d(TAG,"mDrawTrace is: "+((HomeActivity)getActivity()).mDrawTrace);
         if(((HomeActivity)getActivity()).mDrawTrace){
-            startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.ic_home)); //TODO: MAKE THIS THE CAMERA IMAGE
+            //startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.camera_bar)); //TODO: MAKE THIS THE CAMERA IMAGE
         }
         else{
             startPhoto.setText("START");
@@ -156,7 +156,7 @@ public class TraceFragment extends Fragment {
     // Display tracking location
     private void displayTrackingNotification(){
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity())
-                .setSmallIcon(R.drawable.ic_home)
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Jog My Memory")
                 .setContentText("Making Memories!");
         Intent resultIntent = new Intent(getActivity(), TraceFragment.class);
@@ -245,9 +245,7 @@ public class TraceFragment extends Fragment {
             ((HomeActivity) getActivity()).setDrawTrace(true);
             //Update the button
             startPhoto.setText("");
-            startPhoto.setBackgroundResource(android.R.drawable.ic_menu_camera);
-            //Start up an Excursion
-            ((HomeActivity)getActivity()).startNewExcursion();
+            startPhoto.setBackgroundResource(R.drawable.camera_bar);
             //Display the tracking notification
             this.displayTrackingNotification();
         }
@@ -269,7 +267,7 @@ public class TraceFragment extends Fragment {
             // Set the camera/start button back to camera mode
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()
                     .getResources().getDrawable(android.R.drawable.btn_default));
-            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("START");
+            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("Start");
         }
     }
 

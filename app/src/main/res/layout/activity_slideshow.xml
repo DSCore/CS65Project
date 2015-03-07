@@ -1,13 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
-    android:paddingBottom="0dp" tools:context=".SlideshowActivity"
-    android:layout_gravity="center"
-    >
-
-
+    android:layout_height="match_parent"
+    tools:context=".SlideshowActivity"
+    android:layout_gravity="center">
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -16,37 +11,50 @@
         android:layout_gravity="center"
         />
 
-
-
-    <Button
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/next_bt"
-        android:onClick="onClickNext"
-        android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true" />
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:gravity="center|bottom"
+        android:src="@drawable/tri_bar"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exit"
-        android:id="@+id/exit_btn"
-        android:layout_alignParentBottom="true"
-        android:onClick="onExitClicked"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Previous"
-        android:id="@+id/previous_btn"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center|bottom"
         android:layout_alignParentBottom="true"
         android:onClick="onPrevClicked"
         android:layout_alignParentLeft="true"
-        android:layout_gravity="center_horizontal" />
-
+        android:layout_gravity="center_horizontal" >
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:text="Previous"
+            android:id="@+id/previous_btn"
+            android:onClick="onPrevClicked"
+            android:textColor="#00a5f6"
+            android:background="#00000000" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:text="Exit"
+            android:id="@+id/exit_btn"
+            android:onClick="onExitClicked"
+            android:textColor="#00a5f6"
+            android:background="#00000000" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:text="Next"
+            android:id="@+id/next_bt"
+            android:onClick="onClickNext"
+            android:textColor="#00a5f6"
+            android:background="#00000000" />
+    </LinearLayout>
 </RelativeLayout>
