@@ -33,7 +33,7 @@
         android:name="jog.my.memory.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- TODO: Update this with our icon! -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
