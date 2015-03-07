@@ -98,6 +98,7 @@ public class ExcursionDBHelper {
         //Select the entry with the right ID from the table.
         Cursor cursor = db.query(ExcursionSQLiteHelper.TABLE_EXCURSIONS, allColumns,
                 ExcursionSQLiteHelper.COLUMN_ID + " = " + mId, null, null, null, null);
+        cursor.moveToFirst();
         return cursorToExcursion(cursor);
     }
 

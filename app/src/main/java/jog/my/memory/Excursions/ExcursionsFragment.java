@@ -3,6 +3,7 @@ package jog.my.memory.Excursions;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
 import android.view.LayoutInflater;
@@ -68,6 +69,11 @@ public class ExcursionsFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id){
         Excursion entry = (Excursion)(getListAdapter()).getItem(position);
         long rowId = entry.getmID();
+
+        Intent intent = new Intent(getActivity(), DisplayExcursionActivity.class);
+        intent.putExtra(DisplayExcursionActivity.EXTRA_ROW_ID, rowId);
+        startActivity(intent);
+
     }
 
     @Override
