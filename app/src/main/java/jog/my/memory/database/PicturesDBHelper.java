@@ -109,10 +109,18 @@ public class PicturesDBHelper {
 
     public ArrayList<Picture> fetchEntriesByExcursionID(long id){
         ArrayList<Picture> entries = new ArrayList<Picture>();
+//        Cursor cursor = db.query(PicturesSQLiteHelper.TABLE_PICTURES,
+//                allColumns,
+//                COLUMN_EXCURSIONID + " = ?",
+//                new String[]{Long.toString(id)},
+//                null,
+//                null,
+//                null);
+
         Cursor cursor = db.query(PicturesSQLiteHelper.TABLE_PICTURES,
                 allColumns,
-                COLUMN_EXCURSIONID + " = ?",
-                new String[]{Long.toString(id)},
+                COLUMN_EXCURSIONID + " = " + id,
+                null,
                 null,
                 null,
                 null);
@@ -126,7 +134,6 @@ public class PicturesDBHelper {
         }
         // Make sure to close the cursor
         cursor.close();
-
         return entries;
     }
 

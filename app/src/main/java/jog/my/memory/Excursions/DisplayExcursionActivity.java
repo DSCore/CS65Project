@@ -2,6 +2,7 @@ package jog.my.memory.Excursions;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -49,17 +50,16 @@ public class DisplayExcursionActivity extends Activity {
         mydbHelper.close();
 
         //Delete all pictures associated with excursion
-
         PicturesDBHelper picdbHelper = new PicturesDBHelper(this);
         picdbHelper.open();
         ArrayList<Picture> pics = picdbHelper.fetchEntriesByExcursionID(rowId);
+        Log.d("DisplayExcursion", "" + pics);
 
         for (Picture pic : pics){
             picdbHelper.removeEntry(pic.getId());
+            Log.d("DisplayExcursion", "A picture was removed!");
         }
         picdbHelper.close();
-
-        //Todo: Update excursion fragment UI
 
         finish();
     }

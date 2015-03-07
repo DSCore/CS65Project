@@ -332,12 +332,14 @@ public class TraceFragment extends Fragment {
                     pic.setmLat(mLastLocation.getLatitude());
                     pic.setmLong(mLastLocation.getLongitude());
                     pic.setmImage(bmp);
+                    pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }else{
                     Picture pic = new Picture(); //TODO: Update this from merging in the databases
                     pic.setmLat(0);
                     pic.setmLong(0);
                     pic.setmImage(bmp);
+                    pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }
 //                    this.updateGridView();

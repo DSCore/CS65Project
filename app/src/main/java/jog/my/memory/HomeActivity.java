@@ -12,9 +12,9 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -38,14 +38,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
+import jog.my.memory.Gallery.GalleryFragment;
 import jog.my.memory.Home.HomeFragment;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.Slideshow.SlideshowGalleryFragment;
 import jog.my.memory.adapter.NavDrawerListAdapter;
-import jog.my.memory.Gallery.GalleryFragment;
 import jog.my.memory.database.Excursion;
 import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.database.Picture;
@@ -75,10 +76,16 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
 
     public ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+    private long excursionID;
 
     //Excursion and GPS information
     private ArrayList<Location> updates = new ArrayList<Location>();
     private Excursion currentExcursion;
+    private long nextDBID;
+
+    public Excursion getCurrentExcursion(){
+        return currentExcursion;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -466,6 +473,18 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      * Start up a new excursion
      */
     public void startNewExcursion(){
+        ArrayList<LatLng> mLocationList = new ArrayList<LatLng>();
+        LatLng latLng = new LatLng(0,0);
+        mLocationList.add(latLng);
+        ArrayList<Long> mPictureIDs = new ArrayList<Long>(0);
+        Excursion dummy = new Excursion(new GregorianCalendar(), 0, 0,  mLocationList,  mPictureIDs, "Dummy");
+        ExcursionDBHelper dbHelp = new ExcursionDBHelper(this);
+        dbHelp.open();
+        long dummyID = (dbHelp.insertEntry(dummy));
+        dbHelp.removeEntry(dummyID);
+        nextDBID = dummyID + 1;
+        dbHelp.close();
+
         this.currentExcursion = new Excursion();
         this.currentExcursion.setmName("TESTEXCURSION"); //TODO: Trigger a DialogFragment to get this!
         Date date = new Date();
@@ -473,6 +492,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         String dateFormatted = formatter.format(date);
         this.currentExcursion.setmTimeStamp(dateFormatted);
         Log.d(TAG,"Created new Excursion"+this.currentExcursion);
+    }
+
+    public long getNextDBID(){
+        return nextDBID;
     }
 
     /**

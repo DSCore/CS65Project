@@ -82,6 +82,7 @@ public class ExcursionDBHelper {
         values.put(COLUMN_GPS_DATA, mExcursion.getmGPSDATA());
         values.put(COLUMN_PICTUREIDS, mExcursion.getmPictureIDsAsByteArray());
         values.put(COLUMN_NAME, mExcursion.getmName());
+
         int i =  db.update(ExcursionSQLiteHelper.TABLE_EXCURSIONS, values, COLUMN_ID + "=" + rowId, null);
         return i > 0;
     }
@@ -107,7 +108,12 @@ public class ExcursionDBHelper {
         ArrayList<Excursion> entries = new ArrayList<Excursion>();
 
         Cursor cursor = db.query(ExcursionSQLiteHelper.TABLE_EXCURSIONS,
-                allColumns, null, null, null, null, null);
+                allColumns,
+                null,
+                null,
+                null,
+                null,
+                null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

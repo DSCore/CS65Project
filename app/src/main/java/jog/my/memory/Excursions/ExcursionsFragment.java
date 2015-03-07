@@ -79,6 +79,15 @@ public class ExcursionsFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(false);
+
+        //Open database
+        myDBHelper = new ExcursionDBHelper(getActivity());
+        myDBHelper.open();
+        values = myDBHelper.fetchEntries();
+        myDBHelper.close();
+
+        adapter = new ExcursionAdapter(context, R.id.example_list_item, this.values);
+        setListAdapter(adapter);
     }
 
     @Override
