@@ -1,9 +1,11 @@
 package jog.my.memory.Gallery;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,19 +15,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import jog.my.memory.Helpers.BitmapHelpers;
 import jog.my.memory.HomeActivity;
@@ -138,7 +146,44 @@ public class GalleryFragment extends Fragment {
         this.mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(context,DisplayActivity.class);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                Picture mCurrentPicture = mPicsList.get(position);
+
+                SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                try {
+                    Date date = format.parse(mCurrentPicture.getmTimeStamp());
+                    SimpleDateFormat fmt = new SimpleDateFormat("MMM, d yyyy hh:mm a");
+                    String dateString = fmt.format(date);
+                    builder.setTitle(dateString);
+                } catch (Exception e) {
+                    builder.setTitle(mCurrentPicture.getmTimeStamp());
+                    e.printStackTrace();
+                }
+
+                // Set up the input
+                final TextView input = new TextView(context);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setText("GPS: " + mCurrentPicture.getmLat() + ", " + mCurrentPicture.getmLong());
+                input.setPadding(40, 0, 0, 30);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+                /*Intent intent = new Intent(context,DisplayActivity.class);
                 Picture mCurrentPicture = mPicsList.get(position);
                 intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImageAsByteArray());
                 intent.putExtra(DisplayActivity.GPS,
@@ -147,7 +192,7 @@ public class GalleryFragment extends Fragment {
                                 , Location.FORMAT_DEGREES));
                 intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentPicture.getmTimeStamp());
                 intent.putExtra(DisplayActivity.ID,mCurrentPicture.getId());
-                startActivityForResult(intent, DISPLAY_ACTIVITY_REQUEST);
+                startActivityForResult(intent, DISPLAY_ACTIVITY_REQUEST);*/
             }
         });
     }
