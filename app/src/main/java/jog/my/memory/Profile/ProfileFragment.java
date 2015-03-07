@@ -29,9 +29,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import jog.my.memory.Helpers.BitmapHelpers;
 import jog.my.memory.Helpers.MyDialogFragment;
 import jog.my.memory.R;
-import jog.my.memory.Helpers.BitmapHelpers;
 
 
 public class ProfileFragment extends Fragment {
@@ -335,6 +335,7 @@ public class ProfileFragment extends Fragment {
         //Exits the activity without saving anything
         super.getFragmentManager().popBackStackImmediate(); //TODO: Make sure this works like finish()
     }
+
 
     public void loadProfile(){
         //Loads the profile of the user
