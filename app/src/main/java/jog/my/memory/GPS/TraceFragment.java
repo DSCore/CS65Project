@@ -96,6 +96,7 @@ public class TraceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
+        HomeActivity.hideKeyboard(context);
 //        ((HomeActivity)super.getActivity()).setDrawTrace(true);
     }
 
