@@ -36,6 +36,7 @@
             android:layout_height="50dip"
             android:background="#00000000"
             android:textColor="#00a5f6"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:text="START"/>
     </RelativeLayout>
 </FrameLayout>

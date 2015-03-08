@@ -100,7 +100,14 @@ public class TraceFragment extends Fragment {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
         HomeActivity.hideKeyboard(context);
-//        ((HomeActivity)super.getActivity()).setDrawTrace(true);
+        Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
+        if(((HomeActivity)super.getActivity()).mDrawTrace){
+            startPhoto.setText("");
+            startPhoto.setBackgroundResource(R.drawable.camera_bar);
+        } else {
+            startPhoto.setText("START");
+            startPhoto.setBackgroundResource(0);
+        }
     }
 
     @Override
@@ -117,6 +124,7 @@ public class TraceFragment extends Fragment {
         super.onDestroy();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -127,16 +135,7 @@ public class TraceFragment extends Fragment {
         this.displayTrackingNotification();
         //Save the context
         this.context = inflater.getContext();
-        //Set the button's display contextually
         Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
-        Log.d(TAG,"mDrawTrace is: "+((HomeActivity)getActivity()).mDrawTrace);
-        if(((HomeActivity)getActivity()).mDrawTrace){
-            //startPhoto.setBackground(getActivity().getResources().getDrawable(R.drawable.camera_bar)); //TODO: MAKE THIS THE CAMERA IMAGE
-        }
-        else{
-            startPhoto.setText("START");
-
-        }
 
         startPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,9 +280,9 @@ public class TraceFragment extends Fragment {
             ((HomeActivity) getActivity()).stopCurrentExcursion();
 
             // Set the camera/start button back to camera mode
-            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()
-                    .getResources().getDrawable(android.R.drawable.btn_default));
-            ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("Start");
+            Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
+            startPhoto.setBackgroundResource(0);
+            startPhoto.setText("START");
             this.stopDisplayTrackingNotification();
         }
     }

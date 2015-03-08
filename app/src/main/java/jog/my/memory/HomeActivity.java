@@ -187,9 +187,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         Criteria criteria = new Criteria();
 
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        updates.add(location);
         if (location != null)
         {
+            updates.add(location);
 //            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
 //                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
