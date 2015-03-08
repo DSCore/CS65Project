@@ -82,7 +82,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "HomeActivity";
     public DrawerLayout mDrawerLayout;
     public ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -132,6 +132,18 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         setContentView(R.layout.activity_home);
 
         context = this;
+
+        // Check device for Play Services APK. If check succeeds, proceed with
+        // GCM registration.
+        if (checkPlayServices()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            regid = getRegistrationId(context);
+            Log.d(TAG,"Registering with server!");
+            registerInBackground();
+        }
+        else{
+            Log.d(TAG,"Your device is not connected to Google APK");
+        }
 
         getWindow().setFeatureInt(Window.FEATURE_ACTION_BAR, R.layout.window_title);
         setUpMapIfNeeded();
@@ -734,8 +746,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
 //                jsonObject.put("inputType", ee.getmInputType());
 //                jsonObject.put("activityType", ee.getmActivityType());
                 jsonObject.put("timeStamp", ee.getmTimeStamp());
-                jsonObject.put("duration", ee.getmDuration());
-                jsonObject.put("distance", ee.getmDistance());
+//                jsonObject.put("duration", ee.getmDuration());
+//                jsonObject.put("distance", ee.getmDistance());
 //                jsonObject.put("avgSpeed", ee.getmAvgSpeed());
 //                jsonObject.put("calories", ee.getmCalorie());
 //                jsonObject.put("climb", ee.getmClimb());

@@ -14,6 +14,7 @@ https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend
     string in this file.
     --></string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyAWE3DGE7IJa5vV2_wih36LLtZpeyM60y8</string> <!-- Dartmouth phone -->
-    <!--<string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyBf3V8_lEt2hZs3Z3G-bEjZtgbjqMtekvI</string>--> <!-- Devon's phone -->
+    <!--<string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyAWE3DGE7IJa5vV2_wih36LLtZpeyM60y8</string> &lt;!&ndash; Dartmouth phone &ndash;&gt;-->
+    <!--<string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyBf3V8_lEt2hZs3Z3G-bEjZtgbjqMtekvI</string>  Devon's phone-->
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyCUyEuMmUk6TK45UGWw3Zozgi3W58nCcsM</string>  Steve's phone
 </resources>

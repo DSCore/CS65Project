@@ -1,10 +1,15 @@
 package jog.my.memory.Excursions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,13 +32,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import jog.my.memory.R;
 import jog.my.memory.database.Excursion;
 import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.database.Picture;
 import jog.my.memory.database.PicturesDBHelper;
+import jog.my.memory.gcm.ServerUtilities;
 
 public class MapDisplayActivity extends FragmentActivity {
 
@@ -280,51 +296,294 @@ public class MapDisplayActivity extends FragmentActivity {
         this.mMarkers.clear();
     }
 
+    public void onShareClicked(View v){
+        updateServer();
+    }
+
+    /*** Server upload code ***/
+
     /**
-     * Updates the status display with the new location in ee
-     *
-     * @param ee - ExerciseEntry
+     * Updates the server with the database
      */
-//    private void updateDisplayWithNewLocation(Excursion ee){
-//        //Set the current type
-//        String mCurType = "Type: "+ getResources()
-//                .getStringArray(R.array.ui_activityType_spinner_entries)[ee.getmActivityType()];
-//
-//        //Ensure the units are displayed correctly
-//        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-//        String mKey = this.getString(R.string.list_unit_preferences);
-//        String mCurrentUnits = mPrefs.getString(mKey, "Metric");
-//
-//        //Set the values based on what unit preference the user has
-//        String mAvgSpeed, mCurSpeed, mDistance, mClimb;
-//        if(mCurrentUnits.equals("Metric")) {
-//            mAvgSpeed = "Avg Speed: "
-//                    + UnitConverter.convertImperialToMetric(ee.getmAvgSpeed())
-//                    +" km/h";
-//            mCurSpeed = "Cur Speed: "
-//                    + UnitConverter.convertImperialToMetric(ee.getmSpeed())
-//                    +" km/h";
-//            mDistance = "Distance: "
-//                    + UnitConverter.convertImperialToMetric(ee.getmDistance())
-//                    +" km";
-//            mClimb = "Climb: "
-//                    + UnitConverter.convertImperialToMetric(ee.getmClimb())
-//                    +" km";
+    private void updateServer(){
+        //Get the Arraylist of Exercise entries currently in the database
+//        ArrayList<Excursion> listEE = new ExcursionDBHelper(this).fetchEntries();
+
+        ArrayList<Excursion> listEE = new ArrayList<>();
+        listEE.add(this.mEeToDisplay);
+        //Build a JSONArray of JSONObjects that contains the ArrayList of ExerciseEntries.
+        String jsonString = this.buildJsonToSend(listEE); //TODO: This needs to be changed to upload the files
+
+        //Post message and then refresh
+        postMsg(jsonString);
+
+//        //Post the images to the server
+//        this.postImage(this.mShownImages);
+    }
+
+    private void postImage(ArrayList<Picture> listPics){
+        for(Picture pic : listPics){
+            //Get the picture
+            Bitmap bmp = pic.getmImage();
+            //Save it to a file and open that file
+            String picFileLoc = PictureUtilities.saveToFile(bmp);
+            File picFile = new File(picFileLoc);
+            //Post the file to the server
+            ServerUtilities.postFile(
+                    getBaseContext(),
+                    getResources().getString(R.string.server_addr),
+                    Uri.fromFile(picFile));
+
+            //Get the location
+            Location location = pic.getmLocation();
+        }
+    }
+
+    /**
+     * Builds a JsonArray of JsonObjects to send to the server.
+     * @param listEE - the list of Exercise Entries
+     * @return a JSON entity appropriate for sending to a server
+     */
+    private String buildJsonToSend(ArrayList<Excursion> listEE){
+        JSONArray jsonArray = new JSONArray();
+
+        for(Excursion ee : listEE){
+            try{
+                //Create the JSON object
+                JSONObject jsonObject = new JSONObject();
+                //Populate it with all the fields in ExerciseEntity (server-side object)
+                jsonObject.put("id", (long)ee.getmID());
+//                jsonObject.put("inputType", ee.getmInputType());
+//                jsonObject.put("activityType", ee.getmActivityType());
+                jsonObject.put("timeStamp", ee.getmTimeStamp());
+//                jsonObject.put("duration", ee.getmDuration());
+//                jsonObject.put("distance", ee.getmDistance());
+//                jsonObject.put("avgSpeed", ee.getmAvgSpeed());
+//                jsonObject.put("calories", ee.getmCalorie());
+//                jsonObject.put("climb", ee.getmClimb());
+//                jsonObject.put("heartRate", ee.getmHeartRate());
+                jsonObject.put("name", ee.getmName());
+                //Add the object to the JSONArray
+                jsonArray.put(jsonObject);
+            }
+            catch(Exception e){
+                Log.i(TAG,"Exception in JSON creation, it failed.");
+            }
+
+        }
+        //Return the array of JSON objects in compact JSON String form.
+        try{Log.d(TAG, "Just build JSON array: "+jsonArray.toString(4));}catch(Exception e){};
+        return jsonArray.toString();
+    }
+
+    private void postMsg(String msg) {
+        new AsyncTask<String, Void, String>() {
+
+            @Override
+            protected String doInBackground(String... arg0) {
+                String url = getString(R.string.server_addr) + "/post.do";
+                String res = "";
+                Map<String, String> params = new HashMap<String, String>();
+
+                Log.d(TAG,"post_text mapped to arg0[0] = "+arg0[0]);
+                params.put("post_text", arg0[0]);
+                params.put("from", "phone");
+
+//                params.put(GregorianCalendar to milliseconds.)
+                try {
+                    res = ServerUtilities.post(url, params);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return res;
+            }
+
+            @Override
+            protected void onPostExecute(String res) {
+                //Refresh the history list for the HistoryFragment
+                refreshPostHistory();
+            }
+
+        }.execute(msg);
+    }
+
+    /**
+     * Supports refreshing the post history by spinning up
+     * a background process that posts to the server.
+     */
+    private void refreshPostHistory() {
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... arg0) {
+                String url = getString(R.string.server_addr)
+                        + "/get_history.do";
+                String res = "";
+                Map<String, String> params = new HashMap<String, String>();
+                try {
+                    res = ServerUtilities.post(url, params);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return res;
+            }
+
+            @Override
+            protected void onPostExecute(String res) {
+                if (!res.equals("")) {
+                    Log.d(TAG,"Successfully received something! It was:");
+                    Log.d(TAG,""+res);
+                }
+            }
+
+        }.execute();
+    }
+
+//    /**
+//     * Check the device to make sure it has the Google Play Services APK. If it
+//     * doesn't, display a dialog that allows users to download the APK from the
+//     * Google Play Store or enable it in the device's system settings.
+//     */
+//    private boolean checkPlayServices() {
+//        int resultCode = GooglePlayServicesUtil
+//                .isGooglePlayServicesAvailable(this);
+//        if (resultCode != ConnectionResult.SUCCESS) {
+//            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+//                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+//                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+//            } else {
+//                finish();
+//            }
+//            return false;
 //        }
-//        else{
-//            mAvgSpeed = "Avg Speed: "+ ee.getmAvgSpeed()+" mph";
-//            mCurSpeed = "Cur Speed: "+ee.getmSpeed()+" mph";
-//            mDistance = "Distance: "+ee.getmDistance()+" miles";
-//            mClimb = "Climb: "+ee.getmClimb()+" miles";
-//        }
-//
-//        //Set the calories
-//        String mCalorie = "Calorie: "+ee.getmCalorie();
-//
-//        // Construct the entire string:
-//        String total = mCurType+"\n"+mAvgSpeed+"\n"
-//                +mCurSpeed+"\n"+mClimb+"\n"+mCalorie+"\n"+mDistance;
-//        //Set the text in the display
-//        ((TextView) findViewById(R.id.type_stats)).setText(total);
+//        return true;
 //    }
+//
+//    /**
+//     * Gets the current registration ID for application on GCM service.
+//     * <p>
+//     * If result is empty, the app needs to register.
+//     *
+//     * @return registration ID, or empty string if there is no existing
+//     *         registration ID.
+//     */
+//    private String getRegistrationId(Context context) {
+//        final SharedPreferences prefs = getGCMPreferences(context);
+//        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+//        if (registrationId.isEmpty()) {
+//            return "";
+//        }
+//        // Check if app was updated; if so, it must clear the registration ID
+//        // since the existing regID is not guaranteed to work with the new
+//        // app version.
+//        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION,
+//                Integer.MIN_VALUE);
+//        int currentVersion = getAppVersion(context);
+//        if (registeredVersion != currentVersion) {
+//            return "";
+//        }
+//        return registrationId;
+//    }
+//
+//    /**
+//     * @return Application's {@code SharedPreferences}.
+//     */
+//    private SharedPreferences getGCMPreferences(Context context) {
+//        // This sample app persists the registration ID in shared preferences,
+//        // but
+//        // how you store the regID in your app is up to you.
+//        return getSharedPreferences(MapDisplayActivity.class.getSimpleName(),
+//                Context.MODE_PRIVATE);
+//    }
+//
+//    /**
+//     * @return Application's version code from the {@code PackageManager}.
+//     */
+//    private static int getAppVersion(Context context) {
+//        try {
+//            PackageInfo packageInfo = context.getPackageManager()
+//                    .getPackageInfo(context.getPackageName(), 0);
+//            return packageInfo.versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            // should never happen
+//            throw new RuntimeException("Could not get package name: " + e);
+//        }
+//    }
+//
+//    /**
+//     * Registers the application with GCM servers asynchronously.
+//     * <p>
+//     * Stores the registration ID and app versionCode in the application's
+//     * shared preferences.
+//     */
+//
+//    private GoogleCloudMessaging gcm;
+//    private String regid;
+//    private Context context;
+//    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+//    public static final String PROPERTY_REG_ID = "registration_id";
+//    private static final String PROPERTY_APP_VERSION = "appVersion";
+//
+//    private String SENDER_ID = "1069779036848"; //TODO: This needs to be changed every time you register with a new app!
+//
+//    private void registerInBackground() {
+//        new AsyncTask<Void, Void, String>() {
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                String msg = "";
+//                try {
+//                    if (gcm == null) {
+//                        gcm = GoogleCloudMessaging.getInstance(getBaseContext());
+//                    }
+//                    regid = gcm.register(SENDER_ID);
+//                    msg = "Device registered, registration ID=" + regid;
+//
+//                    // You should send the registration ID to your server over
+//                    // HTTP,
+//                    // so it can use GCM/HTTP or CCS to send messages to your
+//                    // app.
+//                    // The request to your server should be authenticated if
+//                    // your app
+//                    // is using accounts.
+//                    ServerUtilities.sendRegistrationIdToBackend(getBaseContext(), regid);
+//
+//
+//                    // Persist the regID - no need to register again.
+//                    storeRegistrationId(context, regid);
+//                } catch (IOException ex) {
+//                    msg = "Error :" + ex.getMessage();
+//                    // If there is an error, don't just keep trying to register.
+//                    // Require the user to click a button again, or perform
+//                    // exponential back-off.
+//                }
+//                return msg;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String msg) {
+//                Log.i(TAG, "gcm register msg: " + msg);
+//            }
+//        }.execute(null, null, null);
+//    }
+//
+//    /**
+//     * Stores the registration ID and app versionCode in the application's
+//     * {@code SharedPreferences}.
+//     *
+//     * @param context
+//     *            application's context.
+//     * @param regId
+//     *            registration ID
+//     */
+//    private void storeRegistrationId(Context context, String regId) {
+//        final SharedPreferences prefs = getGCMPreferences(context);
+//        int appVersion = getAppVersion(context);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(PROPERTY_REG_ID, regId);
+//        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+//        editor.commit();
+//    }
+
 }

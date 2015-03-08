@@ -359,7 +359,6 @@ public class TraceFragment extends Fragment {
 
                 Location mLastLocation = null;
                 HomeActivity ha = (HomeActivity) context;
-                ArrayList<Location> locs = ha.getUpdates();
 
                 if(ha.getUpdates().size() > 0)
                     mLastLocation = ha.getUpdates().get(ha.getUpdates().size() - 1);

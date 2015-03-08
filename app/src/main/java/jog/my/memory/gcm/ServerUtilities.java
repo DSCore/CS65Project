@@ -176,7 +176,7 @@ public final class ServerUtilities {
      */
     public static String postFile(Context context, String serverUrl, Uri uri){
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(serverUrl);
+        HttpPost httppost = new HttpPost(serverUrl+"/postFile.do");
 
         InputStream stream = null;
         try {
