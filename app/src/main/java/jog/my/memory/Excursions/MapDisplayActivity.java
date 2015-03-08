@@ -3,6 +3,7 @@ package jog.my.memory.Excursions;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -44,6 +45,8 @@ public class MapDisplayActivity extends FragmentActivity {
     private int position;
     private int inputType;
     private long id;
+    private ArrayList<Picture> mShownImages = new ArrayList<Picture>();
+    private ArrayList<Marker> mMarkers = new ArrayList<Marker>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +201,8 @@ public class MapDisplayActivity extends FragmentActivity {
                     ee.getmLocationList().get(ee.getmLocationList().size() - 1).toLatLng()));
             //Update the route trace.
             this.updateRouteTrace(ee);
+            //Update all of the markers on the map
+            this.updateShownImages();
         }
     }
 
@@ -215,7 +220,7 @@ public class MapDisplayActivity extends FragmentActivity {
         this.mMap.addPolyline(mPO);
     }
 
-    public void onDeleteExcursionButtonPress(View v){
+    public void onDeleteExcursionButtonPress(View v) {
         ExcursionDBHelper mydbHelper = new ExcursionDBHelper(this);
         mydbHelper.open();
         mydbHelper.removeEntry(this.id);
@@ -227,13 +232,51 @@ public class MapDisplayActivity extends FragmentActivity {
         ArrayList<Picture> pics = picdbHelper.fetchEntriesByExcursionID(this.id);
         Log.d("DisplayExcursion", "" + pics);
 
-        for (Picture pic : pics){
+        for (Picture pic : pics) {
             picdbHelper.removeEntry(pic.getId());
             Log.d("DisplayExcursion", "A picture was removed!");
         }
         picdbHelper.close();
 
         finish();
+    }
+
+    private void updateShownImages(){
+        this.updateShownImages(this.mEeToDisplay.getmID());
+    }
+
+    /**
+     * Update the map with the images shown
+     */
+    public void updateShownImages(long excursionID){
+        //Clear all of the markers on the map
+        this.clearAllMarkers();
+        //Update the images that are shown on the map
+        this.mShownImages = (new PicturesDBHelper(this)).fetchEntriesByExcursionID(excursionID);
+        //Show all of the images as icons at the locations that they were taken
+        for(Picture pic : this.mShownImages){
+            this.addPictureToMap(pic);
+        }
+    }
+
+    public void addPictureToMap(Picture pic){
+        Location location = pic.getmLocation();
+        LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
+        Bitmap bmp = pic.getmImage();
+        bmp = Bitmap.createScaledBitmap(bmp,new Double(0.6*bmp.getWidth()).intValue(),new Double(0.6*bmp.getHeight()).intValue(),false);
+        this.mMarkers.add(
+                this.mMap.addMarker(new MarkerOptions()
+                                .position(position)
+                                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+                ));
+        Log.d(TAG,"Created new marker!");
+    }
+
+    public void clearAllMarkers(){
+        //Clear all markers from the map
+        this.mMap.clear();
+        //Clear all markers from the list
+        this.mMarkers.clear();
     }
 
     /**

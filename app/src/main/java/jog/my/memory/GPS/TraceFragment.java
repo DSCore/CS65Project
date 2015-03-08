@@ -284,6 +284,8 @@ public class TraceFragment extends Fragment {
             startPhoto.setBackgroundResource(0);
             startPhoto.setText("START");
             this.stopDisplayTrackingNotification();
+            //Clear the map of all markers
+            ((HomeActivity)getActivity()).clearAllMarkers();
         }
     }
 
@@ -342,21 +344,27 @@ public class TraceFragment extends Fragment {
                 catch(ArrayIndexOutOfBoundsException ae){
                     Log.d(TAG,"No locations were found");
                 }
+                final Picture pic = new Picture();
                 if( mLastLocation != null) {
-                    Picture pic = new Picture(); //TODO: Update this from merging in the databases
                     pic.setmLat(mLastLocation.getLatitude());
                     pic.setmLong(mLastLocation.getLongitude());
                     pic.setmImage(bmp);
                     pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }else{
-                    Picture pic = new Picture(); //TODO: Update this from merging in the databases
                     pic.setmLat(0);
                     pic.setmLong(0);
                     pic.setmImage(bmp);
                     pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }
+                //Update the images that are displayed on the map
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((HomeActivity) getActivity()).addPictureToMap(pic);
+                    }
+                });
 //                    this.updateGridView();
                 mDbHelper.close();
             }
