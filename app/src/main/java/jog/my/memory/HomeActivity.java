@@ -96,6 +96,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private Timer mTimer;
     private TimerTask mUpdateMapView;
 
+    //images on the map.
+    private ArrayList<Picture> mShownImages;
+
     public Excursion getCurrentExcursion(){
         return currentExcursion;
     }
@@ -635,5 +638,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
 
+    }
+
+    /**
+     * Update the map with the images shown
+     */
+    public void updateShownImages(){
+        //Show all of the images as icons at the locations that they were taken
+        for(Picture pic : this.mShownImages){
+            this.addPictureToMap(pic);
+        }
     }
 }

@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cormack.devon.lab1_1.MapDisplayActivity">
+    <item
+        android:id="@+id/deleteEntryButton"
+        android:title="@string/DELETE"
+        android:showAsAction="always"
+        />
+</menu>
