@@ -183,6 +183,17 @@ public class TraceFragment extends Fragment {
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
+    /**
+     * Stops displaying the tracking notification
+     */
+    private void stopDisplayTrackingNotification(){
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.cancel(TraceFragment.TRACING_NOTIFICATION);
+    }
+
 //    // TODO: Rename method, update argument and hook method into UI event - from default frag, probably don't need this
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
@@ -275,6 +286,7 @@ public class TraceFragment extends Fragment {
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()
                     .getResources().getDrawable(android.R.drawable.btn_default));
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("Start");
+            this.stopDisplayTrackingNotification();
         }
     }
 
