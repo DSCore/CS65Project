@@ -22,6 +22,8 @@ import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.HomeActivity;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
+import jog.my.memory.database.ExcursionDBHelper;
+import jog.my.memory.database.PicturesDBHelper;
 
 public class HomeFragment extends Fragment {
 
@@ -111,14 +113,8 @@ public class HomeFragment extends Fragment {
      */
     public void updateDisplayedInformation(){
 
-        //TODO: Get the information from somewhere...
-        int mNumExcursions = 142;
-        int mNumLikes = 15400;
-        int mNumGalleries = 22;
-
-        //this.mTvGallery.setText(prettyPrint(mNumGalleries));
-        this.mTvFavorites.setText(prettyPrint(mNumLikes));
-        this.mTvExcursions.setText(prettyPrint(mNumExcursions));
+        this.mTvFavorites.setText(prettyPrint(new PicturesDBHelper(context).fetchEntries().size()));
+        this.mTvExcursions.setText(prettyPrint(new ExcursionDBHelper(context).fetchEntries().size()));
 
     }
 
