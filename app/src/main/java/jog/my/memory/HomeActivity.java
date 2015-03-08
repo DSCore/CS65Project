@@ -1,10 +1,12 @@
 package jog.my.memory;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +51,7 @@ import java.util.TimerTask;
 import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.Gallery.GalleryFragment;
+import jog.my.memory.Helpers.MyDialogFragment;
 import jog.my.memory.Home.HomeFragment;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.Slideshow.SlideshowGalleryFragment;
@@ -517,6 +522,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     /**
      * Start up a new excursion
      */
+    private String m_Text = "";
+    private MyDialogFragment mDialogFrag;
     public void startNewExcursion(){
         ArrayList<LatLng> mLocationList = new ArrayList<LatLng>();
         LatLng latLng = new LatLng(0,0);
@@ -530,10 +537,47 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         nextDBID = dummyID + 1;
         dbHelp.close();
 
-        this.currentExcursion = new Excursion();
-        this.currentExcursion.setmName("TESTEXCURSION"); //TODO: Trigger a DialogFragment to get this!
+        final Excursion nCurrentExcursion = new Excursion();
+        this.currentExcursion= new Excursion();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Excursion name:");
+        builder.setMessage("Enter excursion name here");
+        final EditText mInput = new EditText(this);
+
+        mInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT);
+        builder.setView(mInput);
+
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mInput.getText().toString().length()==0) {
+                    m_Text = "Excursion number: " + getNextDBID();;
+                } else {
+                    m_Text = mInput.getText().toString();
+
+                }
+                nCurrentExcursion.setmName(m_Text);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = "Excursion number: "+ getNextDBID();
+                nCurrentExcursion.setmName(m_Text);
+                dialog.cancel();
+
+            }
+        });
+
+        builder.show();
+
+        this.currentExcursion = nCurrentExcursion;
+
+        //TODO: Trigger a DialogFragment to get this!
         Date date = new Date();
-        DateFormat formatter = new SimpleDateFormat("E MMM dd yyyy HH:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateFormatted = formatter.format(date);
         this.currentExcursion.setmTimeStamp(dateFormatted);
         Log.d(TAG,"Created new Excursion"+this.currentExcursion);
