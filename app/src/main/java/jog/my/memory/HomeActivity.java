@@ -36,6 +36,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -98,7 +99,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private TimerTask mUpdateMapView;
 
     //images on the map.
-    private ArrayList<Picture> mShownImages;
+    private ArrayList<Picture> mShownImages = new ArrayList<Picture>();
+    private ArrayList<Marker> mMarkers = new ArrayList<Marker>();
 
     public Excursion getCurrentExcursion(){
         return currentExcursion;
@@ -625,10 +627,11 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         Log.d(TAG,"New (w,h) = ("+0.6*bmp.getWidth()+","+0.6*bmp.getHeight()+")");
         Log.d(TAG,"New (w,h) = ("+new Double(0.6*bmp.getWidth()).intValue()+","+new Double(0.6*bmp.getHeight()).intValue()+")");
         bmp = Bitmap.createScaledBitmap(bmp,new Double(0.6*bmp.getWidth()).intValue(),new Double(0.6*bmp.getHeight()).intValue(),false);
-        this.mMap.addMarker(new MarkerOptions()
-                .position(position)
-                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
-        );
+        this.mMarkers.add(
+                this.mMap.addMarker(new MarkerOptions()
+                                .position(position)
+                                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+                ));
         Log.d(TAG,"Created new marker!");
     }
 
@@ -647,12 +650,21 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     /**
      * Update the map with the images shown
      */
-    public void updateShownImages(){
+    public void updateShownImages(long excursionID){
+        //Clear all of the markers on the map
+        this.clearAllMarkers();
         //Update the images that are shown on the map
-        this.mShownImages = (new PicturesDBHelper(this)).fetchEntries();
+        this.mShownImages = (new PicturesDBHelper(this)).fetchEntriesByExcursionID(excursionID);
         //Show all of the images as icons at the locations that they were taken
         for(Picture pic : this.mShownImages){
             this.addPictureToMap(pic);
         }
+    }
+
+    public void clearAllMarkers(){
+        //Clear all markers from the map
+        this.mMap.clear();
+        //Clear all markers from the list
+        this.mMarkers.clear();
     }
 }

@@ -284,6 +284,8 @@ public class TraceFragment extends Fragment {
             startPhoto.setBackgroundResource(0);
             startPhoto.setText("START");
             this.stopDisplayTrackingNotification();
+            //Clear the map of all markers
+            ((HomeActivity)getActivity()).clearAllMarkers();
         }
     }
 
