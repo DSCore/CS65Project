@@ -102,5 +102,6 @@
     <string name="displayEntry_Date_Time">Date</string>
     <string name="displayEntry_Duration">Duration</string>
     <string name="displayEntry_Distance">Distance</string>
+    <string name="server_addr">http://cs65dctst.appsport.com</string>
 
 </resources>

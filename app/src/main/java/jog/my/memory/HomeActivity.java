@@ -7,6 +7,9 @@ import android.app.FragmentManager;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -15,6 +18,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
@@ -30,6 +34,9 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -41,11 +48,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +75,7 @@ import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.database.MyLatLng;
 import jog.my.memory.database.Picture;
 import jog.my.memory.database.PicturesDBHelper;
+import jog.my.memory.gcm.ServerUtilities;
 import jog.my.memory.model.NavDrawerItem;
 
 public class HomeActivity extends FragmentActivity implements TraceFragment.onTraceFragmentClickedListener{
@@ -115,6 +129,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
         setContentView(R.layout.activity_home);
+
+        context = this;
 
         getWindow().setFeatureInt(Window.FEATURE_ACTION_BAR, R.layout.window_title);
         setUpMapIfNeeded();
@@ -680,5 +696,270 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         this.mMap.clear();
         //Clear all markers from the list
         this.mMarkers.clear();
+    }
+
+
+
+    /*** Server upload code ***/
+
+    /**
+     * Updates the server with the database
+     */
+    private void updateServer(){
+        //Get the Arraylist of Exercise entries currently in the database
+        ArrayList<Excursion> listEE = new ExcursionDBHelper(this).fetchEntries();
+
+        //Build a JSONArray of JSONObjects that contains the ArrayList of ExerciseEntries.
+        String jsonString = this.buildJsonToSend(listEE); //TODO: This needs to be changed to upload the files
+
+        //Post message and then refresh
+        postMsg(jsonString);
+    }
+
+    /**
+     * Builds a JsonArray of JsonObjects to send to the server.
+     * @param listEE - the list of Exercise Entries
+     * @return a JSON entity appropriate for sending to a server
+     */
+    private String buildJsonToSend(ArrayList<Excursion> listEE){
+        JSONArray jsonArray = new JSONArray();
+
+        for(Excursion ee : listEE){
+            try{
+                //Create the JSON object
+                JSONObject jsonObject = new JSONObject();
+                //Populate it with all the fields in ExerciseEntity (server-side object)
+                jsonObject.put("id", (long)ee.getmID());
+//                jsonObject.put("inputType", ee.getmInputType());
+//                jsonObject.put("activityType", ee.getmActivityType());
+                jsonObject.put("timeStamp", ee.getmTimeStamp());
+                jsonObject.put("duration", ee.getmDuration());
+                jsonObject.put("distance", ee.getmDistance());
+//                jsonObject.put("avgSpeed", ee.getmAvgSpeed());
+//                jsonObject.put("calories", ee.getmCalorie());
+//                jsonObject.put("climb", ee.getmClimb());
+//                jsonObject.put("heartRate", ee.getmHeartRate());
+                jsonObject.put("name", ee.getmName());
+                //Add the object to the JSONArray
+                jsonArray.put(jsonObject);
+            }
+            catch(Exception e){
+                Log.i(TAG,"Exception in JSON creation, it failed.");
+            }
+
+        }
+        //Return the array of JSON objects in compact JSON String form.
+        try{Log.d(TAG, "Just build JSON array: "+jsonArray.toString(4));}catch(Exception e){};
+        return jsonArray.toString();
+    }
+
+    private void postMsg(String msg) {
+        new AsyncTask<String, Void, String>() {
+
+            @Override
+            protected String doInBackground(String... arg0) {
+                String url = getString(R.string.server_addr) + "/post.do";
+                String res = "";
+                Map<String, String> params = new HashMap<String, String>();
+
+                Log.d(TAG,"post_text mapped to arg0[0] = "+arg0[0]);
+                params.put("post_text", arg0[0]);
+                params.put("from", "phone");
+
+//                params.put(GregorianCalendar to milliseconds.)
+                try {
+                    res = ServerUtilities.post(url, params);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return res;
+            }
+
+            @Override
+            protected void onPostExecute(String res) {
+                //Refresh the history list for the HistoryFragment
+                refreshPostHistory();
+            }
+
+        }.execute(msg);
+    }
+
+    /**
+     * Supports refreshing the post history by spinning up
+     * a background process that posts to the server.
+     */
+    private void refreshPostHistory() {
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... arg0) {
+                String url = getString(R.string.server_addr)
+                        + "/get_history.do";
+                String res = "";
+                Map<String, String> params = new HashMap<String, String>();
+                try {
+                    res = ServerUtilities.post(url, params);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                return res;
+            }
+
+            @Override
+            protected void onPostExecute(String res) {
+                if (!res.equals("")) {
+                    Log.d(TAG,"Successfully received something! It was:");
+                    Log.d(TAG,""+res);
+                }
+            }
+
+        }.execute();
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If it
+     * doesn't, display a dialog that allows users to download the APK from the
+     * Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil
+                .isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Gets the current registration ID for application on GCM service.
+     * <p>
+     * If result is empty, the app needs to register.
+     *
+     * @return registration ID, or empty string if there is no existing
+     *         registration ID.
+     */
+    private String getRegistrationId(Context context) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+        if (registrationId.isEmpty()) {
+            return "";
+        }
+        // Check if app was updated; if so, it must clear the registration ID
+        // since the existing regID is not guaranteed to work with the new
+        // app version.
+        int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION,
+                Integer.MIN_VALUE);
+        int currentVersion = getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            return "";
+        }
+        return registrationId;
+    }
+
+    /**
+     * @return Application's {@code SharedPreferences}.
+     */
+    private SharedPreferences getGCMPreferences(Context context) {
+        // This sample app persists the registration ID in shared preferences,
+        // but
+        // how you store the regID in your app is up to you.
+        return getSharedPreferences(HomeActivity.class.getSimpleName(),
+                Context.MODE_PRIVATE);
+    }
+
+    /**
+     * @return Application's version code from the {@code PackageManager}.
+     */
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+
+    /**
+     * Registers the application with GCM servers asynchronously.
+     * <p>
+     * Stores the registration ID and app versionCode in the application's
+     * shared preferences.
+     */
+
+    private GoogleCloudMessaging gcm;
+    private String regid;
+    private Context context;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    public static final String PROPERTY_REG_ID = "registration_id";
+    private static final String PROPERTY_APP_VERSION = "appVersion";
+
+    private String SENDER_ID = "1069779036848"; //TODO: This needs to be changed every time you register with a new app!
+
+    private void registerInBackground() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(getBaseContext());
+                    }
+                    regid = gcm.register(SENDER_ID);
+                    msg = "Device registered, registration ID=" + regid;
+
+                    // You should send the registration ID to your server over
+                    // HTTP,
+                    // so it can use GCM/HTTP or CCS to send messages to your
+                    // app.
+                    // The request to your server should be authenticated if
+                    // your app
+                    // is using accounts.
+                    ServerUtilities.sendRegistrationIdToBackend(getBaseContext(), regid);
+
+
+                    // Persist the regID - no need to register again.
+                    storeRegistrationId(context, regid);
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                    // If there is an error, don't just keep trying to register.
+                    // Require the user to click a button again, or perform
+                    // exponential back-off.
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                Log.i(TAG, "gcm register msg: " + msg);
+            }
+        }.execute(null, null, null);
+    }
+
+    /**
+     * Stores the registration ID and app versionCode in the application's
+     * {@code SharedPreferences}.
+     *
+     * @param context
+     *            application's context.
+     * @param regId
+     *            registration ID
+     */
+    private void storeRegistrationId(Context context, String regId) {
+        final SharedPreferences prefs = getGCMPreferences(context);
+        int appVersion = getAppVersion(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PROPERTY_REG_ID, regId);
+        editor.putInt(PROPERTY_APP_VERSION, appVersion);
+        editor.commit();
     }
 }
