@@ -3,13 +3,16 @@ package jog.my.memory.GPS;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
@@ -20,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -284,25 +288,24 @@ public class TraceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == super.getActivity().RESULT_OK) {
             Log.d(TAG, "data is: " + data);
-//            if (data != null) {
-            //Get the URI of the picture from the Gallery
-//                Uri pictureURI = data.getData();
-//                Log.d(TAG, "URI was: " + pictureURI.getPath().toString());
-            //Get the real location
-            //            String realURI = this.getRealPathFromURI(pictureURI);
+            new HttpAsyncTask().execute();
+        }
+    }
+
+
+    private class HttpAsyncTask extends AsyncTask<Void, Void, String> {
+
+        private ProgressDialog dialog;
+
+        protected void onPreExecute() {
+            Toast.makeText(context, "Saving Photo...", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected String doInBackground(Void... urls) {
+
             Bitmap bmp = null;
-//                try {
-//                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.mImageCaptureUri);
-//                } catch (FileNotFoundException fnfe) {
-//                    Log.d(TAG, "File not found: "+fnfe.getStackTrace().toString());
-//                } catch (IOException ioe) {
-//                    Log.d(TAG, "IOException: "+ioe.getStackTrace().toString());
-//                }
-
-//                Bundle extras = data.getExtras();
-//                bmp = (Bitmap) extras.get("data");
-
-            ContentResolver cr = super.getActivity().getContentResolver();
+            ContentResolver cr = context.getContentResolver();
             cr.notifyChange(GalleryFragment.mImageCaptureUri,null);
             try{
                 bmp = MediaStore.Images.Media.getBitmap(cr, GalleryFragment.mImageCaptureUri);
@@ -345,7 +348,14 @@ public class TraceFragment extends Fragment {
                 }
 //                    this.updateGridView();
             }
+            return "OK";
         }
-    }
 
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(context, "Saved Successfully", Toast.LENGTH_LONG).show();
+        }
+
+    }
 }
