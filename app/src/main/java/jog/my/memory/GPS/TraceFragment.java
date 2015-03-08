@@ -288,7 +288,7 @@ public class TraceFragment extends Fragment {
             ((HomeActivity)getActivity()).clearAllMarkers();
         }
     }
-
+    private HttpAsyncTask mAsyncTask;
     /**
      *
      * @param requestCode - What was called?
@@ -300,9 +300,13 @@ public class TraceFragment extends Fragment {
         if(requestCode == this.CAMERA_PICTURE_REQUEST
                 && resultCode == super.getActivity().RESULT_OK) {
             Log.d(TAG, "data is: " + data);
-            new HttpAsyncTask().execute();
+            mAsyncTask = new HttpAsyncTask();
+            mAsyncTask.execute();
+
         }
     }
+
+
 
 
     private class HttpAsyncTask extends AsyncTask<Void, Void, String> {
@@ -315,7 +319,7 @@ public class TraceFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... urls) {
-
+            ((HomeActivity) context).savePhoto=true;
             Bitmap bmp = null;
             ContentResolver cr = context.getContentResolver();
             cr.notifyChange(GalleryFragment.mImageCaptureUri,null);
@@ -375,6 +379,7 @@ public class TraceFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(context, "Saved Successfully!", Toast.LENGTH_LONG).show();
+            ((HomeActivity) context).savePhoto=false;
         }
     }
 }

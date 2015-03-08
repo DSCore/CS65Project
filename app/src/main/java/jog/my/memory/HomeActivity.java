@@ -74,6 +74,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private ActionBarDrawerToggle mDrawerToggle;
 
     public static boolean mDrawTrace = false;
+    public static boolean savePhoto = false;
     Polyline mRouteTrace;
 
     // nav drawer title
@@ -97,6 +98,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
 
     private Timer mTimer;
     private TimerTask mUpdateMapView;
+
+
 
     //images on the map.
     private ArrayList<Picture> mShownImages = new ArrayList<Picture>();
@@ -170,6 +173,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             }
 
             public void onDrawerOpened(View drawerView) {
+
                 getActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
@@ -345,7 +349,15 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             // display view for selected nav drawer item
-            displayView(position);
+            if(mDrawTrace){
+                if(!savePhoto){
+                    displayView(position);
+                }
+            }else{
+                displayView(position);
+            }
+
+
         }
     }
 
@@ -414,6 +426,7 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             default:
                 break;
         }
+
         if (fragment != null && fragment.getClass() != HomeFragment.class) {
             //Open the fragment and add it to the backstack
             FragmentManager fragmentManager = getFragmentManager();
