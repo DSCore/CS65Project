@@ -358,31 +358,30 @@ public class TraceFragment extends Fragment {
                 mDbHelper.open();
 
                 Location mLastLocation = null;
-                try {
-                    mLastLocation = ((HomeActivity) getActivity()).getUpdates().get(((HomeActivity) getActivity()).getUpdates().size() - 1);
-                }
-                catch(ArrayIndexOutOfBoundsException ae){
-                    Log.d(TAG,"No locations were found");
-                }
+                HomeActivity ha = (HomeActivity) context;
+                ArrayList<Location> locs = ha.getUpdates();
+
+                if(ha.getUpdates().size() > 0)
+                    mLastLocation = ha.getUpdates().get(ha.getUpdates().size() - 1);
                 final Picture pic = new Picture();
                 if( mLastLocation != null) {
                     pic.setmLat(mLastLocation.getLatitude());
                     pic.setmLong(mLastLocation.getLongitude());
                     pic.setmImage(bmp);
-                    pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
+                    pic.setmExcursionID(ha.getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }else{
                     pic.setmLat(0);
                     pic.setmLong(0);
                     pic.setmImage(bmp);
-                    pic.setmExcursionID(((HomeActivity) getActivity()).getNextDBID());
+                    pic.setmExcursionID(ha.getNextDBID());
                     mDbHelper.insertEntry(pic);
                 }
                 //Update the images that are displayed on the map
-                getActivity().runOnUiThread(new Runnable() {
+                ha.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((HomeActivity) getActivity()).addPictureToMap(pic);
+                        ((HomeActivity)context).addPictureToMap(pic);
                     }
                 });
 //                    this.updateGridView();
