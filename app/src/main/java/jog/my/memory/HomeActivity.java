@@ -285,6 +285,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         super.onResume();
         setMapVisible(true);
         setUpMapIfNeeded();
+        if( this.mDrawTrace ){
+            displayView(4);
+        }
     }
 
     @Override

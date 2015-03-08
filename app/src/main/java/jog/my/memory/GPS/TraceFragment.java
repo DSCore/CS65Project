@@ -119,8 +119,8 @@ public class TraceFragment extends Fragment {
 
     public void onDestroy(){
         //Cancel the notification
-        ((NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE))
-                .cancel(TraceFragment.TRACING_NOTIFICATION);
+       // ((NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE))
+                //.cancel(TraceFragment.TRACING_NOTIFICATION);
         super.onDestroy();
     }
 
@@ -198,11 +198,8 @@ public class TraceFragment extends Fragment {
      * Stops displaying the tracking notification
      */
     private void stopDisplayTrackingNotification(){
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.cancel(TraceFragment.TRACING_NOTIFICATION);
+        ((NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE))
+                .cancel(TraceFragment.TRACING_NOTIFICATION);
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event - from default frag, probably don't need this

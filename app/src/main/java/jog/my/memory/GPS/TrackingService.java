@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
 
 public class TrackingService extends Service {
@@ -49,7 +50,7 @@ public class TrackingService extends Service {
 
     // Display tracking location
     private void displayTrackingNotification(){
-        Intent resultIntent = new Intent(getBaseContext(), TraceFragment.class);
+        Intent resultIntent = new Intent(getBaseContext(), HomeActivity.class);
         // Because clicking the notification opens a new ("special") activity, there's
         // no need to create an artificial back stack.
         this.mPendingIntent =
@@ -118,6 +119,4 @@ public class TrackingService extends Service {
             Log.d(TAG,"The receiver has already been destroyed!");
         }
     }
-
-
 }
