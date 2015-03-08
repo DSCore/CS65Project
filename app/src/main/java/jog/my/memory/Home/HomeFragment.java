@@ -94,7 +94,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
-        HomeActivity.mDrawTrace = true;
         //Ensure that the keyboard is hidden
 //        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         HomeActivity.hideKeyboard(context);
@@ -106,7 +105,6 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
-        HomeActivity.mDrawTrace = false;
     }
 
     /**

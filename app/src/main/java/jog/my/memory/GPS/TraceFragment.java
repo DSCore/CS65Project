@@ -182,6 +182,17 @@ public class TraceFragment extends Fragment {
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
+    /**
+     * Stops displaying the tracking notification
+     */
+    private void stopDisplayTrackingNotification(){
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.cancel(TraceFragment.TRACING_NOTIFICATION);
+    }
+
 //    // TODO: Rename method, update argument and hook method into UI event - from default frag, probably don't need this
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
@@ -266,7 +277,6 @@ public class TraceFragment extends Fragment {
             //Turn off the trace
             ((HomeActivity) getActivity()).setDrawTrace(false);
             ArrayList<Location> updates = ((HomeActivity) getActivity()).getUpdates();
-            //TODO: Save the data to the database here
             //Save the database
             ((HomeActivity) getActivity()).stopCurrentExcursion();
 
@@ -274,6 +284,7 @@ public class TraceFragment extends Fragment {
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setBackground(getActivity()
                     .getResources().getDrawable(android.R.drawable.btn_default));
             ((Button) view.findViewById(R.id.trace_start_photo_btn)).setText("Start");
+            this.stopDisplayTrackingNotification();
         }
     }
 
@@ -285,7 +296,8 @@ public class TraceFragment extends Fragment {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == super.getActivity().RESULT_OK) {
+        if(requestCode == this.CAMERA_PICTURE_REQUEST
+                && resultCode == super.getActivity().RESULT_OK) {
             Log.d(TAG, "data is: " + data);
             new HttpAsyncTask().execute();
         }
