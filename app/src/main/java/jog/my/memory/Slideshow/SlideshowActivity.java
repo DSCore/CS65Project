@@ -35,6 +35,7 @@ public class SlideshowActivity extends Activity {
     private  int currentIndex=0;
     private PicturesDBHelper mDbHelper;
     private ArrayList<Picture> mPicList = new ArrayList<Picture>();
+    public static String EXTRA_ID = "ID";
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -47,7 +48,11 @@ public class SlideshowActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slideshow);
         this.mDbHelper = new PicturesDBHelper(this);
-        this.mPicList = this.mDbHelper.fetchEntries();
+
+        Bundle extras = getIntent().getExtras();
+        long excID = extras.getLong(EXTRA_ID);
+
+        this.mPicList = this.mDbHelper.fetchEntriesByExcursionID(excID);
 
         next= (Button)findViewById(R.id.next_bt);
         exit= (Button)findViewById(R.id.exit_btn);
@@ -71,9 +76,9 @@ public class SlideshowActivity extends Activity {
     private int i=0;
 
     public void onClickNext(View v){
-      i= (i+1) % mPicList.size();
-      changeImage();
-
+        i= (i+1) % mPicList.size();
+        mHandler.removeCallbacks(slideOver);
+        changeImage();
     }
 
     public void onExitClicked(View v){
@@ -81,9 +86,9 @@ public class SlideshowActivity extends Activity {
     }
 
     public void onPrevClicked(View v){
-        i= (i-1) % mPicList.size();
-        i= (i<0)? i+mPicList.size(): i;
-
+        i = (i - 1) % mPicList.size();
+        i = (i < 0) ? i + mPicList.size() : i;
+        mHandler.removeCallbacks(slideOver);
         changeImage();
     }
 
@@ -143,6 +148,7 @@ public class SlideshowActivity extends Activity {
                 i = (i - 1) % mPicList.size();
                 i = (i < 0) ? i + mPicList.size() : i;
                 mHandler.removeCallbacks(slideOver);
+                changeImage();
             }
 
             return super.onFling(e1, e2, velocityX, velocityY);
