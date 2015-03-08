@@ -58,6 +58,7 @@ import jog.my.memory.Slideshow.SlideshowGalleryFragment;
 import jog.my.memory.adapter.NavDrawerListAdapter;
 import jog.my.memory.database.Excursion;
 import jog.my.memory.database.ExcursionDBHelper;
+import jog.my.memory.database.MyLatLng;
 import jog.my.memory.database.Picture;
 import jog.my.memory.model.NavDrawerItem;
 
@@ -525,8 +526,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private String m_Text = "";
     private MyDialogFragment mDialogFrag;
     public void startNewExcursion(){
-        ArrayList<LatLng> mLocationList = new ArrayList<LatLng>();
-        LatLng latLng = new LatLng(0,0);
+        ArrayList<MyLatLng> mLocationList = new ArrayList<MyLatLng>();
+        MyLatLng latLng = new MyLatLng(0,0);
         mLocationList.add(latLng);
         ArrayList<Long> mPictureIDs = new ArrayList<Long>(0);
         Excursion dummy = new Excursion(new GregorianCalendar(), 0, 0,  mLocationList,  mPictureIDs, "Dummy");
@@ -605,10 +606,10 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      * @param locationList - list of Locations
      * @return list of LatLng from list of locations
      */
-    private ArrayList<LatLng> fromLocationListToLatLngList(ArrayList<Location> locationList){
-        ArrayList<LatLng> latLngList = new ArrayList<LatLng>();
+    private ArrayList<MyLatLng> fromLocationListToLatLngList(ArrayList<Location> locationList){
+        ArrayList<MyLatLng> latLngList = new ArrayList<MyLatLng>();
         for( Location entry : locationList ){
-            latLngList.add(new LatLng(entry.getLatitude(),entry.getLongitude()));
+            latLngList.add(new MyLatLng(entry.getLatitude(),entry.getLongitude()));
         }
         return latLngList;
     }

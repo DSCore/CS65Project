@@ -98,5 +98,9 @@
     <string name="finish_button">Finish \nExcursion</string>
     <string name="title_activity_display_excursion">DisplayExcursionActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="displayEntry_activity_type">Activity Type</string>
+    <string name="displayEntry_Date_Time">Date</string>
+    <string name="displayEntry_Duration">Duration</string>
+    <string name="displayEntry_Distance">Distance</string>
 
 </resources>

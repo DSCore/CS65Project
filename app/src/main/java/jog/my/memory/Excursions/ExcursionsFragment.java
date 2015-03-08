@@ -70,8 +70,10 @@ public class ExcursionsFragment extends ListFragment {
         Excursion entry = (Excursion)(getListAdapter()).getItem(position);
         long rowId = entry.getmID();
 
-        Intent intent = new Intent(getActivity(), DisplayExcursionActivity.class);
-        intent.putExtra(DisplayExcursionActivity.EXTRA_ROW_ID, rowId);
+//        Intent intent = new Intent(getActivity(), DisplayExcursionActivity.class);
+//        intent.putExtra(DisplayExcursionActivity.EXTRA_ROW_ID, rowId);
+        Intent intent = new Intent(getActivity(), MapDisplayActivity.class);
+        intent.putExtra("ee",values.get(position));
         startActivity(intent);
     }
 

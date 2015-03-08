@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.text.ParseException;
@@ -18,12 +19,12 @@ import java.util.GregorianCalendar;
 /**
  * Created by Steve on 2/28/2015.
  */
-public class Excursion {
+public class Excursion implements Serializable{
     private long mID;
     private Calendar mTimeStamp = new GregorianCalendar();
     private double mDuration;
     private double mDistance;
-    private ArrayList<LatLng> mLocationList; // Location list
+    private ArrayList<MyLatLng> mLocationList; // Location list
     private ArrayList<Long> mPictureIDs;
     private String mName;
 
@@ -39,7 +40,7 @@ public class Excursion {
     /**
      * Constructs an Excursion with the given data
      */
-    public Excursion(Calendar mTimeStamp, double mDuration, double mDistance, ArrayList<LatLng> mLocationList, ArrayList<Long> mPictureIDs, String mName){
+    public Excursion(Calendar mTimeStamp, double mDuration, double mDistance, ArrayList<MyLatLng> mLocationList, ArrayList<Long> mPictureIDs, String mName){
         this.mTimeStamp = mTimeStamp;
         this.mDuration = mDuration;
         this.mDistance = mDistance;
@@ -86,7 +87,7 @@ public class Excursion {
     }
 
     public void setmGPSDATA(byte[] bytePointArray) {
-        mLocationList = new ArrayList<LatLng>();
+        mLocationList = new ArrayList<MyLatLng>();
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytePointArray);
         IntBuffer intBuffer = byteBuffer.asIntBuffer();
 
@@ -96,7 +97,7 @@ public class Excursion {
         int locationNum = intArray.length / 2;
 
         for (int i = 0; i < locationNum; i++) {
-            LatLng latLng = new LatLng((double) intArray[i * 2] / 1E6F,
+            MyLatLng latLng = new MyLatLng((double) intArray[i * 2] / 1E6F,
                     (double) intArray[i * 2 + 1] / 1E6F);
             mLocationList.add(latLng);
         }
@@ -106,8 +107,8 @@ public class Excursion {
         int[] intArray = new int[mLocationList.size() * 2];
 
         for (int i = 0; i < mLocationList.size(); i++) {
-            intArray[i * 2] = (int) (mLocationList.get(i).latitude * 1E6);
-            intArray[(i * 2) + 1] = (int) (mLocationList.get(i).longitude * 1E6);
+            intArray[i * 2] = (int) (mLocationList.get(i).getLatitude() * 1E6);
+            intArray[(i * 2) + 1] = (int) (mLocationList.get(i).getLongitude() * 1E6);
         }
 
         ByteBuffer byteBuffer = ByteBuffer.allocate(intArray.length
@@ -119,11 +120,11 @@ public class Excursion {
     }
 
     //Define getter/setter functions to update a new ExerciseEntry
-    public void setmLocationList(ArrayList<LatLng> latlngIn){
+    public void setmLocationList(ArrayList<MyLatLng> latlngIn){
         this.mLocationList = latlngIn;
     }
 
-    public ArrayList<LatLng> getmLocationList(){
+    public ArrayList<MyLatLng> getmLocationList(){
         return mLocationList;
     }
 
