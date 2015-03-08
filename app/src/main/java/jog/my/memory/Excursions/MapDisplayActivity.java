@@ -47,6 +47,7 @@ public class MapDisplayActivity extends FragmentActivity {
     private long id;
     private ArrayList<Picture> mShownImages = new ArrayList<Picture>();
     private ArrayList<Marker> mMarkers = new ArrayList<Marker>();
+    private double imageScale = 0.2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +264,7 @@ public class MapDisplayActivity extends FragmentActivity {
         Location location = pic.getmLocation();
         LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
         Bitmap bmp = pic.getmImage();
-        bmp = Bitmap.createScaledBitmap(bmp,new Double(0.6*bmp.getWidth()).intValue(),new Double(0.6*bmp.getHeight()).intValue(),false);
+        bmp = Bitmap.createScaledBitmap(bmp,new Double(this.imageScale*bmp.getWidth()).intValue(),new Double(this.imageScale*bmp.getHeight()).intValue(),false);
         this.mMarkers.add(
                 this.mMap.addMarker(new MarkerOptions()
                                 .position(position)
