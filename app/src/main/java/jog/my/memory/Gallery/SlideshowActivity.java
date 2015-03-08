@@ -49,12 +49,14 @@ public class SlideshowActivity extends Activity {
         this.mDbHelper = new PicturesDBHelper(this);
         this.mPicList = this.mDbHelper.fetchEntries();
 
-        next= (Button)findViewById(R.id.next_bt);
-        exit= (Button)findViewById(R.id.exit_btn);
-        prev= (Button)findViewById(R.id.previous_btn);
-        img= (ImageView)findViewById(R.id.img_view);
-        img.setImageBitmap(mPicList.get(0).getmImage());
-        mHandler.postDelayed(slideOver, 2500);
+       // if(mPicList.size() > 0) {
+            next = (Button) findViewById(R.id.next_bt);
+            exit = (Button) findViewById(R.id.exit_btn);
+            prev = (Button) findViewById(R.id.previous_btn);
+            img = (ImageView) findViewById(R.id.img_view);
+            img.setImageBitmap(mPicList.get(0).getmImage());
+            mHandler.postDelayed(slideOver, 2500);
+       // }
     }
 
     private final Runnable slideOver = new Runnable()

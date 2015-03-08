@@ -1,6 +1,7 @@
 package jog.my.memory.GPS;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -8,13 +9,11 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
@@ -30,10 +29,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import jog.my.memory.Gallery.GalleryFragment;
+import jog.my.memory.Helpers.BitmapHelpers;
 import jog.my.memory.HomeActivity;
 import jog.my.memory.R;
-import jog.my.memory.Helpers.BitmapHelpers;
-import jog.my.memory.Gallery.GalleryFragment;
 import jog.my.memory.database.Picture;
 import jog.my.memory.database.PicturesDBHelper;
 /**
@@ -323,6 +322,7 @@ public class TraceFragment extends Fragment {
                 bmp = BitmapHelpers.LoadAndResizeBitmap(GalleryFragment.mImageCaptureUri.getPath(), 500, 500);
 
                 PicturesDBHelper mDbHelper = new PicturesDBHelper(context);
+                mDbHelper.open();
 
                 Location mLastLocation = null;
                 try {
@@ -347,6 +347,7 @@ public class TraceFragment extends Fragment {
                     mDbHelper.insertEntry(pic);
                 }
 //                    this.updateGridView();
+                mDbHelper.close();
             }
             return "OK";
         }
