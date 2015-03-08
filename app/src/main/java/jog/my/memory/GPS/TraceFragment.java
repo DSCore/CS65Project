@@ -297,7 +297,8 @@ public class TraceFragment extends Fragment {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == this.CAMERA_PICTURE_REQUEST && resultCode == super.getActivity().RESULT_OK) {
+        if(requestCode == this.CAMERA_PICTURE_REQUEST
+                && resultCode == super.getActivity().RESULT_OK) {
             Log.d(TAG, "data is: " + data);
             new HttpAsyncTask().execute();
         }
