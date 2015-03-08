@@ -89,19 +89,29 @@ public class GalleryFragment extends Fragment {
         //TODO:Set up all of the onClickListeners here so they don't need to be in the activity
         Button mShowSlides = (Button)view.findViewById(R.id.button_slideshow);
         mShowSlides.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View view) {
-                onSlideshowClicked(view);
-            }
+                //Get the data from the database
+                PicturesDBHelper mDbHelper2 = new PicturesDBHelper(context);
+                mDbHelper2.open();
+                ArrayList<Picture> mPicsList2 = mDbHelper2.fetchEntries();
+                mDbHelper2.close();
+
+                if (mPicsList2.size() > 0) {
+                    onSlideshowClicked(view);
+                }
+                    }
         });
 
-        Button mTakePhoto = (Button)view.findViewById(R.id.button_take_pic);
-        mTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onTakePictureClicked(view);
-            }
-        });
+        //Button mTakePhoto = (Button)view.findViewById(R.id.button_take_pic);
+        //mTakePhoto.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+       //     public void onClick(View view) {
+       //         onTakePictureClicked(view);
+       //     }
+       // });
 
 
         //Get a reference to the GridView
@@ -146,7 +156,7 @@ public class GalleryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                Picture mCurrentPicture = mPicsList.get(position);
+                final Picture mCurrentPicture = mPicsList.get(position);
 
                 SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -170,8 +180,13 @@ public class GalleryFragment extends Fragment {
                 // Set up the buttons
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-
+                        //Open pictures db, delete selected picture
+                        PicturesDBHelper myDbHelper = new PicturesDBHelper(context);
+                        myDbHelper.open();
+                        myDbHelper.removeEntry(mCurrentPicture.getId());
+                        myDbHelper.close();
+                        //Update the grid view
+                        updateGridView();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

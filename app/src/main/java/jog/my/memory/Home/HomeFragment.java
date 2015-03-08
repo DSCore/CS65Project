@@ -11,25 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import jog.my.memory.GPS.TraceFragment;
 import jog.my.memory.HomeActivity;
 import jog.my.memory.Profile.ProfileFragment;
 import jog.my.memory.R;
-import jog.my.memory.database.Excursion;
-import jog.my.memory.database.ExcursionDBHelper;
 
 public class HomeFragment extends Fragment {
 
@@ -101,7 +93,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
-        HomeActivity.mDrawTrace = true;
         //Ensure that the keyboard is hidden
 //        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         HomeActivity.hideKeyboard(context);
@@ -113,7 +104,6 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         ((HomeActivity)super.getActivity()).setMapVisible(true);
-        HomeActivity.mDrawTrace = false;
     }
 
     /**

@@ -18,13 +18,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -158,7 +156,7 @@ public class SlideshowGalleryFragment extends Fragment {
         this.mGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(context,SlideshowActivity.class);
+                Intent intent = new Intent(context, SlideshowActivity.class);
                 Picture mCurrentPicture = mPicsList.get(position);
                 intent.putExtra(DisplayActivity.IMAGE, mCurrentPicture.getmImageAsByteArray());
                 intent.putExtra(DisplayActivity.GPS,
@@ -166,7 +164,8 @@ public class SlideshowGalleryFragment extends Fragment {
                                 +", "+ Location.convert(mCurrentPicture.getmLong()
                                 , Location.FORMAT_DEGREES));
                 intent.putExtra(DisplayActivity.TIMESTAMP,mCurrentPicture.getmTimeStamp());
-                intent.putExtra(DisplayActivity.ID,mCurrentPicture.getId());
+                intent.putExtra(SlideshowActivity.EXTRA_ID, mCurrentPicture.getExcursionID());
+
                 startActivityForResult(intent, DISPLAY_ACTIVITY_REQUEST);
             }
         });

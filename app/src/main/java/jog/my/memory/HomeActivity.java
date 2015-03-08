@@ -41,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import jog.my.memory.Excursions.ExcursionsFragment;
 import jog.my.memory.GPS.TraceFragment;
@@ -84,6 +86,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     private ArrayList<Location> updates = new ArrayList<Location>();
     private Excursion currentExcursion;
     private long nextDBID;
+
+    private Timer mTimer;
+    private TimerTask mUpdateMapView;
 
     public Excursion getCurrentExcursion(){
         return currentExcursion;
@@ -176,14 +181,14 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         updates.add(location);
         if (location != null)
         {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude()+.0008, location.getLongitude()))      // Sets the center of the map to location user
                     .zoom(17)                   // Sets the zoom
                     .build();                   // Creates a CameraPosition from the builder
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         }
 
@@ -205,6 +210,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
                         mPO.add(new LatLng(ll.getLatitude(), ll.getLongitude()));
                     }
                     mRouteTrace = mMap.addPolyline(mPO);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(
+                            new LatLng(location.getLatitude(),location.getLongitude())));
                 }
             }
             public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -212,6 +219,35 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
             public void onProviderDisabled(String provider) { }
         };
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        //Start updating the map's location every five seconds
+        this.startUpdateMapView();
+    }
+
+    /**
+     * Updates the location of the map every 5 seconds. Threaded.
+     */
+    public void startUpdateMapView(){
+        //Define a TimerTask to update the location of the data points
+        this.mTimer = new Timer();
+        this.mUpdateMapView = new TimerTask() {
+            @Override
+            public void run() {
+                if(updates != null && updates.size() > 0) {
+                    Location location = updates.get(updates.size() - 1);
+                    final CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(location.getLatitude() + .0008, location.getLongitude()))      // Sets the center of the map to location user
+                            .zoom(17)                   // Sets the zoom
+                            .build();                   // Creates a CameraPosition from the builder
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        }
+                    });
+                }
+            }
+        };
+        this.mTimer.scheduleAtFixedRate(mUpdateMapView,0,5*1000);
     }
 
     /**
@@ -448,6 +484,13 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
     }
 
     public void setDrawTrace(boolean drawTrace){
+        //Turn on or off the HomeFragment updates
+        if(drawTrace){
+            this.mTimer.cancel();
+        }
+        else{
+            this.startUpdateMapView();
+        }
         this.mDrawTrace = drawTrace;
     }
 

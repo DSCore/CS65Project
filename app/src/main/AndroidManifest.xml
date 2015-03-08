@@ -50,6 +50,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".Slideshow.SlideshowActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".Gallery.DisplayActivity"
             android:label="@string/title_activity_display" >
         </activity>
