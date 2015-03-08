@@ -33,7 +33,9 @@
         android:name="jog.my.memory.android.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- TODO: Update this with our icon! -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- TODO: Update this with our icon! -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -46,22 +48,20 @@
         <!-- </activity> -->
         <activity
             android:name=".Gallery.SlideshowActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Slideshow.SlideshowActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name=".Gallery.DisplayActivity"
             android:label="@string/title_activity_display" >
         </activity>
-
         <activity android:name=".Excursions.MapDisplayActivity"
             android:screenOrientation="portrait"/>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -84,6 +84,13 @@
             android:name=".Excursions.DisplayExcursionActivity"
             android:label="@string/title_activity_display_excursion" >
         </activity>
+
+        <service
+            android:name=".GPS.TrackingService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <receiver android:name=".GPS.TrackingService$TrackingLocationReceiver"/>
     </application>
 
 </manifest>

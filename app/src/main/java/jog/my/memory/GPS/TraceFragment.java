@@ -168,27 +168,30 @@ public class TraceFragment extends Fragment {
 
     // Display tracking location
     private void displayTrackingNotification(){
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity())
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Jog My Memory")
-                .setContentText("Making Memories!");
-        Intent resultIntent = new Intent(getActivity(), TraceFragment.class);
-        // Because clicking the notification opens a new ("special") activity, there's
-        // no need to create an artificial back stack.
-        PendingIntent resultPendingIntent =
-            PendingIntent.getActivity(
-                getActivity(),
-                0,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        // Sets an ID for the notification
-        int mNotificationId = TraceFragment.TRACING_NOTIFICATION;
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        Intent intent = new Intent(getActivity(),TrackingService.class);
+        getActivity().startService(intent);
+        Log.d(TAG,"Launched the service!");
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity())
+//                .setSmallIcon(R.drawable.ic_launcher)
+//                .setContentTitle("Jog My Memory")
+//                .setContentText("Making Memories!");
+//        Intent resultIntent = new Intent(getActivity(), TraceFragment.class);
+//        // Because clicking the notification opens a new ("special") activity, there's
+//        // no need to create an artificial back stack.
+//        PendingIntent resultPendingIntent =
+//            PendingIntent.getActivity(
+//                getActivity(),
+//                0,
+//                resultIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT
+//        );
+//        // Sets an ID for the notification
+//        int mNotificationId = TraceFragment.TRACING_NOTIFICATION;
+//        // Gets an instance of the NotificationManager service
+//        NotificationManager mNotifyMgr =
+//                (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+//        // Builds the notification and issues it.
+//        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
     /**
