@@ -77,7 +77,6 @@ public class HomeFragment extends Fragment {
         //Get the text resources displaying the user's information
         this.mTvExcursions = (TextView)rootView.findViewById(R.id.num_excursions);
         this.mTvFavorites = (TextView)rootView.findViewById(R.id.num_likes);
-        this.mTvGallery = (TextView)rootView.findViewById(R.id.num_galleries);
 
         //Set the user's information on the home screen.
         this.updateDisplayedInformation();
@@ -127,7 +126,7 @@ public class HomeFragment extends Fragment {
         int mNumLikes = 15400;
         int mNumGalleries = 22;
 
-        this.mTvGallery.setText(prettyPrint(mNumGalleries));
+        //this.mTvGallery.setText(prettyPrint(mNumGalleries));
         this.mTvFavorites.setText(prettyPrint(mNumLikes));
         this.mTvExcursions.setText(prettyPrint(mNumExcursions));
 

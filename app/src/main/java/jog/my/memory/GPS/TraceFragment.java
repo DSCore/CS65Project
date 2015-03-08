@@ -354,8 +354,7 @@ public class TraceFragment extends Fragment {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(context, "Saved Successfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Saved Successfully!", Toast.LENGTH_LONG).show();
         }
-
     }
 }
