@@ -7,21 +7,52 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent" android:id="@+id/map"
-        tools:context="cormack.devon.lab1_1.MapsActivity"
+        tools:context="com.google.android.gms.maps.MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
-    <LinearLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- This view is currently 6 lines. It could be replaced by 6 one line views if that is easier. -->
-        <TextView
-            android:id="@+id/type_stats"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/stats"
-            android:lines="6"
-            />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:gravity="center|bottom"
+            android:src="@drawable/dual_bar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center|bottom"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                android:id="@+id/button_profile_save"
+                android:layout_width="0dp"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:textColor="#00a5f6"
+                android:background="#00000000"
+                android:text="Delete"
+                android:onClick="onDeleteExcursionButtonPress"
+                />
+
+            <Button
+                android:id="@+id/button_profile_cancel"
+                android:layout_width="0dp"
+                android:layout_height="50dip"
+                android:layout_weight="1"
+                android:textColor="#00a5f6"
+                android:background="#00000000"
+                android:text="Share"
+                android:onClick="onShareClicked"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </FrameLayout>

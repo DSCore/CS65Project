@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,8 +23,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+
 import jog.my.memory.R;
 import jog.my.memory.database.Excursion;
+import jog.my.memory.database.ExcursionDBHelper;
+import jog.my.memory.database.Picture;
+import jog.my.memory.database.PicturesDBHelper;
 
 public class MapDisplayActivity extends FragmentActivity {
 
@@ -37,6 +43,7 @@ public class MapDisplayActivity extends FragmentActivity {
     private Excursion mEeToDisplay;
     private int position;
     private int inputType;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,7 @@ public class MapDisplayActivity extends FragmentActivity {
 
 //        this.mEeToDisplay = (new ExerciseEntryDbHelper(this)).fetchEntryByIndex(this.position);
         this.mEeToDisplay = (Excursion)extras.get("ee");
+        this.id = extras.getLong("row");
 
         setUpMapIfNeeded();
     }
@@ -205,6 +213,27 @@ public class MapDisplayActivity extends FragmentActivity {
             mPO.add(ee.getmLocationList().get(i).toLatLng());
         }
         this.mMap.addPolyline(mPO);
+    }
+
+    public void onDeleteExcursionButtonPress(View v){
+        ExcursionDBHelper mydbHelper = new ExcursionDBHelper(this);
+        mydbHelper.open();
+        mydbHelper.removeEntry(this.id);
+        mydbHelper.close();
+
+        //Delete all pictures associated with excursion
+        PicturesDBHelper picdbHelper = new PicturesDBHelper(this);
+        picdbHelper.open();
+        ArrayList<Picture> pics = picdbHelper.fetchEntriesByExcursionID(this.id);
+        Log.d("DisplayExcursion", "" + pics);
+
+        for (Picture pic : pics){
+            picdbHelper.removeEntry(pic.getId());
+            Log.d("DisplayExcursion", "A picture was removed!");
+        }
+        picdbHelper.close();
+
+        finish();
     }
 
     /**

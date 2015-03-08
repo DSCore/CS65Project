@@ -74,6 +74,7 @@ public class ExcursionsFragment extends ListFragment {
 //        intent.putExtra(DisplayExcursionActivity.EXTRA_ROW_ID, rowId);
         Intent intent = new Intent(getActivity(), MapDisplayActivity.class);
         intent.putExtra("ee",values.get(position));
+        intent.putExtra("row",rowId);
         startActivity(intent);
     }
 
