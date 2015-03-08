@@ -60,6 +60,7 @@ import jog.my.memory.database.Excursion;
 import jog.my.memory.database.ExcursionDBHelper;
 import jog.my.memory.database.MyLatLng;
 import jog.my.memory.database.Picture;
+import jog.my.memory.database.PicturesDBHelper;
 import jog.my.memory.model.NavDrawerItem;
 
 public class HomeActivity extends FragmentActivity implements TraceFragment.onTraceFragmentClickedListener{
@@ -621,6 +622,9 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         Location location = pic.getmLocation();
         LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
         Bitmap bmp = pic.getmImage();
+        Log.d(TAG,"New (w,h) = ("+0.6*bmp.getWidth()+","+0.6*bmp.getHeight()+")");
+        Log.d(TAG,"New (w,h) = ("+new Double(0.6*bmp.getWidth()).intValue()+","+new Double(0.6*bmp.getHeight()).intValue()+")");
+        bmp = Bitmap.createScaledBitmap(bmp,new Double(0.6*bmp.getWidth()).intValue(),new Double(0.6*bmp.getHeight()).intValue(),false);
         this.mMap.addMarker(new MarkerOptions()
                 .position(position)
                 .icon(BitmapDescriptorFactory.fromBitmap(bmp))
@@ -644,6 +648,8 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
      * Update the map with the images shown
      */
     public void updateShownImages(){
+        //Update the images that are shown on the map
+        this.mShownImages = (new PicturesDBHelper(this)).fetchEntries();
         //Show all of the images as icons at the locations that they were taken
         for(Picture pic : this.mShownImages){
             this.addPictureToMap(pic);
