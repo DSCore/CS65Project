@@ -624,8 +624,6 @@ public class HomeActivity extends FragmentActivity implements TraceFragment.onTr
         Location location = pic.getmLocation();
         LatLng position = new LatLng(location.getLatitude(),location.getLongitude());
         Bitmap bmp = pic.getmImage();
-        Log.d(TAG,"New (w,h) = ("+0.6*bmp.getWidth()+","+0.6*bmp.getHeight()+")");
-        Log.d(TAG,"New (w,h) = ("+new Double(0.6*bmp.getWidth()).intValue()+","+new Double(0.6*bmp.getHeight()).intValue()+")");
         bmp = Bitmap.createScaledBitmap(bmp,new Double(0.6*bmp.getWidth()).intValue(),new Double(0.6*bmp.getHeight()).intValue(),false);
         this.mMarkers.add(
                 this.mMap.addMarker(new MarkerOptions()
