@@ -278,7 +278,6 @@ public class TraceFragment extends Fragment {
             //Turn off the trace
             ((HomeActivity) getActivity()).setDrawTrace(false);
             ArrayList<Location> updates = ((HomeActivity) getActivity()).getUpdates();
-            //TODO: Save the data to the database here
             //Save the database
             ((HomeActivity) getActivity()).stopCurrentExcursion();
 
