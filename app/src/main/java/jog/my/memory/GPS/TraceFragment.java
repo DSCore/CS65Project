@@ -132,7 +132,7 @@ public class TraceFragment extends Fragment {
 //        this.startTrackingLocation();
         //Inflate the view
         this.view = inflater.inflate(R.layout.fragment_trace, container, false);
-        this.displayTrackingNotification();
+//        this.displayTrackingNotification();
         //Save the context
         this.context = inflater.getContext();
         Button startPhoto = (Button)view.findViewById(R.id.trace_start_photo_btn);
@@ -151,6 +151,16 @@ public class TraceFragment extends Fragment {
                 onFinishExcursionClicked(v);
             }
         });
+
+        //If the activity is tracing, show the finishPhoto button
+        if(HomeActivity.mDrawTrace){
+            finishPhoto.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.trace_finish_btn_background).setVisibility(View.VISIBLE);
+        }
+        else{
+            finishPhoto.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.trace_finish_btn_background).setVisibility(View.INVISIBLE);
+        }
 
         // Inflate the layout for this fragment
         return view;
@@ -264,6 +274,9 @@ public class TraceFragment extends Fragment {
             startPhoto.setBackgroundResource(R.drawable.camera_bar);
             //Display the tracking notification
             this.displayTrackingNotification();
+            //Make the FinishExcursion button visible
+            this.view.findViewById(R.id.trace_finish_btn).setVisibility(View.VISIBLE);
+            this.view.findViewById(R.id.trace_finish_btn_background).setVisibility(View.VISIBLE);
         }
     }
 
@@ -286,6 +299,9 @@ public class TraceFragment extends Fragment {
             this.stopDisplayTrackingNotification();
             //Clear the map of all markers
             ((HomeActivity)getActivity()).clearAllMarkers();
+            //Make the FinishExcursion button invisible
+            this.view.findViewById(R.id.trace_finish_btn).setVisibility(View.INVISIBLE);
+            this.view.findViewById(R.id.trace_finish_btn_background).setVisibility(View.INVISIBLE);
         }
     }
     private HttpAsyncTask mAsyncTask;
