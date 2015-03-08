@@ -78,6 +78,9 @@ public class MapDisplayActivity extends FragmentActivity {
 //        this.mEeToDisplay = (new ExerciseEntryDbHelper(this)).fetchEntryByIndex(this.position);
         this.mEeToDisplay = (Excursion)extras.get("ee");
         this.id = extras.getLong("row");
+        if (this.mEeToDisplay!=null){
+            updateMapWithNewLocation(this.mEeToDisplay);
+        }
 
         setUpMapIfNeeded();
     }
