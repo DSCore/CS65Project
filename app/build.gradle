@@ -16,6 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+//    packagingOptions {
+//        exclude 'META-INF/NOTICE'
+//    }
 }
 
 dependencies {
@@ -23,4 +26,10 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.google.android.gms:play-services:6.5.87'
+
+    compile (group: 'org.apache.httpcomponents' , name: 'httpmime' , version: '4.3.5') {
+        exclude module: 'org.apache.httpcomponents:httpclient'
+    }
+
+
 }
