@@ -157,11 +157,14 @@ public class MapDisplayActivity extends FragmentActivity {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_disp))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
+            }
+            else{
+                setUpMapIfNeeded();
             }
         }
     }
@@ -182,7 +185,6 @@ public class MapDisplayActivity extends FragmentActivity {
      * Updates the map and the displayed information
      */
     void setupMapWithStoredLocation(){
-//        this.updateDisplayWithNewLocation(this.mEeToDisplay); //TODO: Make this method display our location, then call it.
         this.updateMapWithNewLocation(this.mEeToDisplay);
     }
 
@@ -196,6 +198,9 @@ public class MapDisplayActivity extends FragmentActivity {
         int mNumLoc = ee.getmLocationList().size();
         //If there are locations, update the location of the object by gliding to new location
         Log.d(TAG,"Number of locations is: "+mNumLoc);
+        if(mMap == null){
+            setUpMapIfNeeded();
+        }
         if(mNumLoc >= 1) {
             if (this.mStartMarker == null) {
                 //Add a start marker at the initial location, and go to the location
