@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -233,7 +234,7 @@ public class MapDisplayActivity extends FragmentActivity {
      */
     private void updateRouteTrace(Excursion ee){
         //Construct a polyline through all of the points.
-        PolylineOptions mPO = new PolylineOptions().width(5);
+        PolylineOptions mPO = new PolylineOptions().width(10).color(Color.RED).geodesic(true);
         for(int i=0; i<ee.getmLocationList().size();i++){
             //Add the point to the polyline
             mPO.add(ee.getmLocationList().get(i).toLatLng());
